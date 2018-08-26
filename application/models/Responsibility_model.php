@@ -8,15 +8,16 @@ class Responsibility_model extends MY_Model
     {
         $validationRules = [
             [
-                'field' => 'responsibility_id',
-                'label' => 'Responsibility ID',
-                'rules' => 'trim|required'
-            ],
-            [
                 'field' => 'user_id',
                 'label' => 'User ID',
                 'rules' => 'trim|required'
-            ],                       
+            ],  
+            [
+                'field' => 'draft_id',
+                'label' => 'Draft ID',
+                'rules' => 'trim|required'
+            ],
+                                 
             
         ];
 
@@ -26,8 +27,9 @@ class Responsibility_model extends MY_Model
     public function getDefaultValues()
     {
         return [
-            'draft_id'           => '',
-            'user_id'              => ''
+            
+            'user_id'              => '',
+            'draft_id'           => ''
         ];
     }
 }
