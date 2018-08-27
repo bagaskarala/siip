@@ -10,12 +10,12 @@ class Draft_author_model extends MY_Model
             [
                 'field' => 'draft_id',
                 'label' => 'Draft ID',
-                'rules' => 'trim|required'
+                'rules' => 'trim|required|callback_unique_draft_author_match'
             ],
             [
                 'field' => 'author_id',
                 'label' => 'Author ID',
-                'rules' => 'trim|required'
+                'rules' => 'trim|required|callback_unique_draft_author_match'
             ],                           
         ];
 

@@ -150,20 +150,22 @@ class Draft_author extends Operator_Controller
 //        }
 //    }
 //
-//    public function unique_author_contact()
-//    {
-//        $author_contact      = $this->input->post('author_contact');
-//        $author_id = $this->input->post('author_id');
-//
-//        $this->author->where('author_contact', $author_contact);
-//        !$author_id || $this->author->where('author_id !=', $author_id);
-//        $author = $this->author->get();
-//
-//        if (count($author)) {
-//            $this->form_validation->set_message('unique_author_contact', '%s has been used');
-//            return false;
-//        }
-//        return true;
-//    }
+    public function unique_draft_author_match()
+    {
+        $author_id      = $this->input->post('author_id');
+        $draft_id      = $this->input->post('draft_id');
+        $draft_author_id = $this->input->post('draft_author_id');
+
+        $this->draft_author->where('author_id', $author_id);
+        $this->draft_author->where('draft_id', $draft_id);
+        !$draft_author_id || $this->draft_author->where('draft_author_id !=', $draft_author_id);
+        $draft_author = $this->draft_author->get();
+
+        if (count($draft_author)) {
+            $this->form_validation->set_message('unique_draft_author_match', 'Both of %s has been used');
+            return false;
+        }
+        return true;
+    }
 
 }

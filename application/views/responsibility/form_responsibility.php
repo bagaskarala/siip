@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-10 no-margin">
-        <h2>Responibility</h2>
+        <h2>Responsibility</h2>
     </div>
 </div>
 

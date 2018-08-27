@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Faculty ID</th>
                         <th scope="col">Faculty Name</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
@@ -28,7 +27,6 @@
                     <?php foreach($faculties as $faculty): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $faculty->faculty_id ?></td>
                         <td><?= $faculty->faculty_name ?></td>
                         <td><?= anchor("faculty/edit/$faculty->faculty_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>

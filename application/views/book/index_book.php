@@ -44,7 +44,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Book ID</th>
                         <th scope="col">Draft Title</th>
                         <th scope="col">Book Code</th>
                         <th scope="col">Book Title</th>
@@ -67,7 +66,6 @@
                     <?php foreach($books as $book): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $book->book_id ?></td>
                         <td><?= $book->draft_title ?></td>
                         <td><?= $book->book_code ?></td>
                         <td><?= $book->book_title ?></td>

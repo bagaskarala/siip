@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-10 no-margin">
-        <h2>Add Category</h2>
+        <h2>Category</h2>
     </div>
 </div>
 
@@ -31,9 +31,7 @@
                 <option value=""> - Year - </option>
                 <option value=<?=date('Y')+2 ?> <?=set_select('category_year',date('Y')+2) ?>> <?=date('Y')+2 ?> </option>
                 <option value=<?=date('Y')+1 ?> <?=set_select('category_year',date('Y')+1) ?>> <?=date('Y')+1 ?> </option>
-                <option value=<?=date('Y') ?> <?=set_select('category_year',date('Y')) ?>> <?=date('Y') ?> </option>
-                <option value=<?=date('Y')-1 ?> <?=set_select('category_year',date('Y')-1) ?>> <?=date('Y')-1 ?> </option>
-                <option value=<?=date('Y')-2 ?> <?=set_select('category_year',date('Y')-2) ?>> <?=date('Y')-2 ?> </option>                
+                <option value=<?=date('Y') ?> <?=set_select('category_year',date('Y')) ?>> <?=date('Y') ?> </option>               
             </select>
         </div>
         <div class="col-4">
@@ -80,7 +78,7 @@
         </div>
     </div>           
     
-            <!-- category_status -->
+    <!-- category_status -->
     <div class="row form-group">
         <div class="col-2">
             <p class="label">Category Status</p>

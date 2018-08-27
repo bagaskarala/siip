@@ -144,20 +144,22 @@ class Responsibility extends Operator_Controller
 //        }
 //    }
 //
-//    public function unique_author_contact()
-//    {
-//        $author_contact      = $this->input->post('author_contact');
-//        $author_id = $this->input->post('author_id');
-//
-//        $this->author->where('author_contact', $author_contact);
-//        !$author_id || $this->author->where('author_id !=', $author_id);
-//        $author = $this->author->get();
-//
-//        if (count($author)) {
-//            $this->form_validation->set_message('unique_author_contact', '%s has been used');
-//            return false;
-//        }
-//        return true;
-//    }
+    public function unique_responsibility_match()
+    {
+        $user_id      = $this->input->post('user_id');
+        $draft_id      = $this->input->post('draft_id');
+        $responsibility_id = $this->input->post('responsibility_id');
+
+        $this->responsibility->where('user_id', $user_id);
+        $this->responsibility->where('draft_id', $draft_id);
+        !$responsibility_id || $this->responsibility->where('responsibility_id !=', $responsibility_id);
+        $responsibility = $this->responsibility->get();
+
+        if (count($responsibility)) {
+            $this->form_validation->set_message('unique_responsibility_match', 'Both of %s has been used');
+            return false;
+        }
+        return true;
+    }
 
 }

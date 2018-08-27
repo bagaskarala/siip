@@ -44,7 +44,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Draft ID</th>
                         <th scope="col">Category Name</th>
                         <th scope="col">Theme Name</th>
                         <th scope="col">Draft Title</th>
@@ -72,7 +71,6 @@
                     <?php foreach($drafts as $draft): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $draft->draft_id ?></td>
                         <td><?= $draft->category_name ?></td>
                         <td><?= $draft->theme_name ?></td>
                         <td><?= $draft->draft_title ?></td>

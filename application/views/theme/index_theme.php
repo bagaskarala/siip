@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Theme ID</th>
                         <th scope="col">Theme Name</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
@@ -28,7 +27,6 @@
                     <?php foreach($themes as $theme): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $theme->theme_id ?></td>
                         <td><?= $theme->theme_name ?></td>
                         <td><?= anchor("theme/edit/$theme->theme_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>

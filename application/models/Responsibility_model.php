@@ -10,12 +10,12 @@ class Responsibility_model extends MY_Model
             [
                 'field' => 'user_id',
                 'label' => 'User ID',
-                'rules' => 'trim|required'
+                'rules' => 'trim|required|callback_unique_responsibility_match'
             ],  
             [
                 'field' => 'draft_id',
                 'label' => 'Draft ID',
-                'rules' => 'trim|required'
+                'rules' => 'trim|required|callback_unique_responsibility_match'
             ],
                                  
             

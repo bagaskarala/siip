@@ -136,10 +136,10 @@
         </div>
     </div>     
         
-        <!-- printing_type -->
+    <!-- printing_type -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Printing Type', 'printing_type', ['class' => 'label']) ?>
+            <p class="label">Printing Type</p>
         </div>
         <div class="col-4">
             <label class="block-label">
@@ -211,10 +211,10 @@
     </div>           
         
         
-                <!-- is_reprint -->
+    <!-- is_reprint -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Reprint Status', 'is_reprint', ['class' => 'label']) ?>
+            <p class="label">Reprint Status</p>
         </div>
         <div class="col-4">
             <label class="block-label">

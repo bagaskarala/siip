@@ -85,12 +85,12 @@ class Book_model extends MY_Model
             'isbn'                 => '',
 //            'book_file'                    => '',
             'published_date'                   => '',
-            'printing_type'                    => '',
+            'printing_type'                    => 'p',
             'serial_num'                   => '',
             'serial_num_per_year'                  => '',
             'copies_num'                    => '',
             'book_notes'                  => '',
-            'is_reprint'                     => ''
+            'is_reprint'                     => 'n'
         ];
     }
    

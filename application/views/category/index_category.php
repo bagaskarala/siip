@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Category ID</th>
                         <th scope="col">Category Name</th>
                         <th scope="col">Category Year</th>
                         <th scope="col">Category Note</th>
@@ -33,7 +32,6 @@
                     <?php foreach($categories as $category): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $category->category_id ?></td>
                         <td><?= $category->category_name ?></td>
                         <td><?= $category->category_year ?></td>
                         <td><?= $category->category_note ?></td>

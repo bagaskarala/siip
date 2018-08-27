@@ -18,7 +18,6 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Work Unit ID</th>
                         <th scope="col">Work Unit Name</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
@@ -28,7 +27,6 @@
                     <?php foreach($work_units as $work_unit): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $work_unit->work_unit_id ?></td>
                         <td><?= $work_unit->work_unit_name ?></td>
                         <td><?= anchor("workunit/edit/$work_unit->work_unit_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
