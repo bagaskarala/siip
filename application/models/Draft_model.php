@@ -58,6 +58,21 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
+                'field' => 'author_review_notes',
+                'label' => 'Author Review Notes',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'review_start_date',
+                'label' => 'Review Start Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'review_end_date',
+                'label' => 'Review End Date',
+                'rules' => 'trim'
+            ],
+            [
                 'field' => 'is_revised',
                 'label' => 'Is Revised',
                 'rules' => 'trim'
@@ -78,6 +93,21 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
+                'field' => 'author_edit_notes',
+                'label' => 'Author Edit Notes',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'edit_start_date',
+                'label' => 'Edit Start Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'edit_end_date',
+                'label' => 'Edit End Date',
+                'rules' => 'trim'
+            ],            
+            [
                 'field' => 'is_layouted',
                 'label' => 'Is Layouted',
                 'rules' => 'trim'
@@ -87,7 +117,22 @@ class Draft_model extends MY_Model
                 'label' => 'Layout Notes',
                 'rules' => 'trim'
             ],
-                        [
+            [
+                'field' => 'author_layout_notes',
+                'label' => 'Author Layout Notes',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'layout_start_date',
+                'label' => 'Layout Start Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'layout_end_date',
+                'label' => 'Layout End Date',
+                'rules' => 'trim'
+            ],
+            [
                 'field' => 'is_reprint',
                 'label' => 'Is Reprint',
                 'rules' => 'trim'
@@ -96,7 +141,27 @@ class Draft_model extends MY_Model
                 'field' => 'draft_notes',
                 'label' => 'Draft Notes',
                 'rules' => 'trim'
-            ] 
+            ],
+            [
+                'field' => 'proofread_notes',
+                'label' => 'Proofread Notes',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'author_proofread_notes',
+                'label' => 'Author Proofread Notes',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'proofread_start_date',
+                'label' => 'Proofread Start Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'proofread_end_date',
+                'label' => 'Proofread End Date',
+                'rules' => 'trim'
+            ]
             
         ];
 
@@ -117,23 +182,36 @@ class Draft_model extends MY_Model
             'print_date'                    => '',
             'is_reviewed'                   => '',
             'review_notes'                  => '',
+            'author_review_notes'           => '',
+            'review_start_date'             => '',
+            'review_end_date'               => '',
             'is_revised'                    => '',
             'revise_notes'                  => '',
             'is_edited'                     => '',
             'edit_notes'                    => '',
+            'author_edit_notes'             => '',
+            'edit_start_date'               => '',
+            'edit_end_date'                 => '',
             'is_layouted'                   => '',
             'layout_notes'                  => '',
+            'author_layout_notes'           => '',
+            'layout_start_date'             => '',
+            'layout_end_date'               => '',
             'is_reprint'                    => '',
-            'draft_notes'                   => ''
+            'draft_notes'                   => '',
+            'proofread_notes'               => '',
+            'author_proofread_notes'        => '',
+            'proofread_start_date'          => '',
+            'proofread_end_date'            => ''
         ];
     }
    
-    public function uploadDraftfile($fieldname, $filename)
+    public function uploadDraftfile($fieldname, $draftFileName)
     {
         $config = [
             'upload_path'      => './draftfile/',
-            'file_name'        => $filename ,
-            'allowed_types'    => 'docx',    // docx only
+            'file_name'        => $draftFileName,
+            'allowed_types'    => 'docx|doc',    // docx only
             'max_size'         => 15360,     // 15MB
             'overwrite'        => true,
             'file_ext_tolower' => true,
@@ -150,10 +228,10 @@ class Draft_model extends MY_Model
         }
     }
 
-    public function deleteDraftfile($imgFile)
+    public function deleteDraftfile($draftFile)
     {
-        if (file_exists("./draftfile/$imgFile")) {
-            unlink("./draftfile/$imgFile");
+        if (file_exists("./draftfile/$draftFile")) {
+            unlink("./draftfile/$draftFile");
         }
     }
 

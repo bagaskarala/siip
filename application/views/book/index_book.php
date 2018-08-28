@@ -47,7 +47,7 @@
                         <th scope="col">Draft Title</th>
                         <th scope="col">Book Code</th>
                         <th scope="col">Book Title</th>
-                        <th scope="col">Cover</th>
+<!--                        <th scope="col">Cover</th>-->
                         <th scope="col">Book Edition</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">Book File</th>
@@ -69,7 +69,7 @@
                         <td><?= $book->draft_title ?></td>
                         <td><?= $book->book_code ?></td>
                         <td><?= $book->book_title ?></td>
-                        <td><?= $book->cover ?></td>
+<!--                        <td><?= $book->cover ?></td>-->
                         <td><?= $book->book_edition ?></td>
                         <td><?= $book->isbn ?></td>
                         <td><?= $book->book_file ?></td>

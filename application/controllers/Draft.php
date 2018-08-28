@@ -31,11 +31,12 @@ class Draft extends Operator_Controller
         }
 
         if (!empty($_FILES) && $_FILES['draft_file']['size'] > 0) {
-            $draftFileName  = date('YmdHis'); // draft file name
+            $getextension=explode(".",$_FILES['draft_file']['name']);            
+            $draftFileName  = str_replace(" ","_",$input->draft_title . '_' . date('YmdHis').".".$getextension[1]) ; // draft file name
             $upload = $this->draft->uploadDraftfile('draft_file', $draftFileName);
 
             if ($upload) {
-                $input->draft_file =  "$draftFileName.docx"; // Data for column "draft".
+                $input->draft_file =  "$draftFileName"; // Data for column "draft".
             }
         }
 
@@ -76,12 +77,13 @@ class Draft extends Operator_Controller
         
          if (!empty($_FILES) && $_FILES['draft_file']['size'] > 0) {
             // Upload new draft (if any)
-            $draftFileName  = date('YmdHis'); // Draft file name
+            $getextension=explode(".",$_FILES['draft_file']['name']);            
+            $draftFileName  = str_replace(" ","_",$input->draft_title . '_' . date('YmdHis').".".$getextension[1]); // draft file name
             $upload = $this->draft->uploadDraftfile('draft_file', $draftFileName);
 
             if ($upload) {
-                $input->draft_file =  "$draftFileName.docx";
-                // Delete old cover
+                $input->draft_file =  "$draftFileName";
+                // Delete old draft file
                 if ($draft->draft_file) {
                     $this->draft->deleteDraftfile($draft->draft_file);
                 }

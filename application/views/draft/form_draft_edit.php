@@ -98,7 +98,7 @@
     </div>
 
         
-<!--         finish_date 
+<!-- finish_date -->
     <div class="row form-group">
         <div class="col-2">
             <?= form_label('Finish Date (yyyy-mm-dd)', 'finish_date', ['class' => 'label']) ?>
@@ -111,7 +111,7 @@
         </div>
     </div>
         
-         print_date 
+<!-- print_date -->
     <div class="row form-group">
         <div class="col-2">
             <?= form_label('Print Date (yyyy-mm-dd)', 'print_date', ['class' => 'label']) ?>
@@ -122,7 +122,7 @@
         <div class="col-4">
             <?= form_error('print_date') ?>
         </div>
-    </div> -->
+    </div>
         
         <!-- is_reviewed -->
     <div class="row form-group">
@@ -156,6 +156,46 @@
         </div>
         <div class="col-4">
             <?= form_error('review_notes') ?>
+        </div>
+    </div>
+        
+        <!-- author_review_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Review Notes', 'author_review_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('author_review_notes', $input->author_review_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_review_notes') ?>
+        </div>
+    </div> 
+                
+                
+        <!-- review_start_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Review Start Date (yyyy-mm-dd)', 'review_start_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('review_start_date', $input->review_start_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('review_start_date') ?>
+        </div>
+    </div>
+                        
+        <!-- review_end_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Review End Date (yyyy-mm-dd)', 'review_end_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('review_end_date', $input->review_end_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('review_end_date') ?>
         </div>
     </div> 
         
@@ -228,6 +268,46 @@
             <?= form_error('edit_notes') ?>
         </div>
     </div>         
+
+        <!-- author_edit_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Edit Notes', 'author_edit_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('author_edit_notes', $input->author_edit_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_edit_notes') ?>
+        </div>
+    </div> 
+                
+                
+        <!-- edit_start_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Edit Start Date (yyyy-mm-dd)', 'edit_start_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('edit_start_date', $input->edit_start_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('edit_start_date') ?>
+        </div>
+    </div>
+                        
+        <!-- edit_end_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Edit End Date (yyyy-mm-dd)', 'edit_end_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('edit_end_date', $input->edit_end_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('edit_end_date') ?>
+        </div>
+    </div> 
         
         <!-- is_layouted -->
     <div class="row form-group">
@@ -263,7 +343,47 @@
             <?= form_error('layout_notes') ?>
         </div>
     </div> 
-    
+
+        <!-- author_layout_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Layout Notes', 'author_layout_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('author_layout_notes', $input->author_layout_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_layout_notes') ?>
+        </div>
+    </div> 
+                
+                
+        <!-- layout_start_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Layout Start Date (yyyy-mm-dd)', 'layout_start_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('layout_start_date', $input->layout_start_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('layout_start_date') ?>
+        </div>
+    </div>
+                        
+        <!-- layout_end_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Layout End Date (yyyy-mm-dd)', 'layout_end_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('layout_end_date', $input->layout_end_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('layout_end_date') ?>
+        </div>
+    </div>         
+        
         <!-- is_reprint -->
     <div class="row form-group">
         <div class="col-2">
@@ -298,6 +418,60 @@
             <?= form_error('draft_notes') ?>
         </div>
     </div>        
+
+
+        <!-- proofread_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Proofread Notes', 'proofread_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('proofread_notes', $input->proofread_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('proofread_notes') ?>
+        </div>
+    </div> 
+
+        <!-- author_proofread_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Proofread Notes', 'author_proofread_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('author_proofread_notes', $input->author_proofread_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_proofread_notes') ?>
+        </div>
+    </div> 
+                
+                
+        <!-- proofread_start_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Proofread Start Date (yyyy-mm-dd)', 'proofread_start_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('proofread_start_date', $input->proofread_start_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('proofread_start_date') ?>
+        </div>
+    </div>
+                        
+        <!-- proofread_end_date -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Proofread End Date (yyyy-mm-dd)', 'proofread_end_date', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('proofread_end_date', $input->proofread_end_date, ['class' => 'date date-picker']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('proofread_end_date') ?>
+        </div>
+    </div>
         
     <!-- submit button -->
     <div class="row">

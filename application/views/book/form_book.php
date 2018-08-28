@@ -46,7 +46,7 @@
         </div>
     </div>
         
-<!--     cover -->
+<!--     cover 
     <div class="row form-group">
         <div class="col-2">
             <?= form_label('Cover', 'cover', ['class' => 'label']) ?>
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-<!--     Gambar cover preview -->
+     Gambar cover preview 
     <?php if (!empty($input->cover)): ?>
         <div class="row form-group">
             <div class="col-2">&nbsp;</div>
@@ -68,7 +68,7 @@
             </div>
             <div class="col-4">&nbsp;</div>
         </div>
-    <?php endif ?>
+    <?php endif ?>-->
     
 
         <!-- book_edition -->

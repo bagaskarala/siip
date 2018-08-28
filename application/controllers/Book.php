@@ -29,23 +29,25 @@ class Book extends Operator_Controller
             $input = (object) $this->input->post(null, true);
         }
         
-        if (!empty($_FILES) && $_FILES['cover']['size'] > 0) {
-            $coverFileName  = date('YmdHis'); // Cover file name
-            $upload = $this->book->uploadCover('cover', $coverFileName);
-
-            if ($upload) {
-                $input->cover =  "$coverFileName.jpg"; // Data for column "cover".
-                $this->book->coverResize('cover', "./cover/$coverFileName.jpg", 100, 150);
-            }
-        }
+//        if (!empty($_FILES) && $_FILES['cover']['size'] > 0) {
+//            $getextension=explode(".",$_FILES['cover']['name']);            
+//            $coverFileName  = str_replace(" ","_",$input->book_title . '_' . date('YmdHis').".".$getextension[1]); // Cover name
+//            $upload = $this->book->uploadCover('cover', $coverFileName);
+//
+//            if ($upload) {
+//                $input->cover =  "$coverFileName"; // Data for column "cover".
+//                $this->book->coverResize('cover', "./cover/$coverFileName", 100, 150);
+//            }
+//        }
         
         
         if (!empty($_FILES) && $_FILES['book_file']['size'] > 0) {
-            $bookFileName  = date('YmdHis'); // book file name
+            $getextension=explode(".",$_FILES['book_file']['name']);            
+            $bookFileName  = str_replace(" ","_",$input->book_title . '_' . date('YmdHis').".".$getextension[1]); // Book file name
             $upload = $this->book->uploadBookfile('book_file', $bookFileName);
 
             if ($upload) {
-                $input->book_file =  "$bookFileName.docx"; // Data for column "book".
+                $input->book_file =  "$bookFileName"; // Data for column "book".
             }
         }
         
@@ -86,29 +88,31 @@ class Book extends Operator_Controller
             $input->cover = $book->cover; // Set cover untuk preview.
         }
 
-         //Upload new cover (if any)
-        if (!empty($_FILES) && $_FILES['cover']['size'] > 0) {
-            $coverFileName  = date('YmdHis'); // Cover file name
-            $upload = $this->book->uploadCover('cover', $coverFileName);
-            // Resize to 100x150px
-            if ($upload) {
-                $input->cover =  "$coverFileName.jpg";
-                $this->book->coverResize('cover', "./cover/$coverFileName.jpg", 100, 150);
-                // Delete old cover
-                if ($book->cover) {
-                    $this->book->deleteCover($book->cover);
-                }
-            }
-        }
+//         //Upload new cover (if any)
+//        if (!empty($_FILES) && $_FILES['cover']['size'] > 0) {
+//            $getextension=explode(".",$_FILES['cover']['name']);            
+//            $coverFileName  = str_replace(" ","_",$input->book_title . '_' . date('YmdHis').".".$getextension[1]); //cover file name
+//            $upload = $this->book->uploadCover('cover', $coverFileName);
+//            // Resize to 100x150px
+//            if ($upload) {
+//                $input->cover =  "$coverFileName";
+//                $this->book->coverResize('cover', "./cover/$coverFileName", 100, 150);
+//                // Delete old cover
+//                if ($book->cover) {
+//                    $this->book->deleteCover($book->cover);
+//                }
+//            }
+//        }
         
         
         // Upload new book (if any)
         if (!empty($_FILES) && $_FILES['book_file']['size'] > 0) {            
-            $bookFileName  = date('YmdHis'); // book file name
+            $getextension=explode(".",$_FILES['book_file']['name']);            
+            $bookFileName  = str_replace(" ","_",$input->book_title . '_' . date('YmdHis').".".$getextension[1]); // book file name
             $upload = $this->book->uploadBookfile('book_file', $bookFileName);
 
             if ($upload) {
-                $input->book_file =  "$bookFileName.docx";
+                $input->book_file =  "$bookFileName";
                 // Delete old book
                 if ($book->book_file) {
                     $this->book->deleteBookfile($book->book_file);
@@ -149,7 +153,7 @@ class Book extends Operator_Controller
             // Delete book.
             $this->book->deleteBookfile($book->book_file);
             // Delete cover.
-            $this->book->deleteCover($book->cover);
+//            $this->book->deleteCover($book->cover);
             $this->session->set_flashdata('success', 'Data deleted');
 		} else {
             $this->session->set_flashdata('error', 'Data failed to delete');

@@ -94,85 +94,85 @@ class Book_model extends MY_Model
         ];
     }
    
-    public function uploadBookfile($fieldname, $filename)
+    public function uploadBookfile($bookfieldname, $bookFileName)
     {
         $config = [
             'upload_path'      => './bookfile/',
-            'file_name'        => $filename ,
-            'allowed_types'    => 'docx',    // docx only
+            'file_name'        => $bookFileName ,
+            'allowed_types'    => 'docx|doc|pdf',    // docx only
             'max_size'         => 15360,     // 15MB
             'overwrite'        => true,
             'file_ext_tolower' => true,
         ];
 
         $this->load->library('upload', $config);
-        if ($this->upload->do_upload($fieldname)) {
+        if ($this->upload->do_upload($bookfieldname)) {
             // Upload OK, return uploaded file info.
             return $this->upload->data();
         } else {
             // Add error to $_error_array
-            $this->form_validation->add_to_error_array($fieldname, $this->upload->display_errors('', ''));
+            $this->form_validation->add_to_error_array($bookfieldname, $this->upload->display_errors('', ''));
             return false;
         }
     }
 
-    public function deleteBookfile($imgFile)
+    public function deleteBookfile($bookFile)
     {
-        if (file_exists("./bookfile/$imgFile")) {
-            unlink("./bookfile/$imgFile");
+        if (file_exists("./bookfile/$bookFile")) {
+            unlink("./bookfile/$bookFile");
         }
     }
 
-     public function uploadCover($fieldname, $filename)
-    {
-        $config = [
-            'upload_path'      => './cover/',
-            'file_name'        => $filename,
-            'allowed_types'    => 'jpg',    //  *.jpg only
-            'max_size'         => 10240,     // 10MB
-            'max_width'        => 0,
-            'max_height'       => 0,
-            'overwrite'        => true,
-            'file_ext_tolower' => true,
-        ];
-
-        $this->load->library('upload', $config);
-        if ($this->upload->do_upload($fieldname)) {
-            // Upload OK, return uploaded file info.
-            return $this->upload->data();
-        } else {
-            // Add error to $_error_array
-            $this->form_validation->add_to_error_array($fieldname, $this->upload->display_errors('', ''));
-            return false;
-        }
-    }
-
-
-    public function coverResize($fieldname, $source_path, $width, $height)
-    {
-        $config = [
-            'image_library'  => 'gd2',
-            'source_image'   => $source_path,
-            'maintain_ratio' => true,
-            'width'          => $width,
-            'height'         => $height,
-        ];
-
-        $this->load->library('image_lib', $config);
-
-        if ($this->image_lib->resize()) {
-            return true;
-        } else {
-            $this->form_validation->add_to_error_array($fieldname, $this->image_lib->display_errors('', ''));
-            return false;
-        }
-    }
-
-    public function deleteCover($imgFile)
-    {
-        if (file_exists("./cover/$imgFile")) {
-            unlink("./cover/$imgFile");
-        }
-    }
+//     public function uploadCover($coverfieldname, $coverFileName)
+//    {
+//        $config = [
+//            'upload_path'      => './cover/',
+//            'file_name'        => $coverFileName,
+//            'allowed_types'    => 'jpg|jpeg|png',    //  *.jpg only
+//            'max_size'         => 10240,     // 10MB
+//            'max_width'        => 0,
+//            'max_height'       => 0,
+//            'overwrite'        => true,
+//            'file_ext_tolower' => true,
+//        ];
+//
+//        $this->load->library('upload', $config);
+//        if ($this->upload->do_upload($coverfieldname)) {
+//            // Upload OK, return uploaded file info.
+//            return $this->upload->data();
+//        } else {
+//            // Add error to $_error_array
+//            $this->form_validation->add_to_error_array($coverfieldname, $this->upload->display_errors('', ''));
+//            return false;
+//        }
+//    }
+//
+//
+//    public function coverResize($coverfieldname, $source_path, $width, $height)
+//    {
+//        $config = [
+//            'image_library'  => 'gd2',
+//            'source_image'   => $source_path,
+//            'maintain_ratio' => true,
+//            'width'          => $width,
+//            'height'         => $height,
+//        ];
+//
+//        $this->load->library('image_lib', $config);
+//
+//        if ($this->image_lib->resize()) {
+//            return true;
+//        } else {
+//            $this->form_validation->add_to_error_array($coverfieldname, $this->image_lib->display_errors('', ''));
+//            return false;
+//        }
+//    }
+//
+//    public function deleteCover($imgFile)
+//    {
+//        if (file_exists("./cover/$imgFile")) {
+//            unlink("./cover/$imgFile");
+//        }
+//    }
 
 }
