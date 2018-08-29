@@ -17,6 +17,8 @@ function getDropdownList($table, $columns)
 }
 
 
+
+
 function getDropdownBankList($table, $columns)
 {
     $CI =& get_instance();
