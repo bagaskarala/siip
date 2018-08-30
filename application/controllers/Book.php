@@ -166,22 +166,28 @@ class Book extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $books     = $this->book->where('book_id', $keywords)
+        $books     = $this->book->where('book_code', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('book_title', $keywords)
+                                  ->orLike('ISBN', $keywords)
                                   ->join('draft')
+                                  ->orderBy('book_id')
                                   ->orderBy('draft.draft_id')
                                   ->orderBy('book_title')                
-                                  ->orderBy('book_id')
+                                  ->orderBy('book_code')
+                                  ->orderBy('ISBN')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->book->where('book_id', $keywords)
+        $tot        = $this->book->where('book_code', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('book_title', $keywords)
+                                  ->orLike('ISBN', $keywords)
                                   ->join('draft')
+                                  ->orderBy('book_id')
                                   ->orderBy('draft.draft_id')
                                   ->orderBy('book_title')                
-                                  ->orderBy('book_id')
+                                  ->orderBy('book_code')
+                                  ->orderBy('ISBN')
                                   ->getAll();
         $total = count($tot);
 

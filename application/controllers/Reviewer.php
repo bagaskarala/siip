@@ -10,8 +10,8 @@ class Reviewer extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $reviewers     = $this->reviewer->join('faculty')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->paginate($page)->getAll();
-        $tot        = $this->reviewer->join('faculty')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->getAll();
+        $reviewers     = $this->reviewer->join('faculty')->join('user')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->paginate($page)->getAll();
+        $tot        = $this->reviewer->join('faculty')->join('user')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
         $main_view  = 'reviewer/index_reviewer';
@@ -99,9 +99,12 @@ class Reviewer extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $reviewers     = $this->reviewer->where('reviewer_id', $keywords)
+        $reviewers     = $this->reviewer->where('reviewer_nip', $keywords)
                                   ->orLike('reviewer_name', $keywords)
+                                  ->orLike('faculty_name', $keywords)
+                                  ->orLike('username', $keywords)
                                   ->join('faculty')
+                                  ->join('user')
                                   ->orderBy('faculty.faculty_id')
                                   ->orderBy('reviewer_name')
                                   ->paginate($page)
@@ -151,6 +154,22 @@ class Reviewer extends Operator_Controller
 
         if (count($reviewer)) {
             $this->form_validation->set_message('unique_reviewer_nip', '%s has been used');
+            return false;
+        }
+        return true;
+    }
+    
+        public function unique_reviewer_username()
+    {
+        $user_id      = $this->input->post('user_id');
+        $reviewer_id = $this->input->post('reviewer_id');
+
+        $this->reviewer->where('user_id', $user_id);
+        !$reviewer_id || $this->reviewer->where('reviewer_id !=', $reviewer_id);
+        $reviewer = $this->reviewer->get();
+
+        if (count($reviewer)) {
+            $this->form_validation->set_message('unique_reviewer_username', '%s has been used');
             return false;
         }
         return true;

@@ -30,7 +30,7 @@
     <div class="col-5 align-right">
     <?= form_open('draft/search', ['method' => 'GET']) ?>
         <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter ID or Name', 'class' => 'col-3']) ?>
+        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Category, Theme, or Title', 'class' => 'col-3']) ?>
         <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
     <?= form_close() ?>
     </div>

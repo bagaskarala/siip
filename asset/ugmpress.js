@@ -4,78 +4,125 @@ $(".date").datepicker({
     changeMonth: true,
     changeYear: true,
     yearRange: '1970:+5',
-    dateFormat: "yy-mm-dd"
+    dateFormat: "yy-mm-dd",
+    firstDay: 1
+});
+
+$(".datetimestamp").datepicker({
+    
+    changeMonth: true,
+    changeYear: true,
+    yearRange: '1970:+5',
+    dateFormat: "yy-mm-dd 00:00:00",
+    firstDay: 1,
+    showAnim: "",
 });
 
 
 
 // siswaAutocomplete (Ajax)
-function siswaAutoComplete() {
+function reviewerAutoComplete() {
     var min_length = 0; // min caracters to display the autocomplete
-    var keywords = $('#search_siswa').val();
-    if (keywords.length >= min_length) {
+    var key = $('#search_reviewer').val();
+    if (key.length >= min_length) {
         $.ajax({
-            url: 'http://localhost/ugmpress/peminjaman/siswa_auto_complete',
+            url: 'http://localhost/ugmpress/draftreviewer/reviewer_auto_complete',
             type: 'POST',
-            data: {keywords:keywords},
+            data: {key:key},
             success:function(data){
-                $('#siswa_list').show();
-                $('#siswa_list').html(data);
+                $('#reviewer_list').show();
+                $('#reviewer_list').html(data);
             }
         });
     } else {
-        $('#siswa_list').hide();
+        $('#reviewer_list').hide();
     }
 }
 
-// bukuAutocomplete (Ajax)
-function bukuAutoComplete() {
-    var min_length = 0; // min caracters to display the autocomplete
-    var keywords = $('#search_buku').val();
-    if (keywords.length >= min_length) {
-        $.ajax({
-            url: 'http://localhost/ugmpress/peminjaman/buku_auto_complete',
-            type: 'POST',
-            data: {keywords:keywords},
-            success:function(data){
-                $('#buku_list').show();
-                $('#buku_list').html(data);
-            }
-        });
-    } else {
-        $('#buku_list').hide();
-    }
-}
+//// siswaAutocomplete (Ajax)
+//function siswaAutoComplete() {
+//    var min_length = 0; // min caracters to display the autocomplete
+//    var keywords = $('#search_siswa').val();
+//    if (keywords.length >= min_length) {
+//        $.ajax({
+//            url: 'http://ciperpus306.dev/peminjaman/siswa_auto_complete',
+//            type: 'POST',
+//            data: {keywords:keywords},
+//            success:function(data){
+//                $('#siswa_list').show();
+//                $('#siswa_list').html(data);
+//            }
+//        });
+//    } else {
+//        $('#siswa_list').hide();
+//    }
+//}
+
+//// bukuAutocomplete (Ajax)
+//function bukuAutoComplete() {
+//    var min_length = 0; // min characters to display the autocomplete
+//    var keywords = $('#search_buku').val();
+//    if (keywords.length >= min_length) {
+//        $.ajax({
+//            url: 'http://localhost/ugmpress/peminjaman/buku_auto_complete',
+//            type: 'POST',
+//            data: {keywords:keywords},
+//            success:function(data){
+//                $('#buku_list').show();
+//                $('#buku_list').html(data);
+//            }
+//        });
+//    } else {
+//        $('#buku_list').hide();
+//    }
+//}
 
 // setItem : Change the value of input when "clicked"
-function setItemSiswa(item) {
+function setItemReviewer(item) {
     // change input value
-    $('#search_siswa').val(item);
-    $('#siswa_list').hide();
+    $('#search_reviewer').val(item);
+    $('#reviewer_list').hide();
 }
 
-function setItemBuku(item) {
-    // change input value
-    $('#search_buku').val(item);
-    $('#buku_list').hide();
-}
 
-// Create input "id_siswa" if not exist, otherwise set it's value
-function makeHiddenIdSiswa(nilai) {
-    if ($("#id-siswa").length > 0) {
-        $("#id-siswa").attr('value', nilai);
+//// setItem : Change the value of input when "clicked"
+//function setItemSiswa(item) {
+//    // change input value
+//    $('#search_siswa').val(item);
+//    $('#siswa_list').hide();
+//function setItemBuku(item) {
+//    // change input value
+//    $('#search_buku').val(item);
+//    $('#buku_list').hide();
+//}
+
+// Create input "reviewer_id" if not exist, otherwise set it's value
+function makeHiddenIdReviewer(nilai) {
+    if ($("#reviewer-id").length > 0) {
+        $("#reviewer-id").attr('value', nilai);
     } else {
-        str = '<input type="hidden" id="id-siswa" name="id_siswa" value="'+nilai+'" />';
-        $("#form-peminjaman").append(str);
+        str = '<input type="hidden" id="reviewer-id" name="reviewer_id" value="'+nilai+'" />';
+        $("#form_draft_reviewer_add-draftreviewer").append(str);
     }
 }
+
+
+//// Create input "id_siswa" if not exist, otherwise set it's value
+//function makeHiddenIdSiswa(nilai) {
+//    if ($("#id-siswa").length > 0) {
+//        $("#id-siswa").attr('value', nilai);
+//    } else {
+//        str = '<input type="hidden" id="id-siswa" name="id_siswa" value="'+nilai+'" />';
+//        $("#form-peminjaman").append(str);
+//    }
+//}
 
 // Create input "id_buku" if not exist, otherwise set it's value
-function makeHiddenIdBuku(nilai) {
-    if ($("#id-buku").length > 0) {
-        $("#id-buku").attr('value', nilai);
-    } else {
-        str = '<input type="hidden" id="id-buku" name="id_buku" value="'+nilai+'" />';
-        $("#form-peminjaman").append(str);
-    }
-}
+//function makeHiddenIdBuku(nilai) {
+//    if ($("#id-buku").length > 0) {
+//        $("#id-buku").attr('value', nilai);
+//    } else {
+//        str = '<input type="hidden" id="id-buku" name="id_buku" value="'+nilai+'" />';
+//        $("#form-peminjaman").append(str);
+//    }
+//}

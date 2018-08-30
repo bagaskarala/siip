@@ -133,8 +133,9 @@ class Draft extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $drafts     = $this->draft->where('draft_id', $keywords)
+        $drafts     = $this->draft->where('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
+                                  ->orLike('theme_name', $keywords)
                                   ->join('category')
                                   ->join('theme')
                                   ->orderBy('category.category_id')
@@ -142,12 +143,13 @@ class Draft extends Operator_Controller
                                   ->orderBy('draft_title')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->draft->where('draft_id', $keywords)
+        $tot        = $this->draft->where('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
+                                  ->orLike('theme_name', $keywords)
                                   ->join('category')
                                   ->join('theme')
-                                  ->orderBy('category.category_id')
-                                  ->orderBy('theme.theme_id')                
+                                  ->orderBy('category.category_name')
+                                  ->orderBy('theme.theme_name')                
                                   ->orderBy('draft_title')
                                   ->getAll();
         $total = count($tot);
@@ -165,18 +167,6 @@ class Draft extends Operator_Controller
     }
 
 
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     /*
     |-----------------------------------------------------------------
     | Callback
@@ -206,37 +196,18 @@ class Draft extends Operator_Controller
         }
         return true;
     }
-//    
-//        public function unique_author_email()
-//    {
-//        $author_email      = $this->input->post('author_email');
-//        $author_id = $this->input->post('author_id');
-//
-//        $this->author->where('author_email', $author_email);
-//        !$author_id || $this->author->where('author_id !=', $author_id);
-//        $author = $this->author->get();
-//
-//        if (count($author)) {
-//            $this->form_validation->set_message('unique_author_email', '%s has been used');
-//            return false;
-//        }
-//        return true;
-//    }
-//    
-//            public function unique_author_saving_num()
-//    {
-//        $author_saving_num      = $this->input->post('author_saving_num');
-//        $author_id = $this->input->post('author_id');
-//
-//        $this->author->where('author_saving_num', $author_saving_num);
-//        !$author_id || $this->author->where('author_id !=', $author_id);
-//        $author = $this->author->get();
-//
-//        if (count($author)) {
-//            $this->form_validation->set_message('unique_author_saving_num', '%s has been used');
-//            return false;
-//        }
-//        return true;
-//    }
 
+    
+        public function check_date_finish()
+    {
+        $finish_date = $this->input->post('finish_date');
+        $entry_date   = $this->input->post('entry_date');
+        
+        if($finish_date < $entry_date){
+            $this->form_validation->set_message('check_date_finish', 'Finish date can not be before entry date');   
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
 }

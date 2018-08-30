@@ -33,6 +33,20 @@
             <?= form_error('institute_id') ?>
         </div>
     </div>
+
+      <!-- user_id -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('User Name', 'user_id', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_dropdown('user_id', getDropdownList('user', ['user_id', 'username']), $input->user_id, 'id="user"') ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('user_id') ?>
+        </div>
+    </div>
+
         
         <!-- author_nip -->
     <div class="row form-group">
@@ -150,6 +164,9 @@
             <?= form_error('heir_name') ?>
         </div>
     </div>
+        
+        
+
         
     <!-- submit button -->
     <div class="row">

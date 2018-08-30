@@ -104,7 +104,7 @@
             <?= form_label('Finish Date (yyyy-mm-dd)', 'finish_date', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('finish_date', $input->finish_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('finish_date', $input->finish_date, ['class' => 'datetimestamp date-picker']) ?>
         </div>
         <div class="col-4">
             <?= form_error('finish_date') ?>

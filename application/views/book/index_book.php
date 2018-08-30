@@ -30,7 +30,7 @@
     <div class="col-5 align-right">
     <?= form_open('book/search', ['method' => 'GET']) ?>
         <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Draft or Book Title', 'class' => 'col-3']) ?>
+        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Draft, Book Title, Code, and ISBN', 'class' => 'col-3']) ?>
         <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
     <?= form_close() ?>
     </div>

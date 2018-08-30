@@ -28,7 +28,7 @@ class Category_model extends MY_Model
             [
                 'field' => 'date_close',
                 'label' => 'Date Close',
-                'rules' => 'trim|required|callback_is_date_format_valid'
+                'rules' => 'trim|required|callback_is_date_format_valid|callback_check_date'
             ],
             [
                 'field' => 'category_status',

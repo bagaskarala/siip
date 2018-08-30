@@ -21,8 +21,12 @@ class Reviewer_model extends MY_Model
                 'field' => 'faculty_id',
                 'label' => 'Reviewer ID',
                 'rules' => 'trim|required'
+            ],
+            [
+                'field' => 'user_id',
+                'label' => 'User ID',
+                'rules' => 'trim|required|callback_unique_reviewer_username'
             ]
-
         ];
 
         return $validationRules;
@@ -33,7 +37,8 @@ class Reviewer_model extends MY_Model
         return [
             'reviewer_nip'           => '',
             'reviewer_name'           => '',
-            'faculty_id'              => ''
+            'faculty_id'              => '',
+            'user_id'              => ''
         ];
     }
 }

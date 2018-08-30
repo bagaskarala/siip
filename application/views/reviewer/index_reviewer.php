@@ -30,7 +30,7 @@
     <div class="col-5 align-right">
     <?= form_open('reviewer/search', ['method' => 'GET']) ?>
         <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter ID or Name', 'class' => 'col-3']) ?>
+        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Input your search here', 'class' => 'col-3']) ?>
         <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
     <?= form_close() ?>
     </div>
@@ -44,9 +44,10 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
+                        <th scope="col">User Name</th>
                         <th scope="col">Reviewer NIP</th>
                         <th scope="col">Reviewer Name</th>
-                        <th scope="col">Faculty Name</th>
+                        <th scope="col">Faculty Name</th>                        
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -55,6 +56,7 @@
                     <?php foreach($reviewers as $reviewer): ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
+                        <td><?= $reviewer->username ?></td>
                         <td><?= $reviewer->reviewer_nip ?></td>
                         <td><?= $reviewer->reviewer_name ?></td>
                         <td><?= $reviewer->faculty_name  ?></td>

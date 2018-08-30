@@ -12,9 +12,10 @@ class User extends Admin_Controller
 	public function index($page = null)
 	{
         $users      = $this->user->getAll();
+        $total    = count($users);
         $pages   = $this->pages;
         $main_view  = 'user/index_user';
-		$this->load->view('template', compact('pages', 'main_view', 'users'));
+		$this->load->view('template', compact('pages', 'main_view', 'users', 'total'));
 	}
  
 //--add--        

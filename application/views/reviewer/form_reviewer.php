@@ -8,6 +8,21 @@
 
     <?= isset($input->reviewer_id) ? form_hidden('reviewer_id', $input->reviewer_id) : '' ?>
 
+
+
+        <!-- user_id -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('User Name', 'user_id', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_dropdown('user_id', getDropdownList('user', ['user_id', 'username']), $input->user_id, 'id="user"') ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('user_id') ?>
+        </div>
+    </div>
+
     <!-- reviewer_nip -->
     <div class="row form-group">
         <div class="col-2">
@@ -48,6 +63,8 @@
             <?= form_error('faculty_id') ?>
         </div>
     </div>
+    
+
 
     <!-- submit button -->
     <div class="row">

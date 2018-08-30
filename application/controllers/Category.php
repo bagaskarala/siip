@@ -138,4 +138,16 @@ class Category extends Operator_Controller
 
         return TRUE;
     }
+    
+        public function check_date()
+    {
+        $date_close = $this->input->post('date_close');
+        $date_open   = $this->input->post('date_open');
+        
+        if($date_close < $date_open){
+            $this->form_validation->set_message('check_date', 'Date close can not be before date open');   
+            return FALSE;
+        }
+        return TRUE;
+    }
 }

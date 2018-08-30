@@ -10,7 +10,7 @@ class Worksheet_model extends MY_Model
             [
                 'field' => 'draft_id',
                 'label' => 'Draft ID',
-                'rules' => 'trim|required|min_length[1]|max_length[256]'
+                'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_worksheet_draft'
             ],
             [
                 'field' => 'worksheet_num',
@@ -33,7 +33,7 @@ class Worksheet_model extends MY_Model
         return [
             'draft_id'           => '',
             'worksheet_num'           => '',
-            'is_reprint'              => ''
+            'is_reprint'              => 'n'
         ];
     }
 }

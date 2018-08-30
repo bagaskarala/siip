@@ -98,19 +98,21 @@ class Worksheet extends Operator_Controller
         
         public function search($page = null)
         {
-        $keywords   = $this->input->get('keywords', true);
-        $worksheets     = $this->worksheet->where('worksheet_id', $keywords)
+        $keywords       = $this->input->get('keywords', true);
+        $worksheets     = $this->worksheet->where('worksheet_num', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->join('draft')
+                                  ->orderBy('worksheet_id')
                                   ->orderBy('draft.draft_id')
-                                  ->orderBy('draft_title')
+                                  ->orderBy('worksheet_num')  
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->worksheet->where('worksheet_id', $keywords)
+        $tot            = $this->worksheet->where('worksheet_num', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->join('draft')
+                                  ->orderBy('worksheet_id')
                                   ->orderBy('draft.draft_id')
-                                  ->orderBy('worksheet_num')
+                                  ->orderBy('worksheet_num')  
                                   ->getAll();
         $total = count($tot);
 
@@ -151,6 +153,22 @@ class Worksheet extends Operator_Controller
 
         if (count($worksheet)) {
             $this->form_validation->set_message('unique_worksheet_num', '%s has been used');
+            return false;
+        }
+        return true;
+    }
+    
+        public function unique_worksheet_draft()
+    {
+        $draft_id      = $this->input->post('draft_id');
+        $worksheet_id = $this->input->post('worksheet_id');
+
+        $this->worksheet->where('draft_id', $draft_id);
+        !$worksheet_id || $this->worksheet->where('worksheet_id !=', $worksheet_id);
+        $worksheet = $this->worksheet->get();
+
+        if (count($worksheet)) {
+            $this->form_validation->set_message('unique_worksheet_draft', '%s has been used');
             return false;
         }
         return true;

@@ -10,8 +10,8 @@ class Author extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $authors     = $this->author->join('work_unit')->join('institute')->join('bank')->orderBy('work_unit.work_unit_id')->orderBy('institute.institute_id')->orderBy('author_id')->paginate($page)->getAll();
-        $tot        = $this->author->join('work_unit')->join('institute')->join('bank')->orderBy('work_unit.work_unit_id')->orderBy('institute.institute_id')->orderBy('author_id')->getAll();
+        $authors     = $this->author->join('work_unit')->join('institute')->join('bank')->join('user')->orderBy('work_unit.work_unit_id')->orderBy('institute.institute_id')->orderBy('author_id')->paginate($page)->getAll();
+        $tot        = $this->author->join('work_unit')->join('institute')->join('bank')->join('user')->orderBy('work_unit.work_unit_id')->orderBy('institute.institute_id')->orderBy('author_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
         $main_view  = 'author/index_author';
@@ -99,21 +99,27 @@ class Author extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $authors     = $this->author->where('author_id', $keywords)
+        $authors     = $this->author->where('work_unit_name', $keywords)
+                                  ->orLike('institute_name', $keywords)
+                                  ->orLike('author_nip', $keywords)
                                   ->orLike('author_name', $keywords)
                                   ->join('work_unit')
                                   ->join('institute')
                                   ->join('bank')
+                                  ->join('user')
                                   ->orderBy('work_unit.work_unit_id')
                                   ->orderBy('institute.institute_id')                
                                   ->orderBy('author_name')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->author->where('author_id', $keywords)
+        $tot        = $this->author->where('work_unit_name', $keywords)
+                                  ->orLike('institute_name', $keywords)
+                                  ->orLike('author_nip', $keywords)
                                   ->orLike('author_name', $keywords)
                                   ->join('work_unit')
                                   ->join('institute')
                                   ->join('bank')
+                                  ->join('user')
                                   ->orderBy('work_unit.work_unit_id')
                                   ->orderBy('institute.institute_id')                
                                   ->orderBy('author_name')
@@ -204,6 +210,22 @@ class Author extends Operator_Controller
 
         if (count($author)) {
             $this->form_validation->set_message('unique_author_nip', '%s has been used');
+            return false;
+        }
+        return true;
+    }
+    
+        public function unique_author_username()
+    {
+        $user_id      = $this->input->post('user_id');
+        $author_id = $this->input->post('author_id');
+
+        $this->author->where('user_id', $user_id);
+        !$author_id || $this->author->where('author_id !=', $author_id);
+        $author = $this->author->get();
+
+        if (count($author)) {
+            $this->form_validation->set_message('unique_author_username', '%s has been used');
             return false;
         }
         return true;

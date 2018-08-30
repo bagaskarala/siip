@@ -30,7 +30,7 @@
     <div class="col-5 align-right">
     <?= form_open('author/search', ['method' => 'GET']) ?>
         <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter ID or Name', 'class' => 'col-3']) ?>
+        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Work Unit, Institute, NIP, Username, or Name', 'class' => 'col-3']) ?>
         <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
     <?= form_close() ?>
     </div>
@@ -46,6 +46,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Work Unit Name</th>
                         <th scope="col">Institute Name</th>
+                        <th scope="col">User Name</th>
                         <th scope="col">Author NIP</th>
                         <th scope="col">Author Name</th>
                         <th scope="col">Author Degree</th>
@@ -54,7 +55,7 @@
                         <th scope="col">Author Email</th>
                         <th scope="col">Author Bank</th>
                         <th scope="col">Author Saving Number</th>
-                        <th scope="col">Heir Name</th>
+                        <th scope="col">Heir Name</th>                        
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -65,6 +66,7 @@
                         <td><?= ++$i ?></td>
                         <td><?= $author->work_unit_name ?></td>
                         <td><?= $author->institute_name ?></td>
+                        <td><?= $author->username ?></td>
                         <td><?= $author->author_nip ?></td>
                         <td><?= $author->author_name ?></td>
                         <td><?= $author->author_degree ?></td>

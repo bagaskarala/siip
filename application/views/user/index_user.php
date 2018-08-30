@@ -44,9 +44,14 @@
                     </tr>
                     <?php endforeach ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
+                    </tr>
+                </tfoot>
             </table>
         <?php else: ?>
-            <p>No user data were available</p>
+            <p>User data were not available</p>
         <?php endif ?>
     </div>
 </div>

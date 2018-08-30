@@ -61,6 +61,11 @@ class Author_model extends MY_Model
                 'field' => 'heir_name',
                 'label' => 'Heir Name',
                 'rules' => 'trim|required|min_length[1]|max_length[256]'
+            ],
+            [
+                'field' => 'user_id',
+                'label' => 'User ID',
+                'rules' => 'trim|required|callback_unique_author_username'
             ]
             
             
@@ -82,7 +87,8 @@ class Author_model extends MY_Model
             'author_email'           => '',
             'bank_id'              => '',
             'author_saving_num'           => '',
-            'heir_name'              => ''
+            'heir_name'              => '',
+            'user_id'              => ''
         ];
     }
 }

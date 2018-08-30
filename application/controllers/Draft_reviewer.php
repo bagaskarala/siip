@@ -20,7 +20,7 @@ class Draft_reviewer extends Operator_Controller
 		$this->load->view('template', compact('pages', 'main_view', 'draft_reviewers', 'pagination', 'total'));
 	}
         
-        
+// -- add --        
         public function add()
 	{
         if (!$_POST) {
@@ -31,12 +31,14 @@ class Draft_reviewer extends Operator_Controller
 
         if (!$this->draft_reviewer->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'draftreviewer/form_draft_reviewer_add';
+            $main_view   = 'draftreviewer/form_draft_reviewer';
             $form_action = 'draftreviewer/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
+        
+        unset($input->search_reviewer);
 
         if ($this->draft_reviewer->insert($input)) {
             $this->session->set_flashdata('success', 'Data saved');
@@ -46,7 +48,9 @@ class Draft_reviewer extends Operator_Controller
 
         redirect('draftreviewer');
 	}
-        
+
+
+// -- edit --        
         public function edit($id = null)
 	{
         $draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
@@ -63,12 +67,15 @@ class Draft_reviewer extends Operator_Controller
 
         if (!$this->draft_reviewer->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'draftreviewer/form_draft_reviewer_edit';
+            $main_view   = 'draftreviewer/form_draft_reviewer';
             $form_action = "draftreviewer/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
+        
+        
+        unset($input->search_reviewer);
 
         if ($this->draft_reviewer->where('draft_reviewer_id', $id)->update($input)) {
             $this->session->set_flashdata('success', 'Data updated');
@@ -79,6 +86,7 @@ class Draft_reviewer extends Operator_Controller
         redirect('draftreviewer');
 	}
         
+// -- delete --        
         public function delete($id = null)
 	{
 	$draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
@@ -95,7 +103,28 @@ class Draft_reviewer extends Operator_Controller
 
 		redirect('draftreviewer');
 	}
-        
+
+//-- auto complete --        
+    public function reviewer_auto_complete()
+    {
+        $key = $this->input->post('key');
+        $reviewers = $this->draft_reviewer->liveSearchReviewer($key);
+
+        foreach ($reviewers as $reviewer) {
+            // Put in bold the written text.
+            $reviewer_nip        = str_replace($key, '<strong>'.$key.'</strong>', $reviewer->reviewer_nip );
+            $reviewer_name = preg_replace("#($key)#i", "<strong>$1</strong>", $reviewer->reviewer_name);
+
+            // Add new option.
+            $str  = '<li onclick="setItemReviewer(\''.$reviewer->reviewer_name.'\'); makeHiddenIdReviewer(\''.$reviewer->reviewer_id.'\')">';
+            $str .= "$reviewer_nip - $reviewer_name";
+            $str .= "</li>";
+
+            echo $str;
+        }
+    }
+
+// -- search --
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
@@ -170,23 +199,4 @@ class Draft_reviewer extends Operator_Controller
 
 
 
-    // Live search for reviewer
-    public function reviewer_auto_complete()
-    {
-        $keywords = $this->input->post('keywords');
-        $reviewers = $this->draft_reviewer->liveSearchReviewer($keywords);
-
-        foreach ($reviewers as $reviewer) {
-            // Put in bold the written text.
-            $reviewer_nip        = str_replace($keywords, '<strong>'.$keywords.'</strong>', $reviewer->reviewer_nip);
-            $reviewer_name = preg_replace("#($keywords)#i", "<strong>$1</strong>", $reviewer->reviewer_name);
-
-            // Add new option.
-            $str  = '<li onclick="setItemReviewer(\''.$reviewer->reviewer_name.'\'); makeHiddenIdReviewer(\''.$reviewer->reviewer_id.'\')">';
-            $str .= "$reviewer_nip - $reviewer_name";
-            $str .= "</li>";
-
-            echo $str;
-        }
-    }
 }

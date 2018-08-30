@@ -110,13 +110,13 @@ h3 {
     background-position: center left;
 }
 body#home               #menu-home  a,
-body#process            #menu-process a,
+body#draft-author       #menu-draft-author a,
+body#draft-reviewer     #menu-draft-author a,
 body#draft              #menu-draft a,
 body#author             #menu-author  a,
 body#reviewer           #menu-reviewer  a,
 body#worksheet          #menu-worksheet  a,
 body#theme              #menu-theme  a,
-body#category           #menu-category a,
 body#code               #menu-code a,
 body#book               #menu-book a,
 body#responsibility     #menu-responsibility a,
