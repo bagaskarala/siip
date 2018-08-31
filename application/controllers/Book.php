@@ -166,7 +166,7 @@ class Book extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $books     = $this->book->where('book_code', $keywords)
+        $books     = $this->book->like('book_code', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('book_title', $keywords)
                                   ->orLike('ISBN', $keywords)
@@ -178,7 +178,7 @@ class Book extends Operator_Controller
                                   ->orderBy('ISBN')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->book->where('book_code', $keywords)
+        $tot        = $this->book->like('book_code', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('book_title', $keywords)
                                   ->orLike('ISBN', $keywords)

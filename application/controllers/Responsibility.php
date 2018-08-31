@@ -99,7 +99,7 @@ class Responsibility extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $responsibilities     = $this->responsibility->where('responsibility_id', $keywords)
+        $responsibilities     = $this->responsibility->like('responsibility_id', $keywords)
                                   ->orLike('user_id', $keywords)
                                   ->join('draft')
                                   ->join('user')
@@ -108,7 +108,7 @@ class Responsibility extends Operator_Controller
                                   ->orderBy('responsibility_id')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->responsibility->where('responsibility_id', $keywords)
+        $tot        = $this->responsibility->like('responsibility_id', $keywords)
                                   ->orLike('user_id', $keywords)
                                   ->join('draft')
                                   ->join('user')

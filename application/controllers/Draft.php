@@ -133,7 +133,7 @@ class Draft extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $drafts     = $this->draft->where('category_name', $keywords)
+        $drafts     = $this->draft->like('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('theme_name', $keywords)
                                   ->join('category')
@@ -143,7 +143,7 @@ class Draft extends Operator_Controller
                                   ->orderBy('draft_title')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->draft->where('category_name', $keywords)
+        $tot        = $this->draft->like('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('theme_name', $keywords)
                                   ->join('category')
@@ -198,16 +198,6 @@ class Draft extends Operator_Controller
     }
 
     
-        public function check_date_finish()
-    {
-        $finish_date = $this->input->post('finish_date');
-        $entry_date   = $this->input->post('entry_date');
-        
-        if($finish_date < $entry_date){
-            $this->form_validation->set_message('check_date_finish', 'Finish date can not be before entry date');   
-            return FALSE;
-        }
-        return TRUE;
-    }
+
     
 }

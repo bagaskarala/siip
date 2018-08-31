@@ -99,7 +99,7 @@ class Author extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $authors     = $this->author->where('work_unit_name', $keywords)
+        $authors     = $this->author->like('work_unit_name', $keywords)
                                   ->orLike('institute_name', $keywords)
                                   ->orLike('author_nip', $keywords)
                                   ->orLike('author_name', $keywords)
@@ -112,7 +112,7 @@ class Author extends Operator_Controller
                                   ->orderBy('author_name')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->author->where('work_unit_name', $keywords)
+        $tot        = $this->author->like('work_unit_name', $keywords)
                                   ->orLike('institute_name', $keywords)
                                   ->orLike('author_nip', $keywords)
                                   ->orLike('author_name', $keywords)

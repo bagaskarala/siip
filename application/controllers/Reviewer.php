@@ -99,7 +99,7 @@ class Reviewer extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $reviewers     = $this->reviewer->where('reviewer_nip', $keywords)
+        $reviewers     = $this->reviewer->like('reviewer_nip', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->orLike('faculty_name', $keywords)
                                   ->orLike('username', $keywords)
@@ -109,7 +109,7 @@ class Reviewer extends Operator_Controller
                                   ->orderBy('reviewer_name')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->reviewer->where('reviewer_id', $keywords)
+        $tot        = $this->reviewer->like('reviewer_id', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->join('faculty')
                                   ->orderBy('faculty.faculty_id')

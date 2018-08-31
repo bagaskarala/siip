@@ -8,21 +8,13 @@ $(".date").datepicker({
     firstDay: 1
 });
 
-$(".datetimestamp").datepicker({
-    
-    changeMonth: true,
-    changeYear: true,
-    yearRange: '1970:+5',
-    dateFormat: "yy-mm-dd 00:00:00",
-    firstDay: 1,
-    showAnim: "",
-});
+
 
 
 
 // siswaAutocomplete (Ajax)
 function reviewerAutoComplete() {
-    var min_length = 0; // min caracters to display the autocomplete
+    var min_length = 0; // min characters to display the autocomplete
     var key = $('#search_reviewer').val();
     if (key.length >= min_length) {
         $.ajax({
@@ -41,7 +33,7 @@ function reviewerAutoComplete() {
 
 //// siswaAutocomplete (Ajax)
 //function siswaAutoComplete() {
-//    var min_length = 0; // min caracters to display the autocomplete
+//    var min_length = 0; // min characters to display the autocomplete
 //    var keywords = $('#search_siswa').val();
 //    if (keywords.length >= min_length) {
 //        $.ajax({
@@ -102,20 +94,20 @@ function makeHiddenIdReviewer(nilai) {
         $("#reviewer-id").attr('value', nilai);
     } else {
         str = '<input type="hidden" id="reviewer-id" name="reviewer_id" value="'+nilai+'" />';
-        $("#form_draft_reviewer_add-draftreviewer").append(str);
+        $("#form_draftreviewer").append(str);
     }
 }
 
 
-//// Create input "id_siswa" if not exist, otherwise set it's value
-//function makeHiddenIdSiswa(nilai) {
-//    if ($("#id-siswa").length > 0) {
-//        $("#id-siswa").attr('value', nilai);
-//    } else {
-//        str = '<input type="hidden" id="id-siswa" name="id_siswa" value="'+nilai+'" />';
-//        $("#form-peminjaman").append(str);
-//    }
-//}
+// Create input "id_siswa" if not exist, otherwise set it's value
+function makeHiddenIdSiswa(nilai) {
+    if ($("#id-siswa").length > 0) {
+        $("#id-siswa").attr('value', nilai);
+    } else {
+        str = '<input type="hidden" id="id-siswa" name="id_siswa" value="'+nilai+'" />';
+        $("#form-peminjaman").append(str);
+    }
+}
 
 // Create input "id_buku" if not exist, otherwise set it's value
 //function makeHiddenIdBuku(nilai) {

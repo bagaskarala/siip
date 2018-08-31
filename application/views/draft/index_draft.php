@@ -56,26 +56,30 @@
                         <th scope="col">Review Status</th>
                         <th scope="col">Review Notes</th>
                         <th scope="col">Author Review Notes</th>
-                        <th scope="col">Review Start Date</th>
-                        <th scope="col">Review End Date</th>
+                        <th scope="col">Review Start Deadline</th>                        
+                        <th scope="col">Review Upload Date</th>   
+                        <th scope="col">Review End Deadline</th>
                         <th scope="col">Revise Status</th>
                         <th scope="col">Revise Notes</th>
                         <th scope="col">Edit Status</th>
                         <th scope="col">Edit Notes</th>
                         <th scope="col">Author Edit Notes</th>
-                        <th scope="col">Edit Start Date</th>
-                        <th scope="col">Edit End Date</th>
+                        <th scope="col">Edit Start Deadline</th>
+                        <th scope="col">Edit Upload Date</th>
+                        <th scope="col">Edit End Deadline</th>
                         <th scope="col">Layout Status</th>
                         <th scope="col">Layout Notes</th>
                         <th scope="col">Author Layout Notes</th>
-                        <th scope="col">Layout Start Date</th>
-                        <th scope="col">Layout End Date</th>
+                        <th scope="col">Layout Start Deadline</th>
+                        <th scope="col">Layout Upload Date</th>
+                        <th scope="col">Layout End Deadline</th>
                         <th scope="col">Reprint Status</th>
                         <th scope="col">Draft Notes</th>
                         <th scope="col">Proofread Notes</th>
                         <th scope="col">Author Proofread Notes</th>
-                        <th scope="col">Proofread Start Date</th>
-                        <th scope="col">Proofread End Date</th>
+                        <th scope="col">Proofread Start Deadline</th>
+                        <th scope="col">Proofread Upload Date</th>
+                        <th scope="col">Proofread End Deadline</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -97,26 +101,30 @@
                         <td><?= $draft->is_reviewed == 'y' ? 'Reviewed' : 'Not Reviewed'?></td>
                         <td><?= $draft->review_notes ?></td>
                         <td><?= $draft->author_review_notes ?></td>
-                        <td><?= $draft->review_start_date ?></td>
-                        <td><?= $draft->review_end_date ?></td>
+                        <td><?= $draft->review_start_deadline ?></td>
+                        <td><?= $draft->review_upload_date ?></td>
+                        <td><?= $draft->review_end_deadline ?></td>
                         <td><?= $draft->is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
                         <td><?= $draft->revise_notes ?></td>
                         <td><?= $draft->is_edited == 'y' ? 'Edited' : 'Not Edited'?></td>
                         <td><?= $draft->edit_notes ?></td>
                         <td><?= $draft->author_edit_notes ?></td>
-                        <td><?= $draft->edit_start_date ?></td>
-                        <td><?= $draft->edit_end_date ?></td>
+                        <td><?= $draft->edit_start_deadline ?></td>
+                        <td><?= $draft->edit_upload_date ?></td>
+                        <td><?= $draft->edit_end_deadline ?></td>
                         <td><?= $draft->is_layouted == 'y' ? 'Layouted' : 'Not Layouted'?></td>
                         <td><?= $draft->layout_notes ?></td>
                         <td><?= $draft->author_layout_notes ?></td>
-                        <td><?= $draft->layout_start_date ?></td>
-                        <td><?= $draft->layout_end_date ?></td>
+                        <td><?= $draft->layout_start_deadline ?></td>
+                        <td><?= $draft->layout_upload_date ?></td>
+                        <td><?= $draft->layout_end_deadline ?></td>
                         <td><?= $draft->is_reprint == 'y' ? 'Reprint' : 'Not Reprint'?></td>
                         <td><?= $draft->draft_notes ?></td>
                         <td><?= $draft->proofread_notes ?></td>
                         <td><?= $draft->author_proofread_notes ?></td>
-                        <td><?= $draft->proofread_start_date ?></td>
-                        <td><?= $draft->proofread_end_date ?></td>
+                        <td><?= $draft->proofread_start_deadline ?></td>
+                        <td><?= $draft->proofread_upload_date ?></td>
+                        <td><?= $draft->proofread_end_deadline ?></td>
                         <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
                             <?= form_open("draft/delete/$draft->draft_id") ?>

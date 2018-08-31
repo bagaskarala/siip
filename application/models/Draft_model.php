@@ -40,7 +40,7 @@ class Draft_model extends MY_Model
             [
                 'field' => 'finish_date',
                 'label' => 'Finish Date',
-                'rules' => 'trim|callback_check_date_finish'
+                'rules' => 'trim'
             ],
             [
                 'field' => 'print_date',

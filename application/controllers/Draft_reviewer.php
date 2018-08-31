@@ -38,7 +38,7 @@ class Draft_reviewer extends Operator_Controller
             return;
         }
         
-        unset($input->search_reviewer);
+//        unset($input->search_reviewer);
 
         if ($this->draft_reviewer->insert($input)) {
             $this->session->set_flashdata('success', 'Data saved');
@@ -104,31 +104,31 @@ class Draft_reviewer extends Operator_Controller
 		redirect('draftreviewer');
 	}
 
-//-- auto complete --        
-    public function reviewer_auto_complete()
-    {
-        $key = $this->input->post('key');
-        $reviewers = $this->draft_reviewer->liveSearchReviewer($key);
-
-        foreach ($reviewers as $reviewer) {
-            // Put in bold the written text.
-            $reviewer_nip        = str_replace($key, '<strong>'.$key.'</strong>', $reviewer->reviewer_nip );
-            $reviewer_name = preg_replace("#($key)#i", "<strong>$1</strong>", $reviewer->reviewer_name);
-
-            // Add new option.
-            $str  = '<li onclick="setItemReviewer(\''.$reviewer->reviewer_name.'\'); makeHiddenIdReviewer(\''.$reviewer->reviewer_id.'\')">';
-            $str .= "$reviewer_nip - $reviewer_name";
-            $str .= "</li>";
-
-            echo $str;
-        }
-    }
+////-- auto complete --        
+//    public function reviewer_auto_complete()
+//    {
+//        $key = $this->input->post('key');
+//        $reviewers = $this->draft_reviewer->liveSearchReviewer($key);
+//
+//        foreach ($reviewers as $reviewer) {
+//            // Put in bold the written text.
+//            $reviewer_nip        = str_replace($key, '<strong>'.$key.'</strong>', $reviewer->reviewer_nip );
+//            $reviewer_name = preg_replace("#($key)#i", "<strong>$1</strong>", $reviewer->reviewer_name);
+//
+//            // Add new option.
+//            $str  = '<li onclick="setItemReviewer(\''.$reviewer->reviewer_name.'\'); makeHiddenIdReviewer(\''.$reviewer->reviewer_id.'\')">';
+//            $str .= "$reviewer_nip - $reviewer_name";
+//            $str .= "</li>";
+//
+//            echo $str;
+//        }
+//    }
 
 // -- search --
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $draft_reviewers     = $this->draft_reviewer->where('draft_reviewer_id', $keywords)
+        $draft_reviewers     = $this->draft_reviewer->like('draft_reviewer_id', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->orLike('reviewer_nip', $keywords)
@@ -140,7 +140,7 @@ class Draft_reviewer extends Operator_Controller
                                   ->orderBy('reviewer.reviewer_nip')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->draft_reviewer->where('draft_reviewer_id', $keywords)
+        $tot        = $this->draft_reviewer->like('draft_reviewer_id', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->orLike('reviewer_nip', $keywords)

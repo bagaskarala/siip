@@ -144,7 +144,10 @@ class Category extends Operator_Controller
         $date_close = $this->input->post('date_close');
         $date_open   = $this->input->post('date_open');
         
-        if($date_close < $date_open){
+        $dateTimestamp1 = strtotime($date_close);
+        $dateTimestamp2 = strtotime($date_open);
+        
+        if($dateTimestamp1 < $dateTimestamp2){
             $this->form_validation->set_message('check_date', 'Date close can not be before date open');   
             return FALSE;
         }

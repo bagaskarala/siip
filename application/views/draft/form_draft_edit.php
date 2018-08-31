@@ -98,20 +98,20 @@
     </div>
 
         
-<!-- finish_date -->
+<!-- finish_date 
     <div class="row form-group">
         <div class="col-2">
             <?= form_label('Finish Date (yyyy-mm-dd)', 'finish_date', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('finish_date', $input->finish_date, ['class' => 'datetimestamp date-picker']) ?>
+            <?= form_input('finish_date', $input->finish_date, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
             <?= form_error('finish_date') ?>
         </div>
     </div>
         
-<!-- print_date -->
+ print_date 
     <div class="row form-group">
         <div class="col-2">
             <?= form_label('Print Date (yyyy-mm-dd)', 'print_date', ['class' => 'label']) ?>
@@ -122,7 +122,7 @@
         <div class="col-4">
             <?= form_error('print_date') ?>
         </div>
-    </div>
+    </div>-->
         
         <!-- is_reviewed -->
     <div class="row form-group">
@@ -173,29 +173,29 @@
     </div> 
                 
                 
-        <!-- review_start_date -->
+<!--         review_start_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Review Start Date (yyyy-mm-dd)', 'review_start_date', ['class' => 'label']) ?>
+            <?= form_label('Review Start Deadline (yyyy-mm-dd)', 'review_start_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('review_start_date', $input->review_start_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('review_start_deadline', $input->review_start_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('review_start_date') ?>
+            <?= form_error('review_start_deadline') ?>
         </div>
     </div>
                         
-        <!-- review_end_date -->
+<!--         review_end_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Review End Date (yyyy-mm-dd)', 'review_end_date', ['class' => 'label']) ?>
+            <?= form_label('Review End Deadline (yyyy-mm-dd)', 'review_end_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('review_end_date', $input->review_end_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('review_end_deadline', $input->review_end_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('review_end_date') ?>
+            <?= form_error('review_end_deadline') ?>
         </div>
     </div> 
         
@@ -283,29 +283,29 @@
     </div> 
                 
                 
-        <!-- edit_start_date -->
+<!--         edit_start_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Edit Start Date (yyyy-mm-dd)', 'edit_start_date', ['class' => 'label']) ?>
+            <?= form_label('Edit Start Deadline (yyyy-mm-dd)', 'edit_start_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('edit_start_date', $input->edit_start_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('edit_start_deadline', $input->edit_start_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('edit_start_date') ?>
+            <?= form_error('edit_start_deadline') ?>
         </div>
     </div>
                         
-        <!-- edit_end_date -->
+<!--         edit_end_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Edit End Date (yyyy-mm-dd)', 'edit_end_date', ['class' => 'label']) ?>
+            <?= form_label('Edit End Deadline (yyyy-mm-dd)', 'edit_end_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('edit_end_date', $input->edit_end_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('edit_end_deadline', $input->edit_end_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('edit_end_date') ?>
+            <?= form_error('edit_end_deadline') ?>
         </div>
     </div> 
         
@@ -358,29 +358,29 @@
     </div> 
                 
                 
-        <!-- layout_start_date -->
+<!--         layout_start_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Layout Start Date (yyyy-mm-dd)', 'layout_start_date', ['class' => 'label']) ?>
+            <?= form_label('Layout Start Deadline (yyyy-mm-dd)', 'layout_start_deadline ', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('layout_start_date', $input->layout_start_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('layout_start_deadline ', $input->layout_start_deadline , ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('layout_start_date') ?>
+            <?= form_error('layout_start_deadline ') ?>
         </div>
     </div>
                         
-        <!-- layout_end_date -->
+<!--         layout_end_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Layout End Date (yyyy-mm-dd)', 'layout_end_date', ['class' => 'label']) ?>
+            <?= form_label('Layout End Deadline (yyyy-mm-dd)', 'layout_end_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('layout_end_date', $input->layout_end_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('layout_end_deadline', $input->layout_end_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('layout_end_date') ?>
+            <?= form_error('layout_end_deadline') ?>
         </div>
     </div>         
         
@@ -447,29 +447,29 @@
     </div> 
                 
                 
-        <!-- proofread_start_date -->
+<!--         proofread_start_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Proofread Start Date (yyyy-mm-dd)', 'proofread_start_date', ['class' => 'label']) ?>
+            <?= form_label('Proofread Start Deadline (yyyy-mm-dd)', 'proofread_start_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('proofread_start_date', $input->proofread_start_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('proofread_start_deadline', $input->proofread_start_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('proofread_start_date') ?>
+            <?= form_error('proofread_start_deadline') ?>
         </div>
     </div>
                         
-        <!-- proofread_end_date -->
+<!--         proofread_end_deadline -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Proofread End Date (yyyy-mm-dd)', 'proofread_end_date', ['class' => 'label']) ?>
+            <?= form_label('Proofread End Deadline (yyyy-mm-dd)', 'proofread_end_deadline', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('proofread_end_date', $input->proofread_end_date, ['class' => 'date date-picker']) ?>
+            <?= form_input('proofread_end_deadline', $input->proofread_end_deadline, ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('proofread_end_date') ?>
+            <?= form_error('proofread_end_deadline') ?>
         </div>
     </div>
         

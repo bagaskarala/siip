@@ -99,7 +99,7 @@ class Draft_author extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $draft_authors     = $this->draft_author->where('draft_author_id', $keywords)
+        $draft_authors     = $this->draft_author->like('draft_author_id', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('author_name', $keywords)
                                   ->orLike('author_nip', $keywords)
@@ -111,7 +111,7 @@ class Draft_author extends Operator_Controller
                                   ->orderBy('author.author_nip')
                                   ->paginate($page)
                                   ->getAll();
-        $tot        = $this->draft_author->where('draft_author_id', $keywords)
+        $tot        = $this->draft_author->like('draft_author_id', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('author_name', $keywords)
                                   ->orLike('author_nip', $keywords)

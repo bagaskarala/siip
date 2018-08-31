@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2018 at 06:19 AM
+-- Generation Time: Aug 31, 2018 at 10:03 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`category_id`, `category_name`, `category_year`, `category_note`, `date_open`, `date_close`, `category_status`) VALUES
 (2, 'Hibah Teknik', 2018, 'Contoh catatan hibah', '2018-08-11', '2018-08-13', 'y'),
 (7, 'Hibah Fisipol', 2020, 'contoh isi text', '2018-08-15', '2018-08-24', 'y'),
-(8, 'Umum', 2017, 'asdadsadasdas', '2018-08-16', '2018-08-31', 'y'),
+(8, 'Umum', 2018, 'asdadsadasdas', '2018-08-30', '2018-08-31', 'y'),
 (9, 'Hibah Vokasi', 2018, 'qweqweqeqweqeqwew', '2018-08-29', '2018-08-31', 'n'),
 (10, 'Hibah Kehutanan', 2018, 'Contoh Hibah Kehutanan', '2018-09-09', '2018-09-11', 'y');
 
@@ -280,36 +280,40 @@ CREATE TABLE IF NOT EXISTS `draft` (
   `is_reviewed` enum('y','n') NOT NULL DEFAULT 'n',
   `review_notes` text NOT NULL,
   `author_review_notes` text NOT NULL,
-  `review_start_date` timestamp NULL DEFAULT NULL,
-  `review_end_date` timestamp NULL DEFAULT NULL,
+  `review_start_deadline` datetime DEFAULT NULL,
+  `review_upload_date` timestamp NULL DEFAULT NULL,
+  `review_end_deadline` datetime DEFAULT NULL,
   `is_revised` enum('y','n') NOT NULL DEFAULT 'n',
   `revise_notes` text NOT NULL,
   `is_edited` enum('y','n') NOT NULL DEFAULT 'n',
   `edit_notes` text NOT NULL,
   `author_edit_notes` text NOT NULL,
-  `edit_start_date` timestamp NULL DEFAULT NULL,
-  `edit_end_date` timestamp NULL DEFAULT NULL,
+  `edit_start_deadline` datetime DEFAULT NULL,
+  `edit_upload_date` timestamp NULL DEFAULT NULL,
+  `edit_end_deadline` datetime DEFAULT NULL,
   `is_layouted` enum('y','n') NOT NULL DEFAULT 'n',
   `layout_notes` text NOT NULL,
   `author_layout_notes` text NOT NULL,
-  `layout_start_date` timestamp NULL DEFAULT NULL,
-  `layout_end_date` timestamp NULL DEFAULT NULL,
+  `layout_start_deadline` datetime DEFAULT NULL,
+  `layout_upload_date` timestamp NULL DEFAULT NULL,
+  `layout_end_deadline` datetime DEFAULT NULL,
   `is_reprint` enum('y','n') NOT NULL DEFAULT 'n',
   `draft_notes` text NOT NULL,
   `proofread_notes` text NOT NULL,
   `author_proofread_notes` text NOT NULL,
-  `proofread_start_date` timestamp NULL DEFAULT NULL,
-  `proofread_end_date` timestamp NULL DEFAULT NULL
+  `proofread_start_deadline` datetime DEFAULT NULL,
+  `proofread_upload_date` timestamp NULL DEFAULT NULL,
+  `proofread_end_deadline` datetime DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft`
 --
 
-INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `is_reviewed`, `review_notes`, `author_review_notes`, `review_start_date`, `review_end_date`, `is_revised`, `revise_notes`, `is_edited`, `edit_notes`, `author_edit_notes`, `edit_start_date`, `edit_end_date`, `is_layouted`, `layout_notes`, `author_layout_notes`, `layout_start_date`, `layout_end_date`, `is_reprint`, `draft_notes`, `proofread_notes`, `author_proofread_notes`, `proofread_start_date`, `proofread_end_date`) VALUES
-(15, 2, 12, 'TETI Satu', 'TETI_Satu_20180828141248.doc', 500000, 500000, '2018-08-28 07:12:48', '2018-08-08 17:00:00', '2018-08-16 17:00:00', 'y', 'Nice', 'Nice', '2018-09-02 17:00:00', '2018-09-05 17:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'n', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'n', 'Good', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 7, 13, 'Sejarah Fisipol', 'Sejarah_Fisipol_20180828161319.doc', 1234000, NULL, '2018-08-28 09:13:19', NULL, NULL, 'n', '', '', NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, 'n', '', '', NULL, NULL, 'n', '', '', '', NULL, NULL),
-(17, 8, 13, 'Merdeka Merdeka', 'Merdeka_Merdeka_20180828161352.doc', 50000, NULL, '2018-08-28 09:13:52', NULL, NULL, 'n', '', '', NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, 'n', '', '', NULL, NULL, 'n', '', '', '', NULL, NULL);
+INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `is_reviewed`, `review_notes`, `author_review_notes`, `review_start_deadline`, `review_upload_date`, `review_end_deadline`, `is_revised`, `revise_notes`, `is_edited`, `edit_notes`, `author_edit_notes`, `edit_start_deadline`, `edit_upload_date`, `edit_end_deadline`, `is_layouted`, `layout_notes`, `author_layout_notes`, `layout_start_deadline`, `layout_upload_date`, `layout_end_deadline`, `is_reprint`, `draft_notes`, `proofread_notes`, `author_proofread_notes`, `proofread_start_deadline`, `proofread_upload_date`, `proofread_end_deadline`) VALUES
+(15, 2, 12, 'TETI Satu', 'TETI_Satu_20180828141248.doc', 500000, 500000, '2018-08-28 07:12:48', '2018-08-30 17:00:00', '2018-08-16 17:00:00', 'y', 'Nice', 'Nice', '2018-09-03 00:00:00', NULL, '2018-09-06 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', 'Good', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00'),
+(16, 7, 13, 'Sejarah Fisipol', 'Sejarah_Fisipol_20180828161319.doc', 1234000, NULL, '2018-08-28 09:13:19', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', '', '', NULL, NULL, NULL),
+(17, 8, 13, 'Merdeka Merdeka', 'Merdeka_Merdeka_20180828161352.doc', 50000, NULL, '2018-08-28 09:13:52', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', '', '', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -321,16 +325,17 @@ CREATE TABLE IF NOT EXISTS `draft_author` (
   `draft_author_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `author_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft_author`
 --
 
 INSERT INTO `draft_author` (`draft_author_id`, `draft_id`, `author_id`) VALUES
-(4, 15, NULL),
-(5, 16, NULL),
-(7, 17, NULL);
+(4, 15, 1),
+(5, 16, 1),
+(7, 17, 2),
+(8, 17, 1);
 
 -- --------------------------------------------------------
 
@@ -342,7 +347,7 @@ CREATE TABLE IF NOT EXISTS `draft_reviewer` (
   `draft_reviewer_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `reviewer_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft_reviewer`
@@ -352,7 +357,8 @@ INSERT INTO `draft_reviewer` (`draft_reviewer_id`, `draft_id`, `reviewer_id`) VA
 (3, 15, 22),
 (4, 16, 23),
 (5, 16, 24),
-(6, 16, 22);
+(6, 16, 22),
+(7, 15, 23);
 
 -- --------------------------------------------------------
 
@@ -403,7 +409,7 @@ CREATE TABLE IF NOT EXISTS `responsibility` (
   `responsibility_id` mediumint(9) NOT NULL,
   `user_id` mediumint(9) DEFAULT NULL,
   `draft_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `responsibility`
@@ -411,7 +417,8 @@ CREATE TABLE IF NOT EXISTS `responsibility` (
 
 INSERT INTO `responsibility` (`responsibility_id`, `user_id`, `draft_id`) VALUES
 (6, 2, 15),
-(7, 2, 17);
+(7, 2, 17),
+(8, 7, 17);
 
 -- --------------------------------------------------------
 
@@ -666,12 +673,12 @@ ALTER TABLE `draft`
 -- AUTO_INCREMENT for table `draft_author`
 --
 ALTER TABLE `draft_author`
-  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `draft_reviewer`
 --
 ALTER TABLE `draft_reviewer`
-  MODIFY `draft_reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `draft_reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `faculty`
 --
@@ -686,7 +693,7 @@ ALTER TABLE `institute`
 -- AUTO_INCREMENT for table `responsibility`
 --
 ALTER TABLE `responsibility`
-  MODIFY `responsibility_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `responsibility_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `reviewer`
 --

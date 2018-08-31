@@ -99,7 +99,7 @@ class Worksheet extends Operator_Controller
         public function search($page = null)
         {
         $keywords       = $this->input->get('keywords', true);
-        $worksheets     = $this->worksheet->where('worksheet_num', $keywords)
+        $worksheets     = $this->worksheet->like('worksheet_num', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->join('draft')
                                   ->orderBy('worksheet_id')
@@ -107,7 +107,7 @@ class Worksheet extends Operator_Controller
                                   ->orderBy('worksheet_num')  
                                   ->paginate($page)
                                   ->getAll();
-        $tot            = $this->worksheet->where('worksheet_num', $keywords)
+        $tot            = $this->worksheet->like('worksheet_num', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->join('draft')
                                   ->orderBy('worksheet_id')

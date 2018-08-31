@@ -27,7 +27,7 @@ class MY_Model extends CI_Model
     {
         return $this->db->get($this->table)->result();
     }
-
+    
     public function paginate($page)
     {
         $this->db->limit($this->perPage, $this->calculateRealOffset($page));
@@ -54,6 +54,12 @@ class MY_Model extends CI_Model
     public function where($column, $condition)
     {
         $this->db->where($column, $condition);
+        return $this;
+    }
+    
+        public function like($column, $condition)
+    {
+        $this->db->like($column, $condition);
         return $this;
     }
 
