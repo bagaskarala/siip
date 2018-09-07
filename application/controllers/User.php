@@ -11,7 +11,7 @@ class User extends Admin_Controller
 
 	public function index($page = null)
 	{
-        $users      = $this->user->getAll();
+        $users      = $this->user->paginate($page)->orderBy('user_id')->getAll();
         $total    = count($users);
         $pages   = $this->pages;
         $main_view  = 'user/index_user';
@@ -105,7 +105,38 @@ class User extends Admin_Controller
 
 		redirect('user');
 	}        
-        
+
+// -- search -- 
+
+        public function search($page = null)
+        {
+        $keywords   = $this->input->get('keywords', true);
+        $users     = $this->user->like('username', $keywords)
+                                  ->orLike('level', $keywords)
+                                  ->orderBy('user_id')
+                                  ->orderBy('username')
+                                  ->orderBy('level')
+                                  ->paginate($page)
+                                  ->getAll();
+        $tot        = $this->user->like('username', $keywords)
+                                  ->orLike('level', $keywords)
+                                  ->orderBy('user_id')
+                                  ->orderBy('username')
+                                  ->orderBy('level')
+                                  ->getAll();
+        $total = count($tot);
+
+        $pagination = $this->user->makePagination(site_url('user/search/'), 3, $total);
+
+        if (!$users) {
+            $this->session->set_flashdata('warning', 'Data were not found');
+            redirect('user');
+        }
+
+        $pages    = $this->pages;
+        $main_view  = 'user/index_user';
+        $this->load->view('template', compact('pages', 'main_view', 'users', 'pagination', 'total'));
+    }        
         
     /*
     |-----------------------------------------------------------------

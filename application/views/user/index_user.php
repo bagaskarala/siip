@@ -1,4 +1,16 @@
-<?php $i = 0 ?>
+<?php
+    $perPage = 10;
+    $keywords = $this->input->get('keywords');
+
+    if (isset($keywords)) {
+        $page = $this->uri->segment(3);
+    } else {
+        $page = $this->uri->segment(2);
+    }
+
+    // data table series number
+    $i = isset($page) ? $page * $perPage - $perPage : 0;
+?>
 
 <!-- Page heading -->
 <div class="row">
@@ -9,6 +21,21 @@
 
 <!-- Flash message -->
 <?php $this->load->view('_partial/flash_message') ?>
+
+<!--Search form -->
+<div class="row">
+    <div class="col-5">
+        &nbsp;
+    </div>
+    <div class="col-5 align-right">
+    <?= form_open('user/search', ['method' => 'GET']) ?>
+        <?= form_label('Find', 'key_words') ?>
+        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Input your search here', 'class' => 'col-3']) ?>
+        <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
+    <?= form_close() ?>
+    </div>
+</div>
+
 
 <!-- Table -->
 <div class="row">

@@ -2,6 +2,7 @@
 
 class User_model extends MY_Model
 {
+    protected $perPage = 10;
     public function getValidationRules()
     {
         $validationRules = [
