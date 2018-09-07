@@ -63,13 +63,18 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
-                'field' => 'review_start_date',
-                'label' => 'Review Start Date',
+                'field' => 'review_start_deadline',
+                'label' => 'Review Start Deadline',
                 'rules' => 'trim'
             ],
             [
-                'field' => 'review_end_date',
-                'label' => 'Review End Date',
+                'field' => 'review_upload_date',
+                'label' => 'Review Upload Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'review_end_deadline',
+                'label' => 'Review End Deadline',
                 'rules' => 'trim'
             ],
             [
@@ -97,14 +102,20 @@ class Draft_model extends MY_Model
                 'label' => 'Author Edit Notes',
                 'rules' => 'trim'
             ],
+
             [
-                'field' => 'edit_start_date',
-                'label' => 'Edit Start Date',
+                'field' => 'edit_start_deadline',
+                'label' => 'Edit Start Deadline',
                 'rules' => 'trim'
             ],
             [
-                'field' => 'edit_end_date',
-                'label' => 'Edit End Date',
+                'field' => 'author_upload_date',
+                'label' => 'Author Upload Date',
+                'rules' => 'trim'
+            ],            
+            [
+                'field' => 'edit_end_deadline',
+                'label' => 'Edit End Deadline',
                 'rules' => 'trim'
             ],            
             [
@@ -123,13 +134,18 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
-                'field' => 'layout_start_date',
-                'label' => 'Layout Start Date',
+                'field' => 'layout_start_deadline',
+                'label' => 'Layout Start Deadline',
                 'rules' => 'trim'
             ],
             [
-                'field' => 'layout_end_date',
-                'label' => 'Layout End Date',
+                'field' => 'layout_upload_date',
+                'label' => 'Layout Upload Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'layout_end_deadline',
+                'label' => 'Layout End Deadline',
                 'rules' => 'trim'
             ],
             [
@@ -153,13 +169,18 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
-                'field' => 'proofread_start_date',
-                'label' => 'Proofread Start Date',
+                'field' => 'proofread_start_deadline',
+                'label' => 'Proofread Start Deadline',
                 'rules' => 'trim'
             ],
             [
-                'field' => 'proofread_end_date',
-                'label' => 'Proofread End Date',
+                'field' => 'proofread_upload_date',
+                'label' => 'Proofread Upload Date',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'proofread_end_deadline',
+                'label' => 'Proofread End Deadline',
                 'rules' => 'trim'
             ]
             
@@ -183,26 +204,30 @@ class Draft_model extends MY_Model
             'is_reviewed'                   => '',
             'review_notes'                  => '',
             'author_review_notes'           => '',
-            'review_start_date'             => '',
-            'review_end_date'               => '',
+            'review_start_deadline'             => '',
+            'review_upload_date'          => '',
+            'review_end_deadline'               => '',
             'is_revised'                    => '',
             'revise_notes'                  => '',
             'is_edited'                     => '',
             'edit_notes'                    => '',
             'author_edit_notes'             => '',
-            'edit_start_date'               => '',
-            'edit_end_date'                 => '',
+            'edit_start_deadline'               => '',
+            'edit_upload_date'          => '',
+            'edit_end_deadline'                 => '',
             'is_layouted'                   => '',
             'layout_notes'                  => '',
             'author_layout_notes'           => '',
-            'layout_start_date'             => '',
-            'layout_end_date'               => '',
+            'layout_start_deadline'             => '',
+            'layout_upload_date'          => '',
+            'layout_end_deadline'               => '',
             'is_reprint'                    => '',
             'draft_notes'                   => '',
             'proofread_notes'               => '',
             'author_proofread_notes'        => '',
-            'proofread_start_date'          => '',
-            'proofread_end_date'            => ''
+            'proofread_start_deadline'          => '',
+            'proofread_upload_date'          => '',
+            'proofread_end_deadline'            => ''
         ];
     }
    

@@ -364,7 +364,7 @@
             <?= form_label('Layout Start Deadline (yyyy-mm-dd)', 'layout_start_deadline ', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('layout_start_deadline ', $input->layout_start_deadline , ['class' => 'date date-picker']) ?>
+            <?= form_input('layout_start_deadline', $input->layout_start_deadline , ['class' => 'date date-picker']) ?>
         </div>
         <div class="col-4">
             <?= form_error('layout_start_deadline ') ?>
