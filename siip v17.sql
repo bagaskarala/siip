@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2018 at 10:03 AM
+-- Generation Time: Sep 08, 2018 at 02:34 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `author` (
   `author_saving_num` varchar(30) NOT NULL,
   `heir_name` varchar(256) NOT NULL,
   `user_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `author`
@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS `author` (
 
 INSERT INTO `author` (`author_id`, `work_unit_id`, `institute_id`, `author_nip`, `author_name`, `author_degree`, `author_address`, `author_contact`, `author_email`, `bank_id`, `author_saving_num`, `heir_name`, `user_id`) VALUES
 (1, 1, 1, '1', 'Dono', 'S.T.', 'Yogyakarta', '081511124578', 'dono@email.com', '009', '8874322512', 'Doni', 6),
-(2, 5, 2, '2', 'Harry Pribadi', 'S.T.', 'Jakarta', '08188788521', 'hari@email.com', '014', '321669854', 'Heru', 7);
+(2, 5, 2, '2', 'Harry Pribadi', 'S.T.', 'Jakarta', '08188788521', 'hari@email.com', '014', '321669854', 'Heru', 7),
+(3, 1, 1, '3', 'Jaka Sembung', 'S.Pd', 'Malang', '08798919191919', 'jakasembung@ganyambung.com', '046', '9998282737', 'Jaki', 9);
 
 -- --------------------------------------------------------
 
@@ -283,37 +284,44 @@ CREATE TABLE IF NOT EXISTS `draft` (
   `review_start_deadline` datetime DEFAULT NULL,
   `review_upload_date` timestamp NULL DEFAULT NULL,
   `review_end_deadline` datetime DEFAULT NULL,
-  `is_revised` enum('y','n') NOT NULL DEFAULT 'n',
-  `revise_notes` text NOT NULL,
+  `review_is_revised` enum('y','n') NOT NULL DEFAULT 'n',
+  `review_revise_notes` text NOT NULL,
   `is_edited` enum('y','n') NOT NULL DEFAULT 'n',
   `edit_notes` text NOT NULL,
   `author_edit_notes` text NOT NULL,
   `edit_start_deadline` datetime DEFAULT NULL,
   `edit_upload_date` timestamp NULL DEFAULT NULL,
   `edit_end_deadline` datetime DEFAULT NULL,
+  `edit_is_revised` enum('y','n') NOT NULL DEFAULT 'n',
+  `edit_revise_notes` text NOT NULL,
   `is_layouted` enum('y','n') NOT NULL DEFAULT 'n',
   `layout_notes` text NOT NULL,
   `author_layout_notes` text NOT NULL,
   `layout_start_deadline` datetime DEFAULT NULL,
   `layout_upload_date` timestamp NULL DEFAULT NULL,
   `layout_end_deadline` datetime DEFAULT NULL,
+  `layout_is_revised` enum('y','n') NOT NULL DEFAULT 'n',
+  `layout_revise_notes` text NOT NULL,
   `is_reprint` enum('y','n') NOT NULL DEFAULT 'n',
   `draft_notes` text NOT NULL,
   `proofread_notes` text NOT NULL,
   `author_proofread_notes` text NOT NULL,
   `proofread_start_deadline` datetime DEFAULT NULL,
   `proofread_upload_date` timestamp NULL DEFAULT NULL,
-  `proofread_end_deadline` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+  `proofread_end_deadline` datetime DEFAULT NULL,
+  `proofread_is_revised` enum('y','n') NOT NULL DEFAULT 'n',
+  `proofread_revise_notes` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft`
 --
 
-INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `is_reviewed`, `review_notes`, `author_review_notes`, `review_start_deadline`, `review_upload_date`, `review_end_deadline`, `is_revised`, `revise_notes`, `is_edited`, `edit_notes`, `author_edit_notes`, `edit_start_deadline`, `edit_upload_date`, `edit_end_deadline`, `is_layouted`, `layout_notes`, `author_layout_notes`, `layout_start_deadline`, `layout_upload_date`, `layout_end_deadline`, `is_reprint`, `draft_notes`, `proofread_notes`, `author_proofread_notes`, `proofread_start_deadline`, `proofread_upload_date`, `proofread_end_deadline`) VALUES
-(15, 2, 12, 'TETI Satu', 'TETI_Satu_20180828141248.doc', 500000, 500000, '2018-08-28 07:12:48', '2018-08-30 17:00:00', '2018-08-16 17:00:00', 'y', 'Nice', 'Nice', '2018-09-03 00:00:00', NULL, '2018-09-06 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', 'Good', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00'),
-(16, 7, 13, 'Sejarah Fisipol', 'Sejarah_Fisipol_20180828161319.doc', 1234000, NULL, '2018-08-28 09:13:19', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', '', '', NULL, NULL, NULL),
-(17, 8, 13, 'Merdeka Merdeka', 'Merdeka_Merdeka_20180828161352.doc', 50000, NULL, '2018-08-28 09:13:52', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', '', '', NULL, NULL, NULL);
+INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `is_reviewed`, `review_notes`, `author_review_notes`, `review_start_deadline`, `review_upload_date`, `review_end_deadline`, `review_is_revised`, `review_revise_notes`, `is_edited`, `edit_notes`, `author_edit_notes`, `edit_start_deadline`, `edit_upload_date`, `edit_end_deadline`, `edit_is_revised`, `edit_revise_notes`, `is_layouted`, `layout_notes`, `author_layout_notes`, `layout_start_deadline`, `layout_upload_date`, `layout_end_deadline`, `layout_is_revised`, `layout_revise_notes`, `is_reprint`, `draft_notes`, `proofread_notes`, `author_proofread_notes`, `proofread_start_deadline`, `proofread_upload_date`, `proofread_end_deadline`, `proofread_is_revised`, `proofread_revise_notes`) VALUES
+(15, 2, 12, 'TETI Satu', 'TETI_Satu_20180828141248.doc', 500000, 500000, '2018-08-28 07:12:48', '2018-08-30 17:00:00', '2018-08-16 17:00:00', 'y', 'Nice', 'Nice', '2018-09-03 00:00:00', NULL, '2018-09-06 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', 'n', 'Good', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', ''),
+(16, 7, 13, 'Sejarah Fisipol', 'Sejarah_Fisipol_20180828161319.doc', 1234000, 300000, '2018-08-28 09:13:19', NULL, NULL, 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', 'n', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', '', 'n', '', '', '', '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', 'n', ''),
+(17, 8, 13, 'Merdeka Merdeka', 'Merdeka_Merdeka_20180828161352.doc', 50000, NULL, '2018-08-28 09:13:52', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', '', NULL, NULL, NULL, 'n', ''),
+(18, 10, 15, 'Teknik Kehutanan', 'Teknik_Kehutanan_20180908143429.doc', 100000, NULL, '2018-09-08 07:34:29', NULL, NULL, 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', NULL, NULL, NULL, 'n', '', 'n', '', '', '', NULL, NULL, NULL, 'n', '');
 
 -- --------------------------------------------------------
 
@@ -325,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `draft_author` (
   `draft_author_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `author_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft_author`
@@ -335,7 +343,8 @@ INSERT INTO `draft_author` (`draft_author_id`, `draft_id`, `author_id`) VALUES
 (4, 15, 1),
 (5, 16, 1),
 (7, 17, 2),
-(8, 17, 1);
+(8, 17, 1),
+(9, 17, 3);
 
 -- --------------------------------------------------------
 
@@ -432,7 +441,7 @@ CREATE TABLE IF NOT EXISTS `reviewer` (
   `reviewer_name` varchar(256) NOT NULL,
   `faculty_id` mediumint(9) DEFAULT NULL,
   `user_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reviewer`
@@ -441,7 +450,8 @@ CREATE TABLE IF NOT EXISTS `reviewer` (
 INSERT INTO `reviewer` (`reviewer_id`, `reviewer_nip`, `reviewer_name`, `faculty_id`, `user_id`) VALUES
 (22, '1', 'Kasmir', 3, 3),
 (23, '2', 'Yasir', 4, 5),
-(24, '3', 'Samsir', 3, 4);
+(24, '3', 'Samsir Simsar', 3, 4),
+(25, '4', 'Amir', 4, 8);
 
 -- --------------------------------------------------------
 
@@ -476,7 +486,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(256) NOT NULL,
   `level` enum('superadmin','admin_penerbitan','staff_penerbitan','admin_pemasaran','admin_percetakan','admin_gudang','author','reviewer') NOT NULL,
   `is_blocked` enum('y','n') NOT NULL DEFAULT 'n'
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -489,7 +499,9 @@ INSERT INTO `user` (`user_id`, `username`, `password`, `level`, `is_blocked`) VA
 (4, 'samsir', '2f18685cbcaf0d5b54e928439b2fd187', 'reviewer', 'n'),
 (5, 'yasir', '8d03ecfad755ab078ae3fd29c63c2d7d', 'reviewer', 'n'),
 (6, 'dono', 'e3b810115555736a216f137df55789f6', 'author', 'n'),
-(7, 'hari', 'a9bcf1e4d7b95a22e2975c812d938889', 'author', 'n');
+(7, 'hari', 'a9bcf1e4d7b95a22e2975c812d938889', 'author', 'n'),
+(8, 'amir', '63eefbd45d89e8c91f24b609f7539942', 'reviewer', 'n'),
+(9, 'jaka', '9d83066da00b7c7fa9de34117f488653', 'author', 'n');
 
 -- --------------------------------------------------------
 
@@ -653,7 +665,7 @@ ALTER TABLE `work_unit`
 -- AUTO_INCREMENT for table `author`
 --
 ALTER TABLE `author`
-  MODIFY `author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `book`
 --
@@ -668,12 +680,12 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `draft`
 --
 ALTER TABLE `draft`
-  MODIFY `draft_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
+  MODIFY `draft_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `draft_author`
 --
 ALTER TABLE `draft_author`
-  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `draft_reviewer`
 --
@@ -698,7 +710,7 @@ ALTER TABLE `responsibility`
 -- AUTO_INCREMENT for table `reviewer`
 --
 ALTER TABLE `reviewer`
-  MODIFY `reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+  MODIFY `reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `theme`
 --
@@ -708,7 +720,7 @@ ALTER TABLE `theme`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `user_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `worksheet`
 --
