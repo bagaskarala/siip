@@ -10,8 +10,8 @@ class Draft extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $drafts     = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->paginate($page)->getAll();
-        $tot        = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->getAll();
+        $drafts     = $this->draft->join('category')->join('author')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->paginate($page)->getAll();
+        $tot        = $this->draft->join('category')->join('author')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
         $main_view  = 'draft/index_draft';
@@ -136,8 +136,10 @@ class Draft extends Operator_Controller
         $drafts     = $this->draft->like('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('theme_name', $keywords)
+                                  ->orLike('author_name', $keywords)
                                   ->join('category')
                                   ->join('theme')
+                                  ->join('author')
                                   ->orderBy('category.category_id')
                                   ->orderBy('theme.theme_id')                
                                   ->orderBy('draft_title')
@@ -146,10 +148,12 @@ class Draft extends Operator_Controller
         $tot        = $this->draft->like('category_name', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('theme_name', $keywords)
+                                  ->orLike('author_name', $keywords)
                                   ->join('category')
                                   ->join('theme')
-                                  ->orderBy('category.category_name')
-                                  ->orderBy('theme.theme_name')                
+                                  ->join('author')
+                                  ->orderBy('category.category_id')
+                                  ->orderBy('theme.theme_id')                
                                   ->orderBy('draft_title')
                                   ->getAll();
         $total = count($tot);
@@ -197,7 +201,23 @@ class Draft extends Operator_Controller
         return true;
     }
 
-    
+    public function unique_draft_title_author()
+    {
+        $draft_title     = $this->input->post('draft_title');
+        $author_id     = $this->input->post('author_id');
+        $draft_id = $this->input->post('draft_id');
+        
+        $this->draft->where('author_id', $author_id);
+        $this->draft->where('draft_title', $draft_title);
+        !$draft_id || $this->draft->where('draft_id !=', $draft_id);
+        $draft = $this->draft->get();
+
+        if (count($draft)) {
+            $this->form_validation->set_message('unique_draft_title_author', 'Title and Author Name has been used');
+            return false;
+        }
+        return true;
+    }    
 
     
 }

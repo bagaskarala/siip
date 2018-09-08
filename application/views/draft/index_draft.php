@@ -47,6 +47,7 @@
                         <th scope="col">Category Name</th>
                         <th scope="col">Theme Name</th>
                         <th scope="col">Draft Title</th>
+                        <th scope="col">Author Name</th>
                         <th scope="col">Draft File</th>
                         <th scope="col">Proposed Fund</th>
                         <th scope="col">Approved Fund</th>
@@ -59,20 +60,24 @@
                         <th scope="col">Review Start Deadline</th>                        
                         <th scope="col">Review Upload Date</th>   
                         <th scope="col">Review End Deadline</th>
-                        <th scope="col">Revise Status</th>
-                        <th scope="col">Revise Notes</th>
+                        <th scope="col">Review Revise Status</th>
+                        <th scope="col">Review Revise Notes</th>
                         <th scope="col">Edit Status</th>
                         <th scope="col">Edit Notes</th>
                         <th scope="col">Author Edit Notes</th>
                         <th scope="col">Edit Start Deadline</th>
                         <th scope="col">Edit Upload Date</th>
                         <th scope="col">Edit End Deadline</th>
+                        <th scope="col">Edit Revise Status</th>
+                        <th scope="col">Edit Revise Notes</th>
                         <th scope="col">Layout Status</th>
                         <th scope="col">Layout Notes</th>
                         <th scope="col">Author Layout Notes</th>
                         <th scope="col">Layout Start Deadline</th>
                         <th scope="col">Layout Upload Date</th>
                         <th scope="col">Layout End Deadline</th>
+                        <th scope="col">Layout Revise Status</th>
+                        <th scope="col">Layout Revise Notes</th>
                         <th scope="col">Reprint Status</th>
                         <th scope="col">Draft Notes</th>
                         <th scope="col">Proofread Notes</th>
@@ -80,6 +85,8 @@
                         <th scope="col">Proofread Start Deadline</th>
                         <th scope="col">Proofread Upload Date</th>
                         <th scope="col">Proofread End Deadline</th>
+                        <th scope="col">Proofread Revise Status</th>
+                        <th scope="col">Proofread Revise Notes</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -91,6 +98,7 @@
                         <td><?= $draft->category_name ?></td>
                         <td><?= $draft->theme_name ?></td>
                         <td><?= $draft->draft_title ?></td>
+                        <td><?= $draft->author_name ?></td>
                         <td><?= $draft->draft_file ?></td>
                         <!--<td><a href="<?php echo base_url(); ?>/draft/download/<?php $fieldname; ?>">Download</a></td>-->
                         <td><?= $draft->proposed_fund ?></td>
@@ -104,20 +112,24 @@
                         <td><?= $draft->review_start_deadline ?></td>
                         <td><?= $draft->review_upload_date ?></td>
                         <td><?= $draft->review_end_deadline ?></td>
-                        <td><?= $draft->is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->revise_notes ?></td>
+                        <td><?= $draft->review_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
+                        <td><?= $draft->review_revise_notes ?></td>
                         <td><?= $draft->is_edited == 'y' ? 'Edited' : 'Not Edited'?></td>
                         <td><?= $draft->edit_notes ?></td>
                         <td><?= $draft->author_edit_notes ?></td>
                         <td><?= $draft->edit_start_deadline ?></td>
                         <td><?= $draft->edit_upload_date ?></td>
                         <td><?= $draft->edit_end_deadline ?></td>
+                        <td><?= $draft->edit_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
+                        <td><?= $draft->edit_revise_notes ?></td>
                         <td><?= $draft->is_layouted == 'y' ? 'Layouted' : 'Not Layouted'?></td>
                         <td><?= $draft->layout_notes ?></td>
                         <td><?= $draft->author_layout_notes ?></td>
                         <td><?= $draft->layout_start_deadline ?></td>
                         <td><?= $draft->layout_upload_date ?></td>
                         <td><?= $draft->layout_end_deadline ?></td>
+                        <td><?= $draft->layout_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
+                        <td><?= $draft->layout_revise_notes ?></td>
                         <td><?= $draft->is_reprint == 'y' ? 'Reprint' : 'Not Reprint'?></td>
                         <td><?= $draft->draft_notes ?></td>
                         <td><?= $draft->proofread_notes ?></td>
@@ -125,6 +137,8 @@
                         <td><?= $draft->proofread_start_deadline ?></td>
                         <td><?= $draft->proofread_upload_date ?></td>
                         <td><?= $draft->proofread_end_deadline ?></td>
+                        <td><?= $draft->proofread_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
+                        <td><?= $draft->proofread_revise_notes ?></td>
                         <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
                             <?= form_open("draft/delete/$draft->draft_id") ?>

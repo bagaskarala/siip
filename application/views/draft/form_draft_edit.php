@@ -46,6 +46,20 @@
         </div>
     </div>
         
+        
+        <!-- author_id -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Name', 'author_name', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_dropdown('author_id', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author"') ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_id') ?>
+        </div>
+    </div>
+        
     <!-- draft_file -->
     <div class="row form-group">
         <div class="col-2">
@@ -199,38 +213,38 @@
         </div>
     </div> 
         
-        <!-- is_revised -->
+        <!-- review_is_revised -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Revise Status', 'is_revised', ['class' => 'label']) ?>
+            <?= form_label('Review Revise Status', 'review_is_revised', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
             <label class="block-label">
-                <?= form_radio('is_revised', 'y',
-                    isset($input->is_revised) && ($input->is_revised == 'y') ? true : false)
+                <?= form_radio('review_is_revised', 'y',
+                    isset($input->review_is_revised) && ($input->review_is_revised == 'y') ? true : false)
                 ?> Revised
             </label>
             <label class="block-label">
-                <?= form_radio('is_revised', 'n',
-                    isset($input->is_revised) && ($input->is_revised == 'n') ? true : false)
+                <?= form_radio('review_is_revised', 'n',
+                    isset($input->review_is_revised) && ($input->review_is_revised == 'n') ? true : false)
                 ?> Not Revised
             </label>
         </div>
         <div class="col-4">
-            <?= form_error('is_revised') ?>
+            <?= form_error('review_is_revised') ?>
         </div>
     </div>
         
-        <!-- revise_notes -->
+        <!-- review_revise_notes -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Revise Notes', 'revise_notes', ['class' => 'label']) ?>
+            <?= form_label('Review Revise Notes', 'review_revise_notes', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_textarea('revise_notes', $input->revise_notes, ['class' => 'form-input']) ?>
+            <?= form_textarea('review_revise_notes', $input->review_revise_notes, ['class' => 'form-input']) ?>
         </div>
         <div class="col-4">
-            <?= form_error('revise_notes') ?>
+            <?= form_error('review_revise_notes') ?>
         </div>
     </div>      
         
@@ -307,6 +321,41 @@
         <div class="col-4">
             <?= form_error('edit_end_deadline') ?>
         </div>
+    </div>
+
+        <!-- edit_is_revised -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Edit Revise Status', 'edit_is_revised', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <label class="block-label">
+                <?= form_radio('edit_is_revised', 'y',
+                    isset($input->edit_is_revised) && ($input->edit_is_revised == 'y') ? true : false)
+                ?> Revised
+            </label>
+            <label class="block-label">
+                <?= form_radio('edit_is_revised', 'n',
+                    isset($input->edit_is_revised) && ($input->edit_is_revised == 'n') ? true : false)
+                ?> Not Revised
+            </label>
+        </div>
+        <div class="col-4">
+            <?= form_error('edit_is_revised') ?>
+        </div>
+    </div>
+        
+        <!-- edit_revise_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Edit Revise Notes', 'edit_revise_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('edit_revise_notes', $input->edit_revise_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('edit_revise_notes') ?>
+        </div>
     </div> 
         
         <!-- is_layouted -->
@@ -382,7 +431,42 @@
         <div class="col-4">
             <?= form_error('layout_end_deadline') ?>
         </div>
-    </div>         
+    </div>
+
+        <!-- layout_is_revised -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Layout Revise Status', 'layout_is_revised', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <label class="block-label">
+                <?= form_radio('layout_is_revised', 'y',
+                    isset($input->layout_is_revised) && ($input->layout_is_revised == 'y') ? true : false)
+                ?> Revised
+            </label>
+            <label class="block-label">
+                <?= form_radio('layout_is_revised', 'n',
+                    isset($input->layout_is_revised) && ($input->layout_is_revised == 'n') ? true : false)
+                ?> Not Revised
+            </label>
+        </div>
+        <div class="col-4">
+            <?= form_error('layout_is_revised') ?>
+        </div>
+    </div>
+        
+        <!-- layout_revise_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Layout Revise Notes', 'layout_revise_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('layout_revise_notes', $input->layout_revise_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('layout_revise_notes') ?>
+        </div>
+    </div> 
         
         <!-- is_reprint -->
     <div class="row form-group">
@@ -472,6 +556,41 @@
             <?= form_error('proofread_end_deadline') ?>
         </div>
     </div>
+
+        <!-- proofread_is_revised -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Proofread Revise Status', 'proofread_is_revised', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <label class="block-label">
+                <?= form_radio('proofread_is_revised', 'y',
+                    isset($input->proofread_is_revised) && ($input->proofread_is_revised == 'y') ? true : false)
+                ?> Revised
+            </label>
+            <label class="block-label">
+                <?= form_radio('proofread_is_revised', 'n',
+                    isset($input->proofread_is_revised) && ($input->proofread_is_revised == 'n') ? true : false)
+                ?> Not Revised
+            </label>
+        </div>
+        <div class="col-4">
+            <?= form_error('proofread_is_revised') ?>
+        </div>
+    </div>
+        
+        <!-- proofread_revise_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Proofread Revise Notes', 'proofread_revise_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('proofread_revise_notes', $input->proofread_revise_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('proofread_revise_notes') ?>
+        </div>
+    </div> 
         
     <!-- submit button -->
     <div class="row">
