@@ -92,13 +92,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($drafts as $draft): ?>
+                    <?php foreach($drafts as $draft):
+                            $authors = '';
+                            foreach ($draft->author as $key => $value) {
+                                $authors .= $value->author_name;
+                                $authors .= ', ';
+                            }
+                            $authors = substr($authors, 0, -2);
+                    ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
                         <td><?= $draft->category_name ?></td>
                         <td><?= $draft->theme_name ?></td>
                         <td><?= $draft->draft_title ?></td>
-                        <td><?= $draft->author_name ?></td>
+                        <td><?= $authors ?></td>
                         <td><?= $draft->draft_file ?></td>
                         <!--<td><a href="<?php echo base_url(); ?>/draft/download/<?php $fieldname; ?>">Download</a></td>-->
                         <td><?= $draft->proposed_fund ?></td>

@@ -52,7 +52,7 @@
             <?= form_label('Author Name', 'author_name', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_dropdown('author_id', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author"') ?>
+            <?= form_dropdown('author_id[]', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author"') ?>
         </div>
         <div class="col-4">
             <?= form_error('author_id') ?>

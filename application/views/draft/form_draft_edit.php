@@ -46,19 +46,24 @@
         </div>
     </div>
         
-        
-        <!-- author_id -->
-    <div class="row form-group">
-        <div class="col-2">
-            <?= form_label('Author Name', 'author_name', ['class' => 'label']) ?>
-        </div>
-        <div class="col-4">
-            <?= form_dropdown('author_id', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author"') ?>
-        </div>
-        <div class="col-4">
-            <?= form_error('author_id') ?>
-        </div>
-    </div>
+        <?php
+        foreach ($input->author as $key => $value) {
+            ?>
+                <!-- author_id -->
+            <div class="row form-group">
+                <div class="col-2">
+                    <?= form_label('Author Name', 'author_name', ['class' => 'label']) ?>
+                </div>
+                <div class="col-4">
+                    <?= form_dropdown('author_id[]', getDropdownList('author', ['author_id', 'author_name']), $value->author_id, 'id="author"') ?>
+                </div>
+                <div class="col-4">
+                    <?= form_error('author_id') ?>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
         
     <!-- draft_file -->
     <div class="row form-group">

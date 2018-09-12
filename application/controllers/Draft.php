@@ -10,8 +10,14 @@ class Draft extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $drafts     = $this->draft->join('category')->join('author')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->paginate($page)->getAll();
-        $tot        = $this->draft->join('category')->join('author')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->getAll();
+        $drafts     = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->paginate($page)->getAll();
+        $tot        = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->getAll();
+
+        foreach ($drafts as $key => $value) {
+            $authors = $this->commonlibs->getIdAndName('author', 'draft_author', 'draft', $value->draft_id);
+            $value->author = $authors;
+        }
+
         $total     = count($tot);
         $pages    = $this->pages;
         $main_view  = 'draft/index_draft';
@@ -38,7 +44,7 @@ class Draft extends Operator_Controller
             if ($upload) {
                 $input->draft_file =  "$draftFileName"; // Data for column "draft".
             }
-        }
+        }   
 
         if (!$this->draft->validate() || $this->form_validation->error_array()) {
             $pages     = $this->pages;
@@ -48,8 +54,16 @@ class Draft extends Operator_Controller
             return;
         }
 
-        if ($this->draft->insert($input)) {
-            $this->session->set_flashdata('success', 'Data saved');
+        $draft_id = $this->draft->insert($input);
+
+        if ($draft_id > 0) {
+            foreach ($input->author_id as $key => $value) {
+                    if ($this->commonlibs->insertIntoDifferentTable('draft_author', 'author', 'draft', $value, $draft_id)) {
+                    $this->session->set_flashdata('success', 'Data saved');
+                } else {
+                    $this->session->set_flashdata('error', 'Data author failed to save');
+                }
+            }
         } else {
             $this->session->set_flashdata('error', 'Data failed to save');
         }
@@ -62,13 +76,16 @@ class Draft extends Operator_Controller
       public function edit($id = null)
 	{
         $draft = $this->draft->where('draft_id', $id)->get();
+        $author = $this->commonlibs->getIdAndName('author', 'draft_author', 'draft', $draft->draft_id);
+        $draft->author = $author;
+
         if (!$draft) {
             $this->session->set_flashdata('warning', 'Draft data were not available');
             redirect('draft');
         }
 
         if (!$_POST) {
-            $input = (object) $draft;
+            $input = (object) $draft;$pages    = $this->pages;
         } else {
             $input = (object) $this->input->post(null, true);
             $input->draft_file = $draft->draft_file; // Set draft file for preview.
@@ -101,7 +118,21 @@ class Draft extends Operator_Controller
         }
 
         if ($this->draft->where('draft_id', $id)->update($input)) {
-            $this->session->set_flashdata('success', 'Data updated');
+            foreach ($input->author_id as $key => $value) {
+                if (isset($draft->author[$key])) {
+                    if ($this->commonlibs->updateIntoDifferentTable('draft_author', 'author', 'draft', $value, $id, $draft->author[$key]->author_id)) {
+                        $this->session->set_flashdata('success', 'Data updated');
+                    } else {
+                        $this->session->set_flashdata('error', 'Data failed to update');
+                    }
+                } else {
+                    if ($this->commonlibs->insertIntoDifferentTable('draft_author', 'author', 'draft', $value, $id)) {
+                        $this->session->set_flashdata('success', 'Data saved');
+                    } else {
+                        $this->session->set_flashdata('error', 'Data author failed to save');
+                    }
+                }
+            }
         } else {
             $this->session->set_flashdata('error', 'Data failed to update');
         }
@@ -121,6 +152,7 @@ class Draft extends Operator_Controller
         if ($this->draft->where('draft_id', $id)->delete()) {
             // Delete cover.
             $this->draft->deleteDraftfile($draft->draft_file);
+            $this->commonlibs->deleteDifferentTable('draft_author', 'draft', $id);
             $this->session->set_flashdata('success', 'Data deleted');
 		} else {
             $this->session->set_flashdata('error', 'Data failed to delete');
