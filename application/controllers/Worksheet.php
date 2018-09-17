@@ -98,9 +98,20 @@ class Worksheet extends Operator_Controller
         if ($this->worksheet->where('worksheet_id', $id)->update($data)) {
             $status = array('status' => 1);
             $this->worksheet->updateDraftStatus($worksheet->draft_id, $status);
-			$this->session->set_flashdata('success', 'Worksheet Approved');
+
+            $affected_rows = $this->db->affected_rows();
+
+            if ($affected_rows > 0) {
+                $action = 'Approved';
+                if ($action == '2') {
+                    $action = 'Rejected';
+                }
+                $this->session->set_flashdata('success', "Worksheet $action");
+            } else {
+                $this->session->set_flashdata('success', 'Worksheet Failed Update');
+            }
 		} else {
-            $this->session->set_flashdata('error', 'Worksheet Rejected');
+            $this->session->set_flashdata('success', 'Worksheet Failed Update');
         }
 
 		redirect('worksheet');
