@@ -8,11 +8,6 @@ class Worksheet_model extends MY_Model
     {
         $validationRules = [
             [
-                'field' => 'draft_id',
-                'label' => 'Draft ID',
-                'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_worksheet_draft'
-            ],
-            [
                 'field' => 'worksheet_num',
                 'label' => 'Worksheet Number',
                 'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_worksheet_num'
@@ -31,7 +26,6 @@ class Worksheet_model extends MY_Model
     public function getDefaultValues()
     {
         return [
-            'draft_id'           => '',
             'worksheet_num'           => '',
             'is_reprint'              => 'n'
         ];

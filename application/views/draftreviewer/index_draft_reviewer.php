@@ -39,7 +39,7 @@
 <!-- Table -->
 <div class="row">
     <div class="col-10">
-        <?php if ($draft_reviewers):?>
+        <?php if ($drafts):?>
             <table class="awn-table">
                 <thead>
                     <tr>
@@ -47,24 +47,32 @@
                         <th scope="col">Draft Title</th>
                         <th scope="col">Reviewer NIP</th>
                         <th scope="col">Reviewer Name</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($draft_reviewers as $draft_reviewer): ?>
+                    <?php foreach($drafts as $draft):
+                            $reviewers_nip = "";
+                            $reviewers_name = "";
+                            if (!empty($draft->draft_reviewers)) {
+                                foreach ($draft->draft_reviewers as $key => $value) {
+                                    $reviewers_nip .= $value->reviewer_nip . ', ';
+                                    $reviewers_name .= $value->reviewer_name . ', ';
+                                }
+
+                                $reviewers_nip = substr($reviewers_nip, 0, -2);
+                                $reviewers_name = substr($reviewers_name, 0, -2);
+                            } else {
+                                $reviewers_nip .= "-";
+                                $reviewers_name .= "-";
+                            }
+                    ?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
-                        <td><?= $draft_reviewer->draft_title ?></td>
-                        <td><?= $draft_reviewer->reviewer_nip ?></td>   
-                        <td><?= $draft_reviewer->reviewer_name ?></td>  
-                        <td><?= anchor("draftreviewer/edit/$draft_reviewer->draft_reviewer_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?= form_open("draftreviewer/delete/$draft_reviewer->draft_reviewer_id") ?>
-                                <?= form_hidden('draft_reviewer_id', $draft_reviewer->draft_reviewer_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
-                        </td>
+                        <td><?= $draft->draft_title ?></td>
+                        <td><?= $reviewers_nip ?></td>   
+                        <td><?= $reviewers_name ?></td>  
+                        <td><?= anchor("draftreviewer/edit/$draft->draft_id", 'Pilih Reviewer', ['class' => 'btn btn-success']) ?></td>
                     </tr>
                     <?php endforeach ?>
                 </tbody>

@@ -12,13 +12,13 @@
     <!-- draft_id -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Draft Title', 'draft_id', ['class' => 'label']) ?>
+            <?= form_label('Draft Title', 'draft_title', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_dropdown('draft_id', getDropdownList('draft', ['draft_id', 'draft_title']), $input->draft_id, 'id="draft"') ?>
+            <?= form_input('draft_title', $input->draft_title, 'disabled') ?>
         </div>
         <div class="col-4">
-            <?= form_error('draft_id') ?>
+            <?= form_error('draft_title') ?>
         </div>
     </div>
 

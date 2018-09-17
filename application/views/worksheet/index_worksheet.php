@@ -47,23 +47,50 @@
                         <th scope="col">Draft Title</th>
                         <th scope="col">Worksheet Number</th>
                         <th scope="col">Reprint Status</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($worksheets as $worksheet): ?>
+                    <?php foreach($worksheets as $worksheet):?>
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
                         <td><?= $worksheet->draft_title ?></td>
                         <td><?= $worksheet->worksheet_num ?></td>
                         <td><?= $worksheet->is_reprint == 'y' ? 'Reprint' : 'Not Reprint' ?></td>
+                        <td><?=
+                            $status = "";
+                            if ($worksheet->status > 0) {
+                                if ($worksheet->status == 1) {
+                                    $status = "Approved";
+                                } else {
+                                    $status = "Rejected";
+                                }
+                            } else {
+                                $status = "Waiting";
+                            }
+                            echo $status;
+                            ?>        
+                        </td>
                         <td><?= anchor("worksheet/edit/$worksheet->worksheet_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("worksheet/delete/$worksheet->worksheet_id") ?>
-                                <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
+                            <?php if ($worksheet->status > 0) {
+                                echo "";
+                            } else {
+                                ?>
+                                <?= form_open("worksheet/action/$worksheet->worksheet_id/1") ?>
+                                    <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
+                                    <?= form_button(['type' => 'submit', 'content' => 'Setujui', 'class' => 'btn-success']) ?>
+                                <?= form_close() ?>
+
+                                <?= form_open("worksheet/action/$worksheet->worksheet_id/2") ?>
+                                    <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
+                                    <?= form_button(['type' => 'submit', 'content' => 'Tolak', 'class' => 'btn-danger']) ?>
+                                <?= form_close() ?>
+                            <?php
+                            }
+                            ?>
                         </td>
                     </tr>
                     <?php endforeach ?>
@@ -81,11 +108,6 @@
 </div>
 
 <div class="row">
-    <!-- Button add -->
-    <div class="col-2">
-        <?= anchor("worksheet/add", 'Add', ['class' => 'btn btn-primary']) ?>
-    </div>
-    
 
     <!-- Pagination -->
     <div class="col-2">

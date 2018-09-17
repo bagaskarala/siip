@@ -23,7 +23,7 @@ class Draft_model extends MY_Model
                 'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_draft_title'
             ],
             [
-                'field' => 'author_id',
+                'field' => 'author_id[]',
                 'label' => 'Author ID',
                 'rules' => 'trim|'
             ],

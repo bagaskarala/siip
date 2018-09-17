@@ -49,13 +49,25 @@
         <!-- author_id -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Author Name', 'author_name', ['class' => 'label']) ?>
+            <?= form_label('Author Name', 'author_id[]', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_dropdown('author_id[]', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author"') ?>
+            <?= form_dropdown('author_id[]', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author_id[]"') ?>
         </div>
         <div class="col-4">
-            <?= form_error('author_id') ?>
+            <?= form_error('author_id[]') ?>
+        </div>
+    </div>
+    <!-- author_id -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Name', 'author_id[]', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_dropdown('author_id[]', getDropdownList('author', ['author_id', 'author_name']), $input->author_id, 'id="author_id[]"') ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_id[]') ?>
         </div>
     </div>
         

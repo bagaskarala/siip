@@ -60,6 +60,7 @@ $route['reviewer/(:num)'] = 'reviewer/index/$1';
 $route['author/(:num)'] = 'author/index/$1';
 $route['draft/(:num)'] = 'draft/index/$1';
 $route['worksheet/(:num)'] = 'worksheet/index/$1';
+$route['worksheet/action/(:num)/(:num)'] = 'worksheet/action/$1/$2';
 $route['category/(:num)'] = 'category/index/$1';
 $route['responsibility/(:num)'] = 'responsibility/index/$1';
 $route['user/(:num)'] = 'user/index/$1';

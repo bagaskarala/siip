@@ -7,36 +7,61 @@
 <?php $this->load->view('_partial/flash_message') ?>
 <?= form_open($form_action, ['id' => 'form_draftreviewer', 'autocomplete' => 'off']) ?>
 
-    <?= isset($input->draft_reviewer_id) ? form_hidden('draft_reviewer_id', $input->draft_reviewer_id) : '' ?>
+    <?= isset($input->draft_id) ? form_hidden('draft_id', $input->draft_id) : '' ?>
 
 
     
         <!-- draft_id -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Draft Title', 'draft_id', ['class' => 'label']) ?>
+            <?= form_label('Draft Title', 'draft_title', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_dropdown('draft_id', getDropdownList('draft', ['draft_id', 'draft_title']), $input->draft_id, 'id="draft"') ?>
+            <?= form_input('draft_title', $input->draft_title, 'disabled') ?>
         </div>
         <div class="col-4">
-            <?= form_error('draft_id') ?>
+            <?= form_error('draft_title') ?>
         </div>
     </div>
-        
 
-<!--         reviewer_id -->
-    <div class="row form-group">
-        <div class="col-2">
-            <?= form_label('Reviewer Name', 'reviewer_id', ['class' => 'label']) ?>
-        </div>
-        <div class="col-4">
-            <?= form_dropdown('reviewer_id', getDropdownList('reviewer', ['reviewer_id', 'reviewer_name']), $input->reviewer_id, 'id="reviewer"') ?>
-        </div>
-        <div class="col-4">
-            <?= form_error('reviewer_id') ?>
-        </div>
-    </div>
+    <?= form_hidden('draft_title', $input->draft_title) ?>
+        
+        <?php
+        if (!empty($input->reviewer_id)) {
+            foreach ($input->reviewer_id as $key => $value) {
+                // var_dump($value);
+                ?>
+                    <!--         reviewer_id -->
+                <div class="row form-group">
+                    <div class="col-2">
+                        <?= form_label('Reviewer Name', 'reviewer_id[]', ['class' => 'label']) ?>
+                    </div>
+                    <div class="col-4">
+                        <?= form_dropdown('reviewer_id[]', getDropdownList('reviewer', ['reviewer_id', 'reviewer_name']), $value, 'id="reviewer_id[]"') ?>
+                    </div>
+                    <div class="col-4">
+                        <?= form_error('reviewer_id[]') ?>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            ?>
+                <!--         reviewer_id -->
+            <div class="row form-group">
+                <div class="col-2">
+                    <?= form_label('Reviewer Name', 'reviewer_id[]', ['class' => 'label']) ?>
+                </div>
+                <div class="col-4">
+                    <?= form_dropdown('reviewer_id[]', getDropdownList('reviewer', ['reviewer_id', 'reviewer_name']), 'id="reviewer_id[]"') ?>
+                </div>
+                <div class="col-4">
+                    <?= form_error('reviewer_id[]') ?>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
 
 
 <!--     search_reviewer / fake input just for search

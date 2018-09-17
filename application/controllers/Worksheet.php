@@ -50,6 +50,11 @@ class Worksheet extends Operator_Controller
         public function edit($id = null)
 	{
         $worksheet = $this->worksheet->where('worksheet_id', $id)->get();
+        $data = array('draft_id' => $worksheet->draft_id);
+        $draft_title = $this->worksheet->getWhere($data, 'draft');
+
+        $worksheet->draft_title = $draft_title->draft_title;
+
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
             redirect('worksheet');
@@ -79,18 +84,23 @@ class Worksheet extends Operator_Controller
         redirect('worksheet');
 	}
         
-        public function delete($id = null)
+        public function action($id, $action)
 	{
-	$worksheet = $this->worksheet->where('worksheet_id', $id)->get();
+    	$worksheet = $this->worksheet->where('worksheet_id', $id)->get();
+
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
             redirect('worksheet');
         }
 
-        if ($this->worksheet->where('worksheet_id', $id)->delete()) {
-			$this->session->set_flashdata('success', 'Data deleted');
+        $data = array('status' => $action);
+
+        if ($this->worksheet->where('worksheet_id', $id)->update($data)) {
+            $status = array('status' => 1);
+            $this->worksheet->updateDraftStatus($worksheet->draft_id, $status);
+			$this->session->set_flashdata('success', 'Worksheet Approved');
 		} else {
-            $this->session->set_flashdata('error', 'Data failed to delete');
+            $this->session->set_flashdata('error', 'Worksheet Rejected');
         }
 
 		redirect('worksheet');

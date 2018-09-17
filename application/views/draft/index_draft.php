@@ -49,7 +49,7 @@
                         <th scope="col">Draft Title</th>
                         <th scope="col">Author Name</th>
                         <th scope="col">Draft File</th>
-                        <th scope="col">Proposed Fund</th>
+                        <!-- <th scope="col">Proposed Fund</th>
                         <th scope="col">Approved Fund</th>
                         <th scope="col">Entry Date</th>
                         <th scope="col">Finish Date</th>
@@ -86,7 +86,8 @@
                         <th scope="col">Proofread Upload Date</th>
                         <th scope="col">Proofread End Deadline</th>
                         <th scope="col">Proofread Revise Status</th>
-                        <th scope="col">Proofread Revise Notes</th>
+                        <th scope="col">Proofread Revise Notes</th> -->
+                        <th scope="col">Status</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -108,7 +109,7 @@
                         <td><?= $authors ?></td>
                         <td><?= $draft->draft_file ?></td>
                         <!--<td><a href="<?php echo base_url(); ?>/draft/download/<?php $fieldname; ?>">Download</a></td>-->
-                        <td><?= $draft->proposed_fund ?></td>
+                        <!-- <td><?= $draft->proposed_fund ?></td>
                         <td><?= $draft->approved_fund ?></td>
                         <td><?= $draft->entry_date ?></td>
                         <td><?= $draft->finish_date ?></td>
@@ -145,7 +146,8 @@
                         <td><?= $draft->proofread_upload_date ?></td>
                         <td><?= $draft->proofread_end_deadline ?></td>
                         <td><?= $draft->proofread_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->proofread_revise_notes ?></td>
+                        <td><?= $draft->proofread_revise_notes ?></td> -->
+                        <td><?= $draft->status ?></td>
                         <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
                             <?= form_open("draft/delete/$draft->draft_id") ?>
