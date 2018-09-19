@@ -16,6 +16,8 @@
         </div>
     </div>
 
+    <!-- Superadmin -->
+    <?php if($level === 'superadmin'): ?>
     <div class="row">
         <div class="col-2">
             <h3>Directory</h3>
@@ -23,7 +25,7 @@
                 <ul>
                     <li id="menu-process"><?= anchor('draftauthor', 'Draft Author') ?></li>
                     <li id="menu-process"><?= anchor('draftreviewer', 'Draft Reviewer') ?></li>
-                    <li id="menu-draft"><?= anchor('draft', 'Draft') ?></li>
+                    <li id="menu-draft"><?= anchor('admin/draft', 'Draft') ?></li>
                     <li id="menu-author"><?= anchor('author', 'Author') ?></li>
                     <li id="menu-reviewer"><?= anchor('reviewer', 'Reviewer') ?></li>
                     <li id="menu-worksheet"><?= anchor('worksheet', 'Worksheet') ?></li>
@@ -34,7 +36,7 @@
             </div>
         </div>
     </div>
-                    <?php if ($level === 'superadmin'): ?>
+
     <div class="row">
         <div class="col-2">
             <h3>Menu Admin</h3>
@@ -46,7 +48,29 @@
             </div>
         </div>
     </div>
-                    <?php endif ?>
+    <?php endif ?>
+
+    <!-- Reviewer -->
+    <?php if($level === 'reviewer'): ?>
+    <div class="row">
+        <div class="col-2">
+            <h3>Directory</h3>
+            <div class="sidebar-box">
+                <ul>
+                    <li id="menu-process"><?= anchor('reviewerdraft', 'Reviewer Draft') ?></li>
+                    <!-- <li id="menu-process"><?= anchor('draftreviewer', 'Draft Reviewer') ?></li> -->
+                    <!-- <li id="menu-draft"><?= anchor('draft', 'Draft') ?></li> -->
+                    <!-- <li id="menu-author"><?= anchor('author', 'Author') ?></li> -->
+                    <!-- <li id="menu-reviewer"><?= anchor('reviewer', 'Reviewer') ?></li> -->
+                    <!-- <li id="menu-worksheet"><?= anchor('worksheet', 'Worksheet') ?></li> -->
+                    <!-- <li id="menu-theme"><?= anchor('theme', 'Theme') ?></li> -->
+                    <!-- <li id="menu-category"><?= anchor('category', 'Category') ?></li> -->
+                    <!-- <li id="menu-book"><?= anchor('book', 'Book') ?></li>                     -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <?php endif ?>
 <?php else: ?>
     <div class="row">
         <div class="col-2">
