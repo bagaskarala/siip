@@ -93,10 +93,10 @@ class Worksheet extends Operator_Controller
             redirect('worksheet');
         }
 
-        $data = array('status' => $action);
+        $data = array('worksheet_status' => $action);
 
         if ($this->worksheet->where('worksheet_id', $id)->update($data)) {
-            $status = array('status' => 1);
+            $status = array('draft_status' => 2);
             $this->worksheet->updateDraftStatus($worksheet->draft_id, $status);
 
             $affected_rows = $this->db->affected_rows();
@@ -108,10 +108,10 @@ class Worksheet extends Operator_Controller
                 }
                 $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
-                $this->session->set_flashdata('success', 'Worksheet Failed Update');
+                $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
             }
 		} else {
-            $this->session->set_flashdata('success', 'Worksheet Failed Update');
+            $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
         }
 
 		redirect('worksheet');

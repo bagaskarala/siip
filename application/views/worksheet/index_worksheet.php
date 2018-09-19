@@ -48,6 +48,7 @@
                         <th scope="col">Worksheet Number</th>
                         <th scope="col">Reprint Status</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Notes</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -61,8 +62,8 @@
                         <td><?= $worksheet->is_reprint == 'y' ? 'Reprint' : 'Not Reprint' ?></td>
                         <td><?=
                             $status = "";
-                            if ($worksheet->status > 0) {
-                                if ($worksheet->status == 1) {
+                            if ($worksheet->worksheet_status > 0) {
+                                if ($worksheet->worksheet_status == 1) {
                                     $status = "Approved";
                                 } else {
                                     $status = "Rejected";
@@ -73,20 +74,21 @@
                             echo $status;
                             ?>        
                         </td>
+                        <td><?= $worksheet->worksheet_notes ?></td>
                         <td><?= anchor("worksheet/edit/$worksheet->worksheet_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?php if ($worksheet->status > 0) {
+                            <?php if ($worksheet->worksheet_status > 0) {
                                 echo "";
                             } else {
                                 ?>
                                 <?= form_open("worksheet/action/$worksheet->worksheet_id/1") ?>
                                     <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
-                                    <?= form_button(['type' => 'submit', 'content' => 'Setujui', 'class' => 'btn-success']) ?>
+                                    <?= form_button(['type' => 'submit', 'content' => 'Approve', 'class' => 'btn-success']) ?>
                                 <?= form_close() ?>
 
                                 <?= form_open("worksheet/action/$worksheet->worksheet_id/2") ?>
                                     <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
-                                    <?= form_button(['type' => 'submit', 'content' => 'Tolak', 'class' => 'btn-danger']) ?>
+                                    <?= form_button(['type' => 'submit', 'content' => 'Reject                                                                                                                                                                                                                                                                                                                                                                   ', 'class' => 'btn-danger']) ?>
                                 <?= form_close() ?>
                             <?php
                             }

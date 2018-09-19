@@ -16,7 +16,7 @@ class Draft extends Operator_Controller
         foreach ($drafts as $key => $value) {
             $authors = $this->draft->getIdAndName('author', 'draft_author', $value->draft_id);
             $value->author = $authors;
-            $value->status = $this->checkStatus($value->status);
+            $value->draft_status = $this->checkStatus($value->draft_status);
         }
 
         $total     = count($tot);
@@ -272,55 +272,58 @@ class Draft extends Operator_Controller
         $status = "";
         switch ($code) {
             case 0:
-                $status = 'Waiting for Worksheet';
+                $status = 'Waiting for Worksheet/Desk Screening';
                 break;
             case 1:
-                $status = 'Choosing Reviewer';
+                $status = 'Worksheet Rejected';
                 break;
             case 2:
-                $status = 'Reviewer Rejected';
+                $status = 'Choosing Reviewer';
                 break;
             case 3:
-                $status = 'Process Review';
+                $status = 'Reviewer Rejected';
                 break;
             case 4:
-                $status = 'Review Done';
+                $status = 'Process Review';
                 break;
             case 5:
-                $status = 'Choosing Editor';
+                $status = 'Review Done';
                 break;
             case 6:
-                $status = 'Process Editor';
+                $status = 'Choosing Editor';
                 break;
             case 7:
-                $status = 'Review Done';
+                $status = 'Process Editor';
                 break;
             case 8:
-                $status = 'Choosing Layouter';
+                $status = 'Edit Done';
                 break;
             case 9:
-                $status = 'Process Layouter';
-                break;
-            case 10:
-                $status = 'Review Done';
-                break;
-            case 11:
-                $status = 'Choosing Proofread';
-                break;
-            case 12:
-                $status = 'Process Proofread';
-                break;
-            case 13:
-                $status = 'Review Done';
-                break;
-            case 14:
                 $status = 'Choosing Layouter';
                 break;
-            case 15:
+            case 10:
                 $status = 'Process Layouter';
                 break;
+            case 11:
+                $status = 'Layout Done';
+                break;
+            case 12:
+                $status = 'Choosing Proofread';
+                break;
+            case 13:
+                $status = 'Process Proofread';
+                break;
+            case 14:
+                $status = 'Proofread Done';
+                break;
+            case 15:
+                $status = 'Choosing Layouter';
+                break;
             case 16:
-                $status = 'Review Done';
+                $status = 'Process Layouter';
+                break;
+            case 17:
+                $status = 'Layout Done';
                 break;
             
             default:

@@ -57,7 +57,18 @@
         </div>
     </div>
 
-
+        <!-- worksheet_notes -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Desk Screening Notes', 'worksheet_notes', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_textarea('worksheet_notes', $input->worksheet_notes, ['class' => 'form-input']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('worksheet_notes') ?>
+        </div>
+    </div>      
 
 
 
