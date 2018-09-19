@@ -102,11 +102,11 @@ class Worksheet extends Operator_Controller
             $affected_rows = $this->db->affected_rows();
 
             if ($affected_rows > 0) {
-                $action = 'Approved';
+                $actionMessage = 'Approved';
                 if ($action == '2') {
-                    $action = 'Rejected';
+                    $actionMessage = 'Rejected';
                 }
-                $this->session->set_flashdata('success', "Worksheet $action");
+                $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
                 $this->session->set_flashdata('success', 'Worksheet Failed Update');
             }

@@ -20,12 +20,12 @@ class Draft_model extends MY_Model
             [
                 'field' => 'draft_title',
                 'label' => 'Draft Title',
-                'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_draft_title'
+                'rules' => 'trim|required|min_length[1]|max_length[256]|callback_unique_draft_title|callback_unique_draft_title_author'
             ],
             [
                 'field' => 'author_id[]',
                 'label' => 'Author ID',
-                'rules' => 'trim|'
+                'rules' => 'trim|required|callback_unique_draft_title_author'
             ],
             [
                 'field' => 'proposed_fund',
