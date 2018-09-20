@@ -14,8 +14,8 @@ class Responsibility extends Admin_Controller
         $tot        = $this->responsibility->join('draft')->join('user')->orderBy('draft.draft_id')->orderBy('user.user_id')->orderBy('responsibility_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'responsibility/index_responsibility';
-        $pagination = $this->responsibility->makePagination(site_url('responsibility'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->responsibility->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'responsibilities', 'pagination', 'total'));
 	}
@@ -23,6 +23,8 @@ class Responsibility extends Admin_Controller
         
         public function add()
 	{
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->responsibility->getDefaultValues();
         } else {
@@ -31,8 +33,8 @@ class Responsibility extends Admin_Controller
 
         if (!$this->responsibility->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'responsibility/form_responsibility';
-            $form_action = 'responsibility/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -44,15 +46,17 @@ class Responsibility extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('responsibility');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $responsibility = $this->responsibility->where('responsibility_id', $id)->get();
         if (!$responsibility) {
             $this->session->set_flashdata('warning', 'Responsibility data were not available');
-            redirect('responsibility');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -63,8 +67,8 @@ class Responsibility extends Admin_Controller
 
         if (!$this->responsibility->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'responsibility/form_responsibility';
-            $form_action = "responsibility/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -76,7 +80,7 @@ class Responsibility extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('responsibility');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function delete($id = null)
@@ -84,7 +88,7 @@ class Responsibility extends Admin_Controller
 	$responsibility = $this->responsibility->where('responsibility_id', $id)->get();
         if (!$responsibility) {
             $this->session->set_flashdata('warning', 'Responsibility data were not available');
-            redirect('responsibility');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->responsibility->where('responsibility_id', $id)->delete()) {
@@ -93,7 +97,7 @@ class Responsibility extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('responsibility');
+		redirect($this->role . '/' . $this->pages);
 	}
         
         public function search($page = null)
@@ -118,15 +122,15 @@ class Responsibility extends Admin_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->responsibility->makePagination(site_url('responsibility/search/'), 3, $total);
+        $pagination = $this->responsibility->makePagination(site_url('superadmin/responsibility/search/'), 3, $total);
 
         if (!$responsibilities) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('responsibility');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'responsibility/index_responsibility';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'responsibilities', 'pagination', 'total'));
     }
         

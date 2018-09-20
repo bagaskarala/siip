@@ -14,8 +14,8 @@ class Draft_author extends Operator_Controller
         $tot        = $this->draft_author->join('draft')->join('author')->orderBy('draft.draft_id')->orderBy('author.author_id')->orderBy('draft_author_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'draftauthor/index_draft_author';
-        $pagination = $this->draft_author->makePagination(site_url('draftauthor'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->draft_author->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'draft_authors', 'pagination', 'total'));
 	}
@@ -23,6 +23,8 @@ class Draft_author extends Operator_Controller
         
         public function add()
 	{
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->draft_author->getDefaultValues();
         } else {
@@ -31,8 +33,8 @@ class Draft_author extends Operator_Controller
 
         if (!$this->draft_author->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'draftauthor/form_draft_author';
-            $form_action = 'draftauthor/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -44,15 +46,17 @@ class Draft_author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('draftauthor');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $draft_author = $this->draft_author->where('draft_author_id', $id)->get();
         if (!$draft_author) {
             $this->session->set_flashdata('warning', 'Draft Author data were not available');
-            redirect('draftauthor');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -63,8 +67,8 @@ class Draft_author extends Operator_Controller
 
         if (!$this->draft_author->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'draftauthor/form_draft_author';
-            $form_action = "draftauthor/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -76,7 +80,7 @@ class Draft_author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('draftauthor');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function delete($id = null)
@@ -84,7 +88,7 @@ class Draft_author extends Operator_Controller
 	$draft_author = $this->draft_author->where('draft_author_id', $id)->get();
         if (!$draft_author) {
             $this->session->set_flashdata('warning', 'Draft Author data were not available');
-            redirect('draftauthor');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->draft_author->where('draft_author_id', $id)->delete()) {
@@ -93,7 +97,7 @@ class Draft_author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('draftauthor');
+		redirect($this->role . '/' . $this->pages);
 	}
         
         public function search($page = null)
@@ -124,15 +128,15 @@ class Draft_author extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->draft_author->makePagination(site_url('draft_author/search/'), 3, $total);
+        $pagination = $this->draft_author->makePagination(site_url('admin/draft_author/search/'), 3, $total);
 
         if (!$draft_authors) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('draftauthor');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'draftauthor/index_draft_author';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'draft_authors', 'pagination', 'total'));
     }
         

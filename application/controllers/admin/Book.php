@@ -14,8 +14,8 @@ class Book extends Operator_Controller
         $tot        = $this->book->join('draft')->orderBy('draft.draft_id')->orderBy('book_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'book/index_book';
-        $pagination = $this->book->makePagination(site_url('book'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->book->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'books', 'pagination', 'total'));
 	}
@@ -23,6 +23,9 @@ class Book extends Operator_Controller
 // -- add --        
         public function add()
 	{
+            
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->book->getDefaultValues();
         } else {
@@ -54,8 +57,8 @@ class Book extends Operator_Controller
         
         if (!$this->book->validate() || $this->form_validation->error_array()) {
             $pages     = $this->pages;
-            $main_view   = 'book/form_book';
-            $form_action = 'book/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -67,17 +70,20 @@ class Book extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('book');
+        redirect($this->role . '/' . $this->pages);
 	}
  
         
 // -- edit --         
         public function edit($id = null)
 	{
+            
+            $act = 'edit';
+            
         $book = $this->book->where('book_id', $id)->get();
         if (!$book) {
             $this->session->set_flashdata('warning', 'Book data were not available');
-            redirect('book');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -124,8 +130,8 @@ class Book extends Operator_Controller
         // If something wrong
         if (!$this->book->validate() || $this->form_validation->error_array()) {
             $pages    = $this->pages;
-            $main_view   = 'book/form_book';
-            $form_action = "book/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -137,7 +143,7 @@ class Book extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('book');
+        redirect($this->role . '/' . $this->pages);
 	}
 
 // -- delete --         
@@ -146,7 +152,7 @@ class Book extends Operator_Controller
 	$book = $this->book->where('book_id', $id)->get();
         if (!$book) {
             $this->session->set_flashdata('warning', 'Book data were not available');
-            redirect('book');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->book->where('book_id', $id)->delete()) {
@@ -159,7 +165,7 @@ class Book extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('book');
+		redirect($this->role . '/' . $this->pages);
 	}
  
 // -- search --        
@@ -191,15 +197,15 @@ class Book extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->book->makePagination(site_url('book/search/'), 3, $total);
+        $pagination = $this->book->makePagination(site_url('admin/book/search/'), 3, $total);
 
         if (!$books) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('book');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'book/index_book';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'books', 'pagination', 'total'));
     }
         

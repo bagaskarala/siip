@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -72,7 +72,7 @@
                         <td><?= $draft->draft_title ?></td>
                         <td><?= $reviewers_nip ?></td>   
                         <td><?= $reviewers_name ?></td>  
-                        <td><?= anchor("draftreviewer/edit/$draft->draft_id", 'Pilih Reviewer', ['class' => 'btn btn-success']) ?></td>
+                        <td><?= anchor("admin/draftreviewer/edit/$draft->draft_id", 'Pilih Reviewer', ['class' => 'btn btn-success']) ?></td>
                     </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -91,7 +91,7 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("draftreviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/draftreviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
 

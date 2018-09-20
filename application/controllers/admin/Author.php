@@ -14,8 +14,8 @@ class Author extends Operator_Controller
         $tot        = $this->author->join('work_unit')->join('institute')->join('bank')->join('user')->orderBy('work_unit.work_unit_id')->orderBy('institute.institute_id')->orderBy('author_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'author/index_author';
-        $pagination = $this->author->makePagination(site_url('author'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->author->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'authors', 'pagination', 'total'));
 	}
@@ -23,16 +23,29 @@ class Author extends Operator_Controller
         
         public function add()
 	{
+            
+        $act = 'add';
+        
         if (!$_POST) {
             $input = (object) $this->author->getDefaultValues();
         } else {
             $input = (object) $this->input->post(null, true);
         }
+        
+        if (!empty($_FILES) && $_FILES['author_ktp']['size'] > 0) {
+            $getextension=explode(".",$_FILES['author_ktp']['name']);            
+            $authorKTP  = str_replace(" ","_",$input->author_name . '_' . date('YmdHis').".".$getextension[1]) ; // author ktp name
+            $upload = $this->author->uploadAuthorKTP('author_ktp', $authorKTP);
 
-        if (!$this->author->validate()) {
+            if ($upload) {
+                $input->author_ktp =  "$authorKTP"; // Data for column "author".
+            }
+        }
+
+        if (!$this->author->validate() || $this->form_validation->error_array()) {
             $pages     = $this->pages;
-            $main_view   = 'author/form_author';
-            $form_action = 'author/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -44,15 +57,18 @@ class Author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('author');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function edit($id = null)
 	{
+            
+            $act = 'edit';
+            
         $author = $this->author->where('author_id', $id)->get();
         if (!$author) {
             $this->session->set_flashdata('warning', 'Author data were not available');
-            redirect('author');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -61,10 +77,25 @@ class Author extends Operator_Controller
             $input = (object) $this->input->post(null, true);
         }
 
-        if (!$this->author->validate()) {
+        if (!empty($_FILES) && $_FILES['author_ktp']['size'] > 0) {
+            // Upload new draft (if any)
+            $getextension=explode(".",$_FILES['author_ktp']['name']);            
+            $authorKTP  = str_replace(" ","_",$input->author_name . '_' . date('YmdHis').".".$getextension[1]); // author ktp name
+            $upload = $this->author->uploadAuthorKTP('author_ktp', $authorKTP);
+
+            if ($upload) {
+                $input->author_ktp =  "$authorKTP";
+                // Delete old KTP file
+                if ($author->author_ktp) {
+                    $this->author->deleteAuthorKTP($author->author_ktp);
+                }
+            }
+        }
+        
+        if (!$this->author->validate() || $this->form_validation->error_array()) {
             $pages    = $this->pages;
-            $main_view   = 'author/form_author';
-            $form_action = "author/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -76,7 +107,7 @@ class Author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('author');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function delete($id = null)
@@ -84,16 +115,18 @@ class Author extends Operator_Controller
 	$author = $this->author->where('author_id', $id)->get();
         if (!$author) {
             $this->session->set_flashdata('warning', 'Author data were not available');
-            redirect('author');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->author->where('author_id', $id)->delete()) {
-			$this->session->set_flashdata('success', 'Data deleted');
+            //deletektp
+            $this->judul->deleteKTP($author->author_ktp);
+            $this->session->set_flashdata('success', 'Data deleted');
 		} else {
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('author');
+		redirect($this->role . '/' . $this->pages);
 	}
         
         public function search($page = null)
@@ -126,15 +159,15 @@ class Author extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->author->makePagination(site_url('author/search/'), 3, $total);
+        $pagination = $this->author->makePagination(site_url('admin/author/search/'), 3, $total);
 
         if (!$authors) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('author');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'author/index_author';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'authors', 'pagination', 'total'));
     }
         

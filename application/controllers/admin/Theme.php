@@ -14,13 +14,15 @@ class Theme extends Operator_Controller
         $themes     = $this->theme->orderBy('theme_id')->getAll();
         $total    = count($themes);
         $pages    = $this->pages;
-        $main_view  = 'theme/index_theme';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
 		$this->load->view('template', compact('pages', 'main_view', 'themes', 'total'));
 	}
         
 //--add--
         public function add()
-	{                     
+	{        
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->theme->getDefaultValues();
         } else {
@@ -29,8 +31,8 @@ class Theme extends Operator_Controller
 
         if (!$this->theme->validate()) {
             $pages   = $this->pages;
-            $main_view   = 'theme/form_theme';
-            $form_action = 'theme/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -42,16 +44,18 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('theme');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $theme = $this->theme->where('theme_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Theme data were not available');
-            redirect('theme');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -62,8 +66,8 @@ class Theme extends Operator_Controller
 
         if (!$this->theme->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'theme/form_theme';
-            $form_action = "theme/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -75,7 +79,7 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('theme');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--delete--        
@@ -84,7 +88,7 @@ class Theme extends Operator_Controller
 		$theme = $this->theme->where('theme_id', $id)->get();
         if (!$theme) {
             $this->session->set_flashdata('warning', 'Theme data were not available');
-            redirect('theme');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->theme->where('theme_id', $id)->delete()) {
@@ -93,7 +97,7 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect('theme');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 

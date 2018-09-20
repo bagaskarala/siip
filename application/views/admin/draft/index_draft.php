@@ -147,10 +147,10 @@
                         <td><?= $draft->proofread_end_deadline ?></td>
                         <td><?= $draft->proofread_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
                         <td><?= $draft->proofread_revise_notes ?></td> -->
-                        <td><?= $draft->status ?></td>
-                        <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= $draft->draft_status ?></td>
+                        <td><?= anchor("admin/draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("draft/delete/$draft->draft_id") ?>
+                            <?= form_open("admin/draft/delete/$draft->draft_id") ?>
                                 <?= form_hidden('draft_id', $draft->draft_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -173,7 +173,7 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("draft/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/draft/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
   
     <!-- Pagination -->

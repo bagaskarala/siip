@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -60,9 +60,9 @@
                         <td><?= $reviewer->reviewer_nip ?></td>
                         <td><?= $reviewer->reviewer_name ?></td>
                         <td><?= $reviewer->faculty_name  ?></td>
-                        <td><?= anchor("reviewer/edit/$reviewer->reviewer_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/reviewer/edit/$reviewer->reviewer_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("reviewer/delete/$reviewer->reviewer_id") ?>
+                            <?= form_open("admin/reviewer/delete/$reviewer->reviewer_id") ?>
                                 <?= form_hidden('reviewer_id', $reviewer->reviewer_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -85,12 +85,12 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("reviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/reviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
         <!-- Button faculty -->
     <div class="col-2">
-        <?= anchor("faculty", 'See Faculty List', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/faculty", 'See Faculty List', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <!-- Pagination -->

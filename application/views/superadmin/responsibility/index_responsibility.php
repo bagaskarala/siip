@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -56,9 +56,9 @@
                         <td><?= ++$i ?></td>
                         <td><?= $responsibility->username ?></td>
                         <td><?= $responsibility->draft_title ?></td>                  
-                        <td><?= anchor("responsibility/edit/$responsibility->responsibility_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("superadmin/responsibility/edit/$responsibility->responsibility_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("responsibility/delete/$responsibility->responsibility_id") ?>
+                            <?= form_open("superadmin/responsibility/delete/$responsibility->responsibility_id") ?>
                                 <?= form_hidden('responsibility_id', $responsibility->responsibility_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -81,7 +81,7 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("responsibility/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("superadmin/responsibility/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
 

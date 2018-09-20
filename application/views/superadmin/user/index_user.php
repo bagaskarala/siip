@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -61,9 +61,9 @@
                         <td><?= $user->username ?></td>
                         <td><?= $user->level ?></td>
                         <td><?= $user->is_blocked == 'n' ? 'Not Blocked' : 'Blocked' ?></td>
-                        <td><?= anchor("user/edit/$user->user_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("superadmin/user/edit/$user->user_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("user/delete/$user->user_id") ?>
+                            <?= form_open("superadmin/user/delete/$user->user_id") ?>
                                 <?= form_hidden('user_id', $user->user_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -86,6 +86,6 @@
 <div class="row">
     <!-- Button create -->
     <div class="col-10">
-        <?= anchor("user/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("superadmin/user/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

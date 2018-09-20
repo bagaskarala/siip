@@ -28,9 +28,9 @@
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
                         <td><?= $work_unit->work_unit_name ?></td>
-                        <td><?= anchor("workunit/edit/$work_unit->work_unit_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/workunit/edit/$work_unit->work_unit_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("workunit/delete/$work_unit->work_unit_id") ?>
+                            <?= form_open("admin/workunit/delete/$work_unit->work_unit_id") ?>
                                 <?= form_hidden('work_unit_id', $work_unit->work_unit_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -53,11 +53,11 @@
 <div class="row">
     <!-- Button create -->
     <div class="col-10">
-        <?= anchor("workunit/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/workunit/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
     <!-- Button back to author -->
     <div class="col-10">
-        <?= anchor("author", 'Back to Author', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/author", 'Back to Author', ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

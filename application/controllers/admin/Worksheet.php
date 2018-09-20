@@ -14,8 +14,8 @@ class Worksheet extends Operator_Controller
         $tot        = $this->worksheet->join('draft')->orderBy('draft.draft_id')->orderBy('worksheet_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'worksheet/index_worksheet';
-        $pagination = $this->worksheet->makePagination(site_url('worksheet'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->worksheet->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'worksheets', 'pagination', 'total'));
 	}
@@ -23,6 +23,8 @@ class Worksheet extends Operator_Controller
         
         public function add()
 	{
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->worksheet->getDefaultValues();
         } else {
@@ -31,8 +33,8 @@ class Worksheet extends Operator_Controller
 
         if (!$this->worksheet->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'worksheet/form_worksheet';
-            $form_action = 'worksheet/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -44,11 +46,13 @@ class Worksheet extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('worksheet');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $worksheet = $this->worksheet->where('worksheet_id', $id)->get();
         $data = array('draft_id' => $worksheet->draft_id);
         $draft_title = $this->worksheet->getWhere($data, 'draft');
@@ -57,7 +61,7 @@ class Worksheet extends Operator_Controller
 
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
-            redirect('worksheet');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -68,8 +72,8 @@ class Worksheet extends Operator_Controller
 
         if (!$this->worksheet->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'worksheet/form_worksheet';
-            $form_action = "worksheet/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -81,7 +85,7 @@ class Worksheet extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('worksheet');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function action($id, $action)
@@ -90,13 +94,13 @@ class Worksheet extends Operator_Controller
 
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
-            redirect('worksheet');
+            redirect($this->role . '/' . $this->pages);
         }
 
-        $data = array('status' => $action);
+        $data = array('worksheet_status' => $action);
 
         if ($this->worksheet->where('worksheet_id', $id)->update($data)) {
-            $status = array('status' => 1);
+            $status = array('draft_status' => 1);
             $this->worksheet->updateDraftStatus($worksheet->draft_id, $status);
 
             $affected_rows = $this->db->affected_rows();
@@ -108,13 +112,13 @@ class Worksheet extends Operator_Controller
                 }
                 $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
-                $this->session->set_flashdata('success', 'Worksheet Failed Update');
+                $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
             }
 		} else {
-            $this->session->set_flashdata('success', 'Worksheet Failed Update');
+            $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
         }
 
-		redirect('worksheet');
+		redirect($this->role . '/' . $this->pages);
 	}
         
         public function search($page = null)
@@ -137,15 +141,15 @@ class Worksheet extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->worksheet->makePagination(site_url('worksheet/search/'), 3, $total);
+        $pagination = $this->worksheet->makePagination(site_url('admin/worksheet/search/'), 3, $total);
 
         if (!$worksheets) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('worksheet');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'worksheet/index_worksheet';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'worksheets', 'pagination', 'total'));
     }
         

@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -58,9 +58,9 @@
                         <td><?= $draft_author->draft_title ?></td>
                         <td><?= $draft_author->author_nip ?></td>   
                         <td><?= $draft_author->author_name ?></td>  
-                        <td><?= anchor("draftauthor/edit/$draft_author->draft_author_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/draftauthor/edit/$draft_author->draft_author_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("draftauthor/delete/$draft_author->draft_author_id") ?>
+                            <?= form_open("admin/draftauthor/delete/$draft_author->draft_author_id") ?>
                                 <?= form_hidden('draft_author_id', $draft_author->draft_author_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -83,7 +83,7 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("draftauthor/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/draftauthor/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
 

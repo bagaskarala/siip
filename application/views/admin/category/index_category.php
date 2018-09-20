@@ -38,9 +38,9 @@
                         <td><?= $category->date_open ?></td>
                         <td><?= $category->date_close ?></td>
                         <td><?= $category->category_status == 'y' ? 'Active' : 'Not Active' ?></td>                      
-                        <td><?= anchor("category/edit/$category->category_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/category/edit/$category->category_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("category/delete/$category->category_id") ?>
+                            <?= form_open("admin/category/delete/$category->category_id") ?>
                                 <?= form_hidden('category_id', $category->category_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -63,6 +63,6 @@
 <div class="row">
     <!-- Button create -->
     <div class="col-10">
-        <?= anchor("category/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/category/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

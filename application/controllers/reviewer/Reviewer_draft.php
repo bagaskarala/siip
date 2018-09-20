@@ -14,8 +14,8 @@ class Reviewer_draft extends Reviewer_Controller
         $tot        = $this->reviewer->join('faculty')->join('user')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'reviewer/index_reviewer';
-        $pagination = $this->reviewer->makePagination(site_url('reviewer'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->reviewer_draft->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'reviewers', 'pagination', 'total'));
 	}
@@ -23,6 +23,8 @@ class Reviewer_draft extends Reviewer_Controller
         
         public function add()
 	{
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->reviewer->getDefaultValues();
         } else {
@@ -31,8 +33,8 @@ class Reviewer_draft extends Reviewer_Controller
 
         if (!$this->reviewer->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'reviewer/form_reviewer';
-            $form_action = 'reviewer/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -44,15 +46,17 @@ class Reviewer_draft extends Reviewer_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('reviewer');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $reviewer = $this->reviewer->where('reviewer_id', $id)->get();
         if (!$reviewer) {
             $this->session->set_flashdata('warning', 'Reviewer data were not available');
-            redirect('reviewer');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -63,8 +67,8 @@ class Reviewer_draft extends Reviewer_Controller
 
         if (!$this->reviewer->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'reviewer/form_reviewer';
-            $form_action = "reviewer/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -76,7 +80,7 @@ class Reviewer_draft extends Reviewer_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('reviewer');
+        redirect($this->role . '/' . $this->pages);
 	}
         
         public function delete($id = null)
@@ -84,7 +88,7 @@ class Reviewer_draft extends Reviewer_Controller
 	$reviewer = $this->reviewer->where('reviewer_id', $id)->get();
         if (!$reviewer) {
             $this->session->set_flashdata('warning', 'Reviewer data were not available');
-            redirect('reviewer');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->reviewer->where('reviewer_id', $id)->delete()) {
@@ -93,7 +97,7 @@ class Reviewer_draft extends Reviewer_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('reviewer');
+		redirect($this->role . '/' . $this->pages);
 	}
         
         public function search($page = null)
@@ -117,15 +121,15 @@ class Reviewer_draft extends Reviewer_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->reviewer->makePagination(site_url('reviewer/search/'), 3, $total);
+        $pagination = $this->reviewer->makePagination(site_url('reviewer/reviewer_draft/search/'), 3, $total);
 
         if (!$reviewers) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('reviewer');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'reviewer/index_reviewer';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'reviewers', 'pagination', 'total'));
     }
         

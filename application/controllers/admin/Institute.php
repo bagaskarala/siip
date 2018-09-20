@@ -13,13 +13,15 @@ class Institute extends Operator_Controller
         $institutes     = $this->institute->orderBy('institute_id')->getAll();
         $total    = count($institutes);
         $pages    = $this->pages;
-        $main_view  = 'institute/index_institute';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
 		$this->load->view('template', compact('pages', 'main_view', 'institutes', 'total'));
 	}
         
 //--add--
         public function add()
-	{                     
+	{             
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->institute->getDefaultValues();
         } else {
@@ -28,8 +30,8 @@ class Institute extends Operator_Controller
 
         if (!$this->institute->validate()) {
             $pages   = $this->pages;
-            $main_view   = 'institute/form_institute';
-            $form_action = 'institute/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -41,16 +43,18 @@ class Institute extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('institute');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $institute = $this->institute->where('institute_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Institute data were not available');
-            redirect('institute');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -61,8 +65,8 @@ class Institute extends Operator_Controller
 
         if (!$this->institute->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'institute/form_institute';
-            $form_action = "institute/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -74,7 +78,7 @@ class Institute extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('institute');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--delete--        
@@ -83,7 +87,7 @@ class Institute extends Operator_Controller
 		$institute = $this->institute->where('institute_id', $id)->get();
         if (!$institute) {
             $this->session->set_flashdata('warning', 'Institute data were not available');
-            redirect('institute');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->institute->where('institute_id', $id)->delete()) {
@@ -92,7 +96,7 @@ class Institute extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect('institute');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 

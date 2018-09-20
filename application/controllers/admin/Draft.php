@@ -16,13 +16,13 @@ class Draft extends Operator_Controller
         foreach ($drafts as $key => $value) {
             $authors = $this->draft->getIdAndName('author', 'draft_author', $value->draft_id);
             $value->author = $authors;
-            $value->status = $this->checkStatus($value->status);
+            $value->draft_status = $this->checkStatus($value->draft_status);
         }
 
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->role . '/draft/index_draft';
-        $pagination = $this->draft->makePagination(site_url($this->role . '/draft'), 3, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->draft->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
 	}
@@ -31,6 +31,8 @@ class Draft extends Operator_Controller
 // --add--        
         public function add()
 	{
+        $act = 'add';
+
         if (!$_POST) {
             $input = (object) $this->draft->getDefaultValues();
         } else {
@@ -49,8 +51,8 @@ class Draft extends Operator_Controller
 
         if (!$this->draft->validate() || $this->form_validation->error_array()) {
             $pages     = $this->pages;
-            $main_view   = 'draft/form_draft_add';
-            $form_action = 'draft/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
@@ -89,13 +91,15 @@ class Draft extends Operator_Controller
             $this->session->set_flashdata('error', 'Data author failed to save');
         } 
 
-        redirect('draft');
+        redirect($this->role . '/' . $this->pages);
       }
      
 // -- edit --
       
       public function edit($id = null)
 	{
+        $act = 'edit';
+
         $draft = $this->draft->where('draft_id', $id)->get();
         $authors = $this->draft->getIdAndName('author', 'draft_author', $draft->draft_id);
 
@@ -109,7 +113,7 @@ class Draft extends Operator_Controller
 
         if (!$draft) {
             $this->session->set_flashdata('warning', 'Draft data were not available');
-            redirect('draft');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -138,8 +142,8 @@ class Draft extends Operator_Controller
         // If something wrong
         if (!$this->draft->validate() || $this->form_validation->error_array()) {
             $pages    = $this->pages;
-            $main_view   = 'draft/form_draft_edit';
-            $form_action = "draft/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -188,7 +192,7 @@ class Draft extends Operator_Controller
             $this->session->set_flashdata('error', 'Data Failed to Update');
         }
 
-        redirect('draft');
+        redirect($this->role . '/' . $this->pages);
 	}
 
 // -- delete --        
@@ -197,7 +201,7 @@ class Draft extends Operator_Controller
 	$draft = $this->draft->where('draft_id', $id)->get();
         if (!$draft) {
             $this->session->set_flashdata('warning', 'Draft data were not available');
-            redirect('draft');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $isSuccess = true;
@@ -209,7 +213,7 @@ class Draft extends Operator_Controller
 
         if ($affected_rows > 0) {
             if ($this->draft->where('draft_id', $id)->delete()) {
-                // Delete cover.
+                // Delete draftfile.
                 $this->draft->deleteDraftfile($draft->draft_file);
             } else {
                 $isSuccess = false;
@@ -224,7 +228,7 @@ class Draft extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('draft');
+		redirect($this->role . '/' . $this->pages);
 	}
 
 // -- search --        
@@ -256,15 +260,15 @@ class Draft extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->draft->makePagination(site_url('draft/search/'), 3, $total);
+        $pagination = $this->draft->makePagination(site_url('admin/draft/search/'), 3, $total);
 
         if (!$drafts) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('draft');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'draft/index_draft';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
     }
 
@@ -272,7 +276,7 @@ class Draft extends Operator_Controller
         $status = "";
         switch ($code) {
             case 0:
-                $status = 'Waiting for Worksheet';
+                $status = 'Waiting for Worksheet/Desk Screening';
                 break;
             case 1:
                 $status = 'Worksheet Rejected';
@@ -284,7 +288,7 @@ class Draft extends Operator_Controller
                 $status = 'Reviewer Rejected';
                 break;
             case 4:
-                $status = 'Process Review';
+                $status = 'Review on Progress';
                 break;
             case 5:
                 $status = 'Review Done';
@@ -293,7 +297,7 @@ class Draft extends Operator_Controller
                 $status = 'Choosing Editor';
                 break;
             case 7:
-                $status = 'Process Editor';
+                $status = 'Edit on Progress';
                 break;
             case 8:
                 $status = 'Edit Done';
@@ -302,28 +306,28 @@ class Draft extends Operator_Controller
                 $status = 'Choosing Layouter';
                 break;
             case 10:
-                $status = 'Process Layouter';
+                $status = 'Layout on Progress';
                 break;
             case 11:
                 $status = 'Layout Done';
                 break;
             case 12:
-                $status = 'Choosing Proofread';
+                $status = 'Choosing Cover';
                 break;
             case 13:
-                $status = 'Process Proofread';
+                $status = 'Cover on Progress';
                 break;
             case 14:
-                $status = 'Proofread Done';
+                $status = 'Cover Done';
                 break;
             case 15:
-                $status = 'Choosing Layouter';
+                $status = 'Choosing Proofread';
                 break;
             case 16:
-                $status = 'Process Layouter';
+                $status = 'Proofread on Progress';
                 break;
             case 17:
-                $status = 'Layout Done';
+                $status = 'Proofread Done';
                 break;
             
             default:

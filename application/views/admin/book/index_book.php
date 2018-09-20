@@ -3,9 +3,9 @@
     $keywords = $this->input->get('keywords');
 
     if (isset($keywords)) {
-        $page = $this->uri->segment(3);
+        $page = $this->uri->segment(4);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(3);
     }
 
     // data table series number
@@ -80,9 +80,9 @@
                         <td><?= $book->copies_num ?></td>
                         <td><?= $book->book_notes ?></td>
                         <td><?= $book->is_reprint == 'y' ? 'Reprint' : 'Not Reprint'?></td>                                           
-                        <td><?= anchor("book/edit/$book->book_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/book/edit/$book->book_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("book/delete/$book->book_id") ?>
+                            <?= form_open("admin/book/delete/$book->book_id") ?>
                                 <?= form_hidden('book_id', $book->book_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -105,7 +105,7 @@
 <div class="row">
     <!-- Button add -->
     <div class="col-2">
-        <?= anchor("book/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/book/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
   
     <!-- Pagination -->

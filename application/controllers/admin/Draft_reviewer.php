@@ -23,8 +23,8 @@ class Draft_reviewer extends Operator_Controller
 
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = 'draftreviewer/index_draft_reviewer';
-        $pagination = $this->draft_reviewer->makePagination(site_url('draftreviewer'), 2, $total);
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
+        $pagination = $this->draft_reviewer->makePagination(site_url($this->role . '/' . $this->pages), 3, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
 	}
@@ -32,6 +32,8 @@ class Draft_reviewer extends Operator_Controller
 // -- add --        
         public function add()
 	{
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->draft_reviewer->getDefaultValues();
         } else {
@@ -40,8 +42,8 @@ class Draft_reviewer extends Operator_Controller
 
         if (!$this->draft_reviewer->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'draftreviewer/form_draft_reviewer';
-            $form_action = 'draftreviewer/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -55,13 +57,15 @@ class Draft_reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('draftreviewer');
+        redirect($this->role . '/' . $this->pages);
 	}
 
 
 // -- edit --        
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $data = array('draft_id' => $id);
         $draft = $this->draft_reviewer->getWhere($data, 'draft');
 
@@ -82,8 +86,8 @@ class Draft_reviewer extends Operator_Controller
 
         if (!$this->draft_reviewer->validate()) {
             $pages    = $this->pages;
-            $main_view   = 'draftreviewer/form_draft_reviewer';
-            $form_action = "draftreviewer/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -126,7 +130,7 @@ class Draft_reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect('draftreviewer');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 // -- delete --        
@@ -135,7 +139,7 @@ class Draft_reviewer extends Operator_Controller
 	$draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
         if (!$draft_reviewer) {
             $this->session->set_flashdata('warning', 'Draft Reviewer data were not available');
-            redirect('draftreviewer');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->draft_reviewer->where('draft_reviewer_id', $id)->delete()) {
@@ -144,7 +148,7 @@ class Draft_reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect('draftreviewer');
+		redirect($this->role . '/' . $this->pages);
 	}
 
 ////-- auto complete --        
@@ -196,15 +200,15 @@ class Draft_reviewer extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->draft_reviewer->makePagination(site_url('draft_reviewer/search/'), 3, $total);
+        $pagination = $this->draft_reviewer->makePagination(site_url('admin/draft_reviewer/search/'), 3, $total);
 
         if (!$drafts) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect('draftreviewer');
+            redirect($this->role . '/' . $this->pages);
         }
 
         $pages    = $this->pages;
-        $main_view  = 'draftreviewer/index_draft_reviewer';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
     }
         

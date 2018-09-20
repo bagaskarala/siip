@@ -28,9 +28,9 @@
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
                         <td><?= $theme->theme_name ?></td>
-                        <td><?= anchor("theme/edit/$theme->theme_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/theme/edit/$theme->theme_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("theme/delete/$theme->theme_id") ?>
+                            <?= form_open("admin/theme/delete/$theme->theme_id") ?>
                                 <?= form_hidden('theme_id', $theme->theme_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -53,6 +53,6 @@
 <div class="row">
     <!-- Button create -->
     <div class="col-10">
-        <?= anchor("theme/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/theme/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

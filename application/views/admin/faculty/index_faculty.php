@@ -28,9 +28,9 @@
                     <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
                         <td><?= ++$i ?></td>
                         <td><?= $faculty->faculty_name ?></td>
-                        <td><?= anchor("faculty/edit/$faculty->faculty_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
+                        <td><?= anchor("admin/faculty/edit/$faculty->faculty_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
-                            <?= form_open("faculty/delete/$faculty->faculty_id") ?>
+                            <?= form_open("admin/faculty/delete/$faculty->faculty_id") ?>
                                 <?= form_hidden('faculty_id', $faculty->faculty_id) ?>
                                 <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
                             <?= form_close() ?>
@@ -53,11 +53,11 @@
 <div class="row">
     <!-- Button create -->
     <div class="col-10">
-        <?= anchor("faculty/add", 'Add', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/faculty/add", 'Add', ['class' => 'btn btn-primary']) ?>
     </div>
     
     <!-- Button back to reviewer -->
     <div class="col-10">
-        <?= anchor("reviewer", 'Back to reviewer', ['class' => 'btn btn-primary']) ?>
+        <?= anchor("admin/reviewer", 'Back to reviewer', ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

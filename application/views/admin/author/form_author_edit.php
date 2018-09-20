@@ -4,7 +4,7 @@
     </div>
 </div>
 
-<?= form_open($form_action) ?>
+<?= form_open_multipart($form_action) ?>
 
     <?= isset($input->author_id) ? form_hidden('author_id', $input->author_id) : '' ?>
 
@@ -74,16 +74,29 @@
         </div>
     </div>
         
-        <!-- author_degree -->
+        <!-- author_degree_front -->
     <div class="row form-group">
         <div class="col-2">
-            <?= form_label('Author Degree', 'author_degree', ['class' => 'label']) ?>
+            <?= form_label('Author Front Degree', 'author_degree_front', ['class' => 'label']) ?>
         </div>
         <div class="col-4">
-            <?= form_input('author_degree', $input->author_degree) ?>
+            <?= form_input('author_degree_front', $input->author_degree_front) ?>
         </div>
         <div class="col-4">
-            <?= form_error('author_degree') ?>
+            <?= form_error('author_degree_front') ?>
+        </div>
+    </div>
+        
+                <!-- author_degree_back -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author Back Degree', 'author_degree_back', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_input('author_degree_back', $input->author_degree_back) ?>
+        </div>
+        <div class="col-4">
+            <?= form_error('author_degree_back') ?>
         </div>
     </div>
 
@@ -165,8 +178,29 @@
         </div>
     </div>
         
-        
+    <!-- author_ktp -->
+    <div class="row form-group">
+        <div class="col-2">
+            <?= form_label('Author KTP', 'author_ktp', ['class' => 'label']) ?>
+        </div>
+        <div class="col-4">
+            <?= form_upload('author_ktp') ?>
+        </div>
+        <div class="col-4">
+            <?= fileFormError('author_ktp', '<p class="form-error">', '</p>'); ?>
+        </div>
+    </div>        
 
+        <!--  author_ktp preview -->
+    <?php if (!empty($input->author_ktp)): ?>
+        <div class="row form-group">
+            <div class="col-2">&nbsp;</div>
+            <div class="col-4">
+                <img src="<?= site_url("/authorktp/$input->author_ktp") ?>" alt="<?= $input->author_name ?>">
+            </div>
+            <div class="col-4">&nbsp;</div>
+        </div>
+    <?php endif ?>
         
     <!-- submit button -->
     <div class="row">

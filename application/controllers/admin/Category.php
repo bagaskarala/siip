@@ -13,13 +13,16 @@ class Category extends Operator_Controller
         $categories     = $this->category->orderBy('category_id')->getAll();
         $total    = count($categories);
         $pages    = $this->pages;
-        $main_view  = 'category/index_category';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
 		$this->load->view('template', compact('pages', 'main_view', 'categories', 'total'));
 	}
         
 //--add--
         public function add()
-	{                     
+	{        
+            
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->category->getDefaultValues();
         } else {
@@ -28,8 +31,8 @@ class Category extends Operator_Controller
 
         if (!$this->category->validate()) {
             $pages   = $this->pages;
-            $main_view   = 'category/form_category';
-            $form_action = 'category/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -41,16 +44,18 @@ class Category extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('category');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $category = $this->category->where('category_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Category data were not available');
-            redirect('category');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -61,8 +66,8 @@ class Category extends Operator_Controller
 
         if (!$this->category->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'category/form_category';
-            $form_action = "category/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -74,7 +79,7 @@ class Category extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('category');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--delete--        
@@ -83,7 +88,7 @@ class Category extends Operator_Controller
 		$category = $this->category->where('category_id', $id)->get();
         if (!$category) {
             $this->session->set_flashdata('warning', 'Category data were not available');
-            redirect('category');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->category->where('category_id', $id)->delete()) {
@@ -92,7 +97,7 @@ class Category extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect('category');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 

@@ -13,13 +13,15 @@ class Work_unit extends Operator_Controller
         $work_units     = $this->work_unit->orderBy('work_unit_id')->getAll();
         $total    = count($work_units);
         $pages    = $this->pages;
-        $main_view  = 'workunit/index_work_unit';
+        $main_view  = $this->role . '/'. $this->pages . '/index_' . $this->pages;
 		$this->load->view('template', compact('pages', 'main_view', 'work_units', 'total'));
 	}
         
 //--add--
         public function add()
-	{                     
+	{          
+            $act = 'add';
+            
         if (!$_POST) {
             $input = (object) $this->work_unit->getDefaultValues();
         } else {
@@ -28,8 +30,8 @@ class Work_unit extends Operator_Controller
 
         if (!$this->work_unit->validate()) {
             $pages   = $this->pages;
-            $main_view   = 'workunit/form_work_unit';
-            $form_action = 'work_unit/add';
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -41,16 +43,18 @@ class Work_unit extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('workunit');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
+            $act = 'edit';
+            
         $work_unit = $this->work_unit->where('work_unit_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Work Unit data were not available');
-            redirect('workunit');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if (!$_POST) {
@@ -61,8 +65,8 @@ class Work_unit extends Operator_Controller
 
         if (!$this->work_unit->validate()) {
             $pages     = $this->pages;
-            $main_view   = 'workunit/form_work_unit';
-            $form_action = "work_unit/edit/$id";
+            $main_view   = $this->role . '/' . $this->pages . '/form_' . $this->pages . '_' . $act;
+            $form_action = $this->role . '/' . $this->pages . '/' . $act . '/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -74,7 +78,7 @@ class Work_unit extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect('workunit');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 //--delete--        
@@ -83,7 +87,7 @@ class Work_unit extends Operator_Controller
 		$code = $this->work_unit->where('work_unit_id', $id)->get();
         if (!$code) {
             $this->session->set_flashdata('warning', 'Work Unit data were not available');
-            redirect('workunit');
+            redirect($this->role . '/' . $this->pages);
         }
 
         if ($this->work_unit->where('work_unit_id', $id)->delete()) {
@@ -92,7 +96,7 @@ class Work_unit extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect('workunit');
+        redirect($this->role . '/' . $this->pages);
 	}
         
 
