@@ -110,13 +110,13 @@ class MY_Model extends CI_Model
 
     public function validate()
     {
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<p class="form-error">', '</p>');
-        $validationRules = $this->getValidationRules();
-        $this->form_validation->set_rules($validationRules);
-        return $this->form_validation->run();
+         $this->load->library('form_validation');
+         $this->form_validation->set_error_delimiters('<p class="form-error">', '</p>');
+         $validationRules = $this->getValidationRules();
+         $this->form_validation->set_rules($validationRules);
+         return $this->form_validation->run();
 
-        // return false;
+        return true;
     }
 
     public function insert($data, $table = "")

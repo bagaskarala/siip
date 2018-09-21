@@ -23,15 +23,15 @@
             <h3>Directory</h3>
             <div class="sidebar-box">
                 <ul>
-                    <li id="menu-process"><?= anchor('admin/draft_author', 'Draft Author') ?></li>
-                    <li id="menu-process"><?= anchor('admin/draft_reviewer', 'Draft Reviewer') ?></li>
-                    <li id="menu-draft"><?= anchor('admin/draft', 'Draft') ?></li>
-                    <li id="menu-author"><?= anchor('admin/author', 'Author') ?></li>
-                    <li id="menu-reviewer"><?= anchor('admin/reviewer', 'Reviewer') ?></li>
-                    <li id="menu-worksheet"><?= anchor('admin/worksheet', 'Worksheet') ?></li>
-                    <li id="menu-theme"><?= anchor('admin/theme', 'Theme') ?></li>
-                    <li id="menu-category"><?= anchor('admin/category', 'Category') ?></li>
-                    <li id="menu-book"><?= anchor('admin/book', 'Book') ?></li>                    
+                    <li id="menu-process"><?= anchor('draft_author', 'Draft Author') ?></li>
+                    <li id="menu-process"><?= anchor('draft_reviewer', 'Draft Reviewer') ?></li>
+                    <li id="menu-draft"><?= anchor('draft', 'Draft') ?></li>
+                    <li id="menu-author"><?= anchor('author', 'Author') ?></li>
+                    <li id="menu-reviewer"><?= anchor('reviewer', 'Reviewer') ?></li>
+                    <li id="menu-worksheet"><?= anchor('worksheet', 'Worksheet') ?></li>
+                    <li id="menu-theme"><?= anchor('theme', 'Theme') ?></li>
+                    <li id="menu-category"><?= anchor('category', 'Category') ?></li>
+                    <li id="menu-book"><?= anchor('book', 'Book') ?></li>                    
                 </ul>
             </div>
         </div>
@@ -44,8 +44,8 @@
             <h3>Menu Admin</h3>
             <div class="sidebar-box">
                 <ul>
-                        <li id="menu-responsibility"><?= anchor('superadmin/responsibility', 'Responsibility') ?></li>
-                        <li id="menu-user"><?= anchor('superadmin/user', 'User') ?></li>
+                        <li id="menu-responsibility"><?= anchor('responsibility', 'Responsibility') ?></li>
+                        <li id="menu-user"><?= anchor('user', 'User') ?></li>
                 </ul>
             </div>
         </div>

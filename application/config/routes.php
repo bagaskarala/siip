@@ -54,12 +54,19 @@ $route[''] = 'home';
 $route['404_override'] = 'error404';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['([a-z]+)/([a-z]+)'] = '$1/$2/index';
-$route['([a-z]+)/([a-z]+)/(:num)'] = '$1/$2/index/$3';
-$route['([a-z]+)/([a-z]+)/([a-z]+)'] = '$1/$2/$3';
-$route['([a-z]+)/([a-z]+)/([a-z]+)/(:num)'] = '$1/$2/$3/$4';
-$route['([a-z]+)/([a-z]+)/([a-z]+)/(:num)/(:num)'] = '$1/$2/$3/$4/$5';
+//asli
+//$route['([a-z]+)/([a-z]+)'] = '$1/$2/index';
+//$route['([a-z]+)/([a-z]+)/(:num)'] = '$1/$2/index/$3';
+//$route['([a-z]+)/([a-z]+)/([a-z]+)'] = '$1/$2/$3';
+//$route['([a-z]+)/([a-z]+)/([a-z]+)/(:num)'] = '$1/$2/$3/$4';
+//$route['([a-z]+)/([a-z]+)/([a-z]+)/(:num)/(:num)'] = '$1/$2/$3/$4/$5';
 
+//edit
+$route['([a-z]+)'] = '$1/index';
+$route['([a-z]+)/(:num)'] = '$1/index/$2';
+$route['([a-z]+)/([a-z]+)'] = '$1/$2';
+$route['([a-z]+)/([a-z]+)/(:num)'] = '$1/$2/$3';
+$route['([a-z]+)/([a-z]+)/(:num)/(:num)'] = '$1/$2/$3/$4';
 
 // // Admin
 // $route['institute/(:num)'] = 'institute/index/$1';

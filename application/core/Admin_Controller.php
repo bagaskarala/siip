@@ -3,6 +3,7 @@ class Admin_Controller extends MY_Controller
 {
     public function __construct()
     {
+        $this->role = 'superadmin';
         parent::__construct();
 
         $username = $this->session->userdata('username');
