@@ -10,8 +10,8 @@ class Worksheet extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $worksheets     = $this->worksheet->join('draft')->orderBy('draft.draft_id')->orderBy('worksheet_id')->paginate($page)->getAll();
-        $tot        = $this->worksheet->join('draft')->orderBy('draft.draft_id')->orderBy('worksheet_id')->getAll();
+        $worksheets     = $this->worksheet->join('draft')->orderBy('draft.draft_id', 'desc')->orderBy('worksheet_id', 'desc')->paginate($page)->getAll();
+        $tot        = $this->worksheet->join('draft')->orderBy('draft.draft_id', 'desc')->orderBy('worksheet_id', 'desc')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
         $main_view  = $this->pages . '/index_' . $this->pages;
@@ -71,7 +71,7 @@ class Worksheet extends Operator_Controller
         if (!$this->worksheet->validate()) {
             $pages    = $this->pages;
             $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $form_action = $this->pages . '/edit/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -95,7 +95,7 @@ class Worksheet extends Operator_Controller
             redirect($this->pages);
         }
 
-        $data = array('worksheet_status' => $action);
+        $data = array('worksheet_status' => $action, 'worksheet_pic' => $this->username);
 
         if ($this->worksheet->where('worksheet_id', $id)->update($data)) {
             $status = array('draft_status' => $action);

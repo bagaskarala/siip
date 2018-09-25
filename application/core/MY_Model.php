@@ -116,7 +116,7 @@ class MY_Model extends CI_Model
          $this->form_validation->set_rules($validationRules);
          return $this->form_validation->run();
 
-        return true;
+        // return true;
     }
 
     public function insert($data, $table = "")
@@ -225,5 +225,11 @@ class MY_Model extends CI_Model
         } else {
             return 0;
         }
+    }
+
+    public function editDraftDate($id, $column) {
+        $data = array($column => date('Y-m-d H:i:s'));
+        $this->where('draft_id', $id)
+             ->update($data, 'draft');
     }
 }

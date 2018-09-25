@@ -47,7 +47,8 @@ class Login_model extends MY_Model
             $data = [
                 'username' => $user->username,
                 'level'    => $user->level,
-                'is_login' => true
+                'is_login' => true,
+                'user_id'  => $user->user_id
             ];
 
             $this->session->set_userdata($data);

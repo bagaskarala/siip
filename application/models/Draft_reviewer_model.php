@@ -7,11 +7,11 @@ class Draft_reviewer_model extends MY_Model
        public function getValidationRules()
     {
         $validationRules = [
-            // [
-            //     'field' => 'draft_id',
-            //     'label' => 'Draft ID',
-            //     'rules' => 'trim|required|callback_unique_draft_reviewer_match'
-            // ],
+            [
+                'field' => 'draft_id',
+                'label' => 'Draft ID',
+                'rules' => 'trim|required|callback_unique_draft_reviewer_match'
+            ],
 //            [   // Fake input, just for live search
 //                'field' => 'search_reviewer',
 //                'label' => 'Reviewer ID',

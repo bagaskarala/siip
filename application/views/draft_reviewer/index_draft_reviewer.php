@@ -93,12 +93,6 @@
 </div>
 
 <div class="row">
-    <!-- Button add -->
-    <div class="col-2">
-        <?= anchor("draft_reviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
-    </div>
-    
-
     <!-- Pagination -->
     <div class="col-2">
     <?php if ($pagination): ?>

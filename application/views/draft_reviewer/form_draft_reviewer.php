@@ -59,6 +59,17 @@
                     <?= form_error('reviewer_id[]') ?>
                 </div>
             </div>
+            <div class="row form-group">
+                <div class="col-2">
+                    <?= form_label('Reviewer Name', 'reviewer_id[]', ['class' => 'label']) ?>
+                </div>
+                <div class="col-4">
+                    <?= form_dropdown('reviewer_id[]', getDropdownList('reviewer', ['reviewer_id', 'reviewer_name']), 'id="reviewer_id[]"') ?>
+                </div>
+                <div class="col-4">
+                    <?= form_error('reviewer_id[]') ?>
+                </div>
+            </div>
             <?php
         }
         ?>

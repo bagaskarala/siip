@@ -85,7 +85,7 @@ class Draft_reviewer extends Operator_Controller
         if (!$this->draft_reviewer->validate()) {
             $pages    = $this->pages;
             $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $form_action = $this->pages . '/edit/' . $id;
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -116,7 +116,7 @@ class Draft_reviewer extends Operator_Controller
                     break;
                 }
             } else {
-                $data_reviewer = array('reviewer_id' => $value, 'draft_id' => $id);
+                $data_reviewer = array('reviewer_id' => $value, 'draft_id' => $id, 'status' => $status);
 
                 $draft_reviewer_id = $this->draft_reviewer->insert($data_reviewer, 'draft_reviewer');
 
@@ -130,6 +130,7 @@ class Draft_reviewer extends Operator_Controller
         if ($isSuccess) {
             $status = 4;
             $status = array('draft_status' => $status);
+            $this->draft_reviewer->editDraftDate($id, 'review_start_date');
             $this->draft_reviewer->updateDraftStatus($draft->draft_id, $status);
             $this->session->set_flashdata('success', 'Data updated');
         } else {

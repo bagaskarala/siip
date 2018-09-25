@@ -10,8 +10,8 @@ class Draft extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $drafts     = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->paginate($page)->getAll();
-        $tot        = $this->draft->join('category')->join('theme')->orderBy('category.category_id')->orderBy('theme.theme_id')->orderBy('draft_id')->getAll();
+        $drafts     = $this->draft->join('category')->join('theme')->orderBy('draft_id', 'desc')->orderBy('category.category_id')->orderBy('theme.theme_id')->paginate($page)->getAll();
+        $tot        = $this->draft->join('category')->join('theme')->orderBy('draft_id', 'desc')->orderBy('category.category_id')->orderBy('theme.theme_id')->getAll();
 
         foreach ($drafts as $key => $value) {
             $authors = $this->draft->getIdAndName('author', 'draft_author', $value->draft_id);
@@ -77,7 +77,9 @@ class Draft extends Operator_Controller
         }
 
         if ($isSuccess) {
-            $data_worksheet = array('draft_id' => $draft_id);
+            $worksheet_num = $this->generateWorksheetNumber();
+
+            $data_worksheet = array('draft_id' => $draft_id, 'worksheet_num' => $worksheet_num);
             $worksheet_id = $this->draft->insert($data_worksheet, 'worksheet');
 
             if ($worksheet_id < 1) {
@@ -276,6 +278,28 @@ class Draft extends Operator_Controller
         $pages    = $this->pages;
         $main_view  = $this->pages . '/index_' . $this->pages;
         $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
+    }
+
+    public function generateWorksheetNumber() {
+        $date = date('Y-m');
+
+        $this->db->limit(1);
+        $query = $this->draft->like('worksheet_num', $date, 'after')
+                             ->orderBy('draft_id', 'desc')
+                             ->get('worksheet');
+
+        if ($query) {
+            $worksheet_num = $query->worksheet_num;
+            $worksheet_num = explode("-", $worksheet_num);
+            $num = (int) $worksheet_num[2];
+            $num++;
+
+            $num = str_pad($num, 2, '0', STR_PAD_LEFT);
+        } else {
+            $num = '01';
+        }
+
+        return $date . '-' . $num;
     }
 
     public function checkStatus($code) {
