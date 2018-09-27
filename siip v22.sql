@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2018 at 06:43 AM
+-- Generation Time: Sep 27, 2018 at 07:29 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -284,12 +284,14 @@ CREATE TABLE IF NOT EXISTS `draft` (
   `print_date` timestamp NULL DEFAULT NULL,
   `review_start_date` datetime NOT NULL,
   `review_end_date` datetime NOT NULL,
+  `reviewer1_file` varchar(255) NOT NULL,
   `reviewer1_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reviewer1_notes` text NOT NULL,
   `authortoreviewer1_notes` text NOT NULL,
   `reviewer1_deadline` datetime NOT NULL,
   `reviewer2_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reviewer2_notes` text NOT NULL,
+  `reviewer2_file` varchar(255) NOT NULL,
   `authortoreviewer2_notes` text NOT NULL,
   `reviewer2_deadline` datetime NOT NULL,
   `edit_user_id` int(11) NOT NULL,
@@ -298,21 +300,25 @@ CREATE TABLE IF NOT EXISTS `draft` (
   `authortoeditor_notes` text NOT NULL,
   `editor_notes` text NOT NULL,
   `layout_start_date` datetime NOT NULL,
+  `editor_file` varchar(255) NOT NULL,
   `editor_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `editor_deadline` datetime NOT NULL,
   `layout_end_date` datetime NOT NULL,
   `layouter1_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `layouter1_notes` text NOT NULL,
   `authortolayouter1_notes` text NOT NULL,
+  `layouter1_file` varchar(255) NOT NULL,
   `layouter1_deadline` datetime NOT NULL,
   `layouter2_notes` text NOT NULL,
   `authortolayouter2_notes` text NOT NULL,
+  `layouter2_file` varchar(255) NOT NULL,
   `layouter2_deadline` datetime NOT NULL,
   `proofread_user_id` int(11) NOT NULL,
   `proofread_start_date` datetime NOT NULL,
   `layouter2_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `proofread_end_date` datetime NOT NULL,
   `proofread_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `proofread_file` varchar(255) NOT NULL,
   `proofread_deadline` datetime NOT NULL,
   `proofread_notes` text NOT NULL,
   `authortoproofread_notes` text NOT NULL,
@@ -324,9 +330,9 @@ CREATE TABLE IF NOT EXISTS `draft` (
 -- Dumping data for table `draft`
 --
 
-INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `review_start_date`, `review_end_date`, `reviewer1_upload_date`, `reviewer1_notes`, `authortoreviewer1_notes`, `reviewer1_deadline`, `reviewer2_upload_date`, `reviewer2_notes`, `authortoreviewer2_notes`, `reviewer2_deadline`, `edit_user_id`, `edit_start_date`, `edit_end_date`, `authortoeditor_notes`, `editor_notes`, `layout_start_date`, `editor_upload_date`, `editor_deadline`, `layout_end_date`, `layouter1_upload_date`, `layouter1_notes`, `authortolayouter1_notes`, `layouter1_deadline`, `layouter2_notes`, `authortolayouter2_notes`, `layouter2_deadline`, `proofread_user_id`, `proofread_start_date`, `layouter2_upload_date`, `proofread_end_date`, `proofread_upload_date`, `proofread_deadline`, `proofread_notes`, `authortoproofread_notes`, `draft_status`, `draft_notes`) VALUES
-(24, 10, 12, 'Olahraga Hutan', 'Olahraga_Hutan_20180927105621.docx', 50000, NULL, '2018-09-27 03:56:22', NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '', '', 1, ''),
-(25, 10, 14, 'Mat Hutan', 'Mat_Hutan_20180927105837.docx', 50000, NULL, '2018-09-27 03:58:37', NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '', '', 1, '');
+INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `proposed_fund`, `approved_fund`, `entry_date`, `finish_date`, `print_date`, `review_start_date`, `review_end_date`, `reviewer1_file`, `reviewer1_upload_date`, `reviewer1_notes`, `authortoreviewer1_notes`, `reviewer1_deadline`, `reviewer2_upload_date`, `reviewer2_notes`, `reviewer2_file`, `authortoreviewer2_notes`, `reviewer2_deadline`, `edit_user_id`, `edit_start_date`, `edit_end_date`, `authortoeditor_notes`, `editor_notes`, `layout_start_date`, `editor_file`, `editor_upload_date`, `editor_deadline`, `layout_end_date`, `layouter1_upload_date`, `layouter1_notes`, `authortolayouter1_notes`, `layouter1_file`, `layouter1_deadline`, `layouter2_notes`, `authortolayouter2_notes`, `layouter2_file`, `layouter2_deadline`, `proofread_user_id`, `proofread_start_date`, `layouter2_upload_date`, `proofread_end_date`, `proofread_upload_date`, `proofread_file`, `proofread_deadline`, `proofread_notes`, `authortoproofread_notes`, `draft_status`, `draft_notes`) VALUES
+(24, 10, 12, 'Olahraga Hutan', 'Olahraga_Hutan_20180927105621.docx', 50000, NULL, '2018-09-27 03:56:22', NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', '', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '', '0000-00-00 00:00:00', '', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '0000-00-00 00:00:00', '', '', 1, ''),
+(25, 10, 14, 'Mat Hutan', 'Mat_Hutan_20180927105837.docx', 50000, NULL, '2018-09-27 03:58:37', NULL, NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '2018-09-27 04:35:47', '', '', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '0000-00-00 00:00:00', '', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '', '', '0000-00-00 00:00:00', '', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '2018-09-27 04:35:47', '0000-00-00 00:00:00', '2018-09-27 04:35:47', '', '0000-00-00 00:00:00', '', '', 1, '');
 
 -- --------------------------------------------------------
 
