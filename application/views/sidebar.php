@@ -31,7 +31,8 @@
                     <li id="menu-worksheet"><?= anchor('worksheet', 'Worksheet') ?></li>
                     <li id="menu-theme"><?= anchor('theme', 'Theme') ?></li>
                     <li id="menu-category"><?= anchor('category', 'Category') ?></li>
-                    <li id="menu-book"><?= anchor('book', 'Book') ?></li>                    
+                    <li id="menu-book"><?= anchor('book', 'Book') ?></li>               
+                    <li id="menu-transaction"><?= anchor('transaction', 'Transaction') ?></li>                   
                 </ul>
             </div>
         </div>
@@ -60,6 +61,7 @@
             <div class="sidebar-box">
                 <ul>
                     <li id="menu-process"><?= anchor('reviewerdraft', 'Reviewer Draft') ?></li>
+                    <li id="menu-transaction"><?= anchor('transaction', 'Transaction') ?></li>   
                     <!-- <li id="menu-process"><?= anchor('draftreviewer', 'Draft Reviewer') ?></li> -->
                     <!-- <li id="menu-draft"><?= anchor('draft', 'Draft') ?></li> -->
                     <!-- <li id="menu-author"><?= anchor('author', 'Author') ?></li> -->

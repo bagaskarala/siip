@@ -14,7 +14,7 @@ class Draft_reviewer extends Operator_Controller
         // $tot        = $this->draft_reviewer->join('draft')->join('reviewer')->orderBy('draft.draft_id')->orderBy('reviewer.reviewer_id')->orderBy('draft_reviewer_id')->getAll();
 
         $drafts     = $this->draft_reviewer->where('draft_status', 1)->orderBy('draft.draft_id', 'DESC')->paginate($page)->getAll('draft');
-        $tot        = $this->draft_reviewer->where('draft_status', 1)->orderBy('draft.draft_id', 'DESC')->paginate($page)->getAll('draft');
+        $tot        = $this->draft_reviewer->where('draft_status', 1)->orderBy('draft.draft_id', 'DESC')->getAll('draft');
 
         foreach ($drafts as $key => $value) {
             $reviewers = $this->draft_reviewer->select('reviewer_nip')->getIdAndName('reviewer', 'draft_reviewer', $value->draft_id, 'draft');
@@ -97,16 +97,12 @@ class Draft_reviewer extends Operator_Controller
         $isSuccess = true;
 
         foreach ($input->reviewer_id as $key => $value) {
-            $status = 0;
-            if ($key == 0) {
-                $status = 1;
-            }
             if (isset($draft->reviewer_id[$key])) {
                 $draft_reviewer_id = $this->draft_reviewer->getPKTableId('reviewer', 'draft', 'draft_reviewer', $draft->reviewer_id[$key], $id);
 
                 if ($draft_reviewer_id > 0) {
                     $isSuccess = true;
-                    $data_input = array('reviewer_id' => $value, 'status' => $status);
+                    $data_input = array('reviewer_id' => $value);
 
                     $this->draft_reviewer->where('draft_reviewer_id', $draft_reviewer_id)
                                          ->update($data_input, 'draft_reviewer');
@@ -116,7 +112,7 @@ class Draft_reviewer extends Operator_Controller
                     break;
                 }
             } else {
-                $data_reviewer = array('reviewer_id' => $value, 'draft_id' => $id, 'status' => $status);
+                $data_reviewer = array('reviewer_id' => $value, 'draft_id' => $id);
 
                 $draft_reviewer_id = $this->draft_reviewer->insert($data_reviewer, 'draft_reviewer');
 

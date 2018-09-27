@@ -108,6 +108,9 @@ class Worksheet extends Operator_Controller
                 if ($action == '2') {
                     $actionMessage = 'Rejected';
                 }
+
+                $this->worksheet->insert(array('draft_id' => $worksheet->draft_id), 'transaction');
+                
                 $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
                 $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
