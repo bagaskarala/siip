@@ -1,3 +1,4 @@
+<?php $ceklevel = $this->session->userdata('level'); ?>
 <?php
     $perPage = 10;
     $keywords = $this->input->get('keywords');
@@ -11,181 +12,152 @@
     // data table series number
     $i = isset($page) ? $page * $perPage - $perPage : 0;
 ?>
-
-<!-- Page heading -->
-<div class="row">
-    <div class="col-10">
-        <h2>Draft</h2>
-    </div>
-</div>
-
-<!-- Flash message -->
-<?php $this->load->view('_partial/flash_message') ?>
-
-<!--Search form -->
-<div class="row">
-    <div class="col-5">
-        &nbsp;
-    </div>
-    <div class="col-5 align-right">
-    <?= form_open('draft/search', ['method' => 'GET']) ?>
-        <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Category, Theme, or Title', 'class' => 'col-3']) ?>
-        <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
-    <?= form_close() ?>
-    </div>
-</div>
-
-<!-- Table -->
-<div class="row">
-    <div class="col-10">
-        <?php if ($drafts):?>
-            <table class="awn-table">
+<!-- .page-title-bar -->
+  <header class="page-title-bar">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>">Penerbitan</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="text-muted">Draft</a>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="page-title"> Draft </h1> 
+  </header>
+  <!-- /.page-title-bar -->
+  <!-- .page-section -->
+  <div class="page-section">
+    <!-- grid row -->
+    <div class="row">
+      <!-- grid column -->
+      <div class="col-12">
+        <!-- .card -->
+        <section class="card card-fluid">
+        <!-- .card-header -->
+          <header class="card-header bg-light">
+            <!-- .d-flex -->
+            <div class="d-flex align-items-center">
+              <span class="mr-auto">Tabel Draft <span class="badge badge-info"><?=$total ?></span></span>
+              <!-- .card-header-control -->
+              <div class="card-header-control">
+                <?php if ($ceklevel == 'superadmin' || $ceklevel == 'admin_penerbitan'): ?>
+                <!-- .tombol add -->
+                <a href="<?=base_url('draft/add') ?>" class="btn btn-primary btn-sm">Tambah Draft</a>
+                <!-- /.tombol add -->
+              <?php endif ?>
+              </div>
+              <!-- /.card-header-control -->
+            </div>
+            <!-- /.d-flex -->
+          </header>
+            <!-- /.card-header -->
+           <!-- .card-body -->
+          <div class="card-body p-0">
+            <div class="p-3">
+              <!-- .input-group -->
+              <?= form_open('draft/search', ['method' => 'GET']) ?>
+              <div class="input-group input-group-alt">
+                <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Category, Theme, or Title', 'class' => 'form-control']) ?>
+                <div class="input-group-append">
+                   <?= form_button(['type' => 'submit', 'content' => 'Search', 'class' => 'btn btn-secondary']) ?>
+                </div>
+              <?= form_close() ?>
+              </div>
+              <!-- /.input-group -->
+            </div>
+            <!-- .table-responsive -->
+            <?php if ($drafts):?>
+            <div class="table-responsive">
+              <!-- .table -->
+              <table class="table">
+                <!-- thead -->
                 <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Category Name</th>
-                        <th scope="col">Theme Name</th>
-                        <th scope="col">Draft Title</th>
-                        <th scope="col">Author Name</th>
-                        <th scope="col">Draft File</th>
-                        <!-- <th scope="col">Proposed Fund</th>
-                        <th scope="col">Approved Fund</th>
-                        <th scope="col">Entry Date</th>
-                        <th scope="col">Finish Date</th>
-                        <th scope="col">Print Date</th>
-                        <th scope="col">Review Status</th>
-                        <th scope="col">Review Notes</th>
-                        <th scope="col">Author Review Notes</th>
-                        <th scope="col">Review Start Deadline</th>                        
-                        <th scope="col">Review Upload Date</th>   
-                        <th scope="col">Review End Deadline</th>
-                        <th scope="col">Review Revise Status</th>
-                        <th scope="col">Review Revise Notes</th>
-                        <th scope="col">Edit Status</th>
-                        <th scope="col">Edit Notes</th>
-                        <th scope="col">Author Edit Notes</th>
-                        <th scope="col">Edit Start Deadline</th>
-                        <th scope="col">Edit Upload Date</th>
-                        <th scope="col">Edit End Deadline</th>
-                        <th scope="col">Edit Revise Status</th>
-                        <th scope="col">Edit Revise Notes</th>
-                        <th scope="col">Layout Status</th>
-                        <th scope="col">Layout Notes</th>
-                        <th scope="col">Author Layout Notes</th>
-                        <th scope="col">Layout Start Deadline</th>
-                        <th scope="col">Layout Upload Date</th>
-                        <th scope="col">Layout End Deadline</th>
-                        <th scope="col">Layout Revise Status</th>
-                        <th scope="col">Layout Revise Notes</th>
-                        <th scope="col">Reprint Status</th>
-                        <th scope="col">Draft Notes</th>
-                        <th scope="col">Proofread Notes</th>
-                        <th scope="col">Author Proofread Notes</th>
-                        <th scope="col">Proofread Start Deadline</th>
-                        <th scope="col">Proofread Upload Date</th>
-                        <th scope="col">Proofread End Deadline</th>
-                        <th scope="col">Proofread Revise Status</th>
-                        <th scope="col">Proofread Revise Notes</th> -->
-                        <th scope="col">Status</th>
-                        <th scope="col">Detail</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
+                  <tr>
+                    <th scope="col" class="pl-4">No</th>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Theme Name</th>
+                    <th scope="col">Draft Title</th>
+                    <th scope="col">Entry Date</th>
+                    <th scope="col">Status</th>
+                    <?php if ($ceklevel == 'superadmin' || $ceklevel == 'admin_penerbitan'): ?>
+                    <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                    <?php endif ?>
+                  </tr>
                 </thead>
+                <!-- /thead -->
+                <!-- tbody -->
                 <tbody>
-                    <?php foreach($drafts as $draft):
-                            $authors = '';
-                            foreach ($draft->author as $key => $value) {
-                                $authors .= $value->author_name;
-                                $authors .= ', ';
-                            }
-                            $authors = substr($authors, 0, -2);
-                    ?>
-                    <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
-                        <td><?= ++$i ?></td>
-                        <td><?= $draft->category_name ?></td>
-                        <td><?= $draft->theme_name ?></td>
-                        <td><?= $draft->draft_title ?></td>
-                        <td><?= $authors ?></td>
-                        <td><?= $draft->draft_file ?></td>
-                        <!--<td><a href="<?php echo base_url(); ?>/draft/download/<?php $fieldname; ?>">Download</a></td>-->
-                        <!-- <td><?= $draft->proposed_fund ?></td>
-                        <td><?= $draft->approved_fund ?></td>
-                        <td><?= $draft->entry_date ?></td>
-                        <td><?= $draft->finish_date ?></td>
-                        <td><?= $draft->print_date ?></td>
-                        <td><?= $draft->is_reviewed == 'y' ? 'Reviewed' : 'Not Reviewed'?></td>
-                        <td><?= $draft->review_notes ?></td>
-                        <td><?= $draft->author_review_notes ?></td>
-                        <td><?= $draft->review_start_deadline ?></td>
-                        <td><?= $draft->review_upload_date ?></td>
-                        <td><?= $draft->review_end_deadline ?></td>
-                        <td><?= $draft->review_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->review_revise_notes ?></td>
-                        <td><?= $draft->is_edited == 'y' ? 'Edited' : 'Not Edited'?></td>
-                        <td><?= $draft->edit_notes ?></td>
-                        <td><?= $draft->author_edit_notes ?></td>
-                        <td><?= $draft->edit_start_deadline ?></td>
-                        <td><?= $draft->edit_upload_date ?></td>
-                        <td><?= $draft->edit_end_deadline ?></td>
-                        <td><?= $draft->edit_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->edit_revise_notes ?></td>
-                        <td><?= $draft->is_layouted == 'y' ? 'Layouted' : 'Not Layouted'?></td>
-                        <td><?= $draft->layout_notes ?></td>
-                        <td><?= $draft->author_layout_notes ?></td>
-                        <td><?= $draft->layout_start_deadline ?></td>
-                        <td><?= $draft->layout_upload_date ?></td>
-                        <td><?= $draft->layout_end_deadline ?></td>
-                        <td><?= $draft->layout_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->layout_revise_notes ?></td>
-                        <td><?= $draft->is_reprint == 'y' ? 'Reprint' : 'Not Reprint'?></td>
-                        <td><?= $draft->draft_notes ?></td>
-                        <td><?= $draft->proofread_notes ?></td>
-                        <td><?= $draft->author_proofread_notes ?></td>
-                        <td><?= $draft->proofread_start_deadline ?></td>
-                        <td><?= $draft->proofread_upload_date ?></td>
-                        <td><?= $draft->proofread_end_deadline ?></td>
-                        <td><?= $draft->proofread_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
-                        <td><?= $draft->proofread_revise_notes ?></td> -->
-                        <td><?= $draft->draft_status ?></td>
-                        <td><?= anchor("draft/detail/$draft->draft_id", 'Detail', ['class' => 'btn btn-success']) ?></td>
-                        <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?= form_open("draft/delete/$draft->draft_id") ?>
-                                <?= form_hidden('draft_id', $draft->draft_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
+                  <?php foreach($drafts as $draft): 
+                    $authors = '';
+                    foreach ($draft->authors as $key => $value) {
+                        $authors .= $value->author_name;
+                        $authors .= '<br>';
+                    }
+                    $authors = substr($authors, 0, -2);
+                  ?>
+                  <!-- tr -->
+                  <tr>
+                    <td class="align-middle pl-4"><?= ++$i ?></td>
+                    <td class="align-middle"><?= $draft->category_name ?></td>
+                    <td class="align-middle"><?= $draft->theme_name ?></td>
+                    <td class="align-middle">
+                      <a data-toggle="popover" data-placement="right" data-container="body" auto right data-html="true" title="Penulis" data-trigger="hover" data-content="<?php echo empty($authors) ? "Data not found" : $authors;?>" href="<?= base_url('draft/view/'.$draft->draft_id) ?>"><?= $draft->draft_title ?></a>
+                    </td>
+                    <td class="align-middle"><?= $draft->entry_date ?></td>
+                    <td class="align-middle"><?= $draft->draft_status ?></td>
+                    <?php if ($ceklevel == 'superadmin' || $ceklevel == 'admin_penerbitan'): ?>
+                    <td class="align-middle text-right">
+                      <a href="<?= base_url('draft/edit/'.$draft->draft_id.'') ?>" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-pencil-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                      <a href="<?= base_url('draft/delete/'.$draft->draft_id.'') ?>" class="btn btn-sm btn-danger">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                    </td>
+                  <?php endif ?>
+                  </tr>
+                  <!-- /tr -->
+                  <?php endforeach ?>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
-                    </tr>
-                </tfoot>
-            </table>
-        <?php else: ?>
-            <p>Draft data were not available</p>
-        <?php endif ?>
+                <!-- /tbody -->
+              </table>
+              <!-- /.table -->
+            </div>
+            <?php else: ?>
+                <p class="text-center">Data tidak tersedia</p>
+            <?php endif ?>
+            <!-- /.table-responsive -->
+             <!-- Pagination -->
+                <?php if ($pagination): ?>          
+                  <?= $pagination ?>
+                <?php else: ?>
+                    &nbsp;
+                <?php endif ?>
+            <!-- .pagination -->
+          </div>
+          <!-- /.card-body -->
+          <?php if ($ceklevel == 'superadmin' || $ceklevel == 'admin_penerbitan'): ?>
+          <!-- .card-footer -->
+            <footer class="card-footer bg-light">
+              <div class="card-footer-content">
+                <a href="<?=base_url('category') ?>" class="btn btn-secondary mr-2">Kategori</a>
+                  <a href="<?=base_url('theme') ?>" class="btn btn-secondary mr-2">Tema</a>
+              </div>
+            </footer>
+          <!-- /.card-footer -->
+          <?php endif ?>
+        </section>
+        <!-- /.card -->
+      </div>
+      <!-- /grid column -->
     </div>
-</div>
-
-<div class="row">
-    <!-- Button add -->
-    <div class="col-2">
-        <?= anchor("draft/add", 'Add', ['class' => 'btn btn-primary']) ?>
-    </div>
-  
-    <!-- Pagination -->
-    <div class="col-2">
-    <?php if ($pagination): ?>
-        <div id="pagination"  class="float-right">
-            <?= $pagination ?>
-        </div>
-    <?php else: ?>
-        &nbsp;
-    <?php endif ?>
-    </div>
-</div>
+    <!-- /grid row -->
+  </div>
+  <!-- /.page-section -->

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Responsibility extends Admin_Controller
+class Responsibility extends Operator_Controller
 {
 	public function __construct()
     {
@@ -14,16 +14,16 @@ class Responsibility extends Admin_Controller
         $tot        = $this->responsibility->join('draft')->join('user')->orderBy('draft.draft_id')->orderBy('user.user_id')->orderBy('responsibility_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->responsibility->makePagination(site_url($this->pages), 2, $total);
+        $main_view  = 'responsibility/index_responsibility';
+        $pagination = $this->responsibility->makePagination(site_url('responsibility'), 2, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'responsibilities', 'pagination', 'total'));
 	}
         
         
         public function add()
-	{
-            
+	{   
+        $data = array();
         if (!$_POST) {
             $input = (object) $this->responsibility->getDefaultValues();
         } else {
@@ -31,29 +31,34 @@ class Responsibility extends Admin_Controller
         }
 
         if (!$this->responsibility->validate()) {
-            $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
-
-            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+            $data['validasi'] = false;
+            echo json_encode($data);
+            // $pages     = $this->pages;
+            // $main_view   = 'responsibility/form_responsibility';
+            // $form_action = 'responsibility/add';
+            // $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
 
         if ($this->responsibility->insert($input)) {
+            $data['validasi'] = true;
+            $data['status'] = true;
             $this->session->set_flashdata('success', 'Data saved');
         } else {
+            $data['validasi'] = true;
+            $data['status'] = false;
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        echo json_encode($data);
 	}
         
         public function edit($id = null)
-	{            
+	{
         $responsibility = $this->responsibility->where('responsibility_id', $id)->get();
         if (!$responsibility) {
             $this->session->set_flashdata('warning', 'Responsibility data were not available');
-            redirect($this->pages);
+            redirect('responsibility');
         }
 
         if (!$_POST) {
@@ -64,8 +69,8 @@ class Responsibility extends Admin_Controller
 
         if (!$this->responsibility->validate()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $main_view   = 'responsibility/form_responsibility';
+            $form_action = "responsibility/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -77,24 +82,30 @@ class Responsibility extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect($this->pages);
+        redirect('responsibility');
 	}
         
         public function delete($id = null)
 	{
-	$responsibility = $this->responsibility->where('responsibility_id', $id)->get();
+        $data = array();
+	   $responsibility = $this->responsibility->where('responsibility_id', $id)->get();
         if (!$responsibility) {
+            $data['cek'] = false;
             $this->session->set_flashdata('warning', 'Responsibility data were not available');
-            redirect($this->pages);
+            //redirect('responsibility');
         }
 
         if ($this->responsibility->where('responsibility_id', $id)->delete()) {
+            $data['cek'] = true;
+            $data['status'] = true;
             $this->session->set_flashdata('success', 'Data deleted');
 		} else {
+            $data['cek'] = true;
+            $data['status'] = false;
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+		echo json_encode($data);
 	}
         
         public function search($page = null)
@@ -123,11 +134,11 @@ class Responsibility extends Admin_Controller
 
         if (!$responsibilities) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('responsibility');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'responsibility/index_responsibility';
         $this->load->view('template', compact('pages', 'main_view', 'responsibilities', 'pagination', 'total'));
     }
         

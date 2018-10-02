@@ -43,6 +43,12 @@ class MY_Model extends CI_Model
         return $this->db->get($table)->result();
     }
 
+    public function getAllArray($table = "")
+    {
+        $table = $this->checkTable($table);
+        return $this->db->get($table)->result_array();
+    }
+
     public function getWhere($data, $table = "") {
         $table = $this->checkTable($table);
         return $this->db->get_where($table, $data)->row();
@@ -50,8 +56,7 @@ class MY_Model extends CI_Model
 
     public function getAllWhere($data, $table = "") {
         $table = $this->checkTable($table);
-        $this->db->get_where($table, $data);
-        return $this->db->result();
+        return $this->db->get_where($table, $data)->result();
     }
 
     public function paginate($page)
@@ -123,13 +128,13 @@ class MY_Model extends CI_Model
 
     public function validate()
     {
-         $this->load->library('form_validation');
-         $this->form_validation->set_error_delimiters('<p class="form-error">', '</p>');
-         $validationRules = $this->getValidationRules();
-         $this->form_validation->set_rules($validationRules);
-         return $this->form_validation->run();
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+        $validationRules = $this->getValidationRules();
+        $this->form_validation->set_rules($validationRules);
+        return $this->form_validation->run();
 
-        // return true;
+        // return false;
     }
 
     public function insert($data, $table = "")
@@ -158,6 +163,12 @@ class MY_Model extends CI_Model
         return $this;
     }
 
+    public function join3($table1, $table2, $column, $type = 'left')
+    {
+        $this->db->join($table1, "$table1.{$column}_id = $table2.{$column}_id", $type);
+        return $this;
+    }
+
     public function joinRelationMiddle($table_dest, $table_middle) {
         $this->db->join($table_middle, "$table_dest.{$table_dest}_id = $table_middle.{$table_dest}_id", "left");
         return $this;
@@ -181,16 +192,30 @@ class MY_Model extends CI_Model
         $this->load->library('pagination');
 
         $config = [
-            'base_url'         => $baseURL,
-            'uri_segment'      => $uriSegment,
-            'per_page'         => $this->perPage,
-            'total_rows'       => $totalRows,
-            'use_page_numbers' => true,
-            'num_links'        => 5,
-            'first_link'       => '<img src="' . base_url('asset/images/first.png') . '">',
-            'last_link'        => '<img src="' . base_url('asset/images/last.png') . '">',
-            'next_link'        => '<img src="' . base_url('asset/images/next.png') . '">',
-            'prev_link'        => '<img src="' . base_url('asset/images/previous.png') . '">',
+            'base_url'          => $baseURL,
+            'uri_segment'       => $uriSegment,
+            'per_page'          => $this->perPage,
+            'total_rows'        => $totalRows,
+            'use_page_numbers'  => true,
+            'num_links'         => 5,
+            'first_link'        => 'First',
+            'last_link'         => 'Last',
+            'next_link'         => '<i class="fa fa-lg fa-angle-right"></i>',
+            'prev_link'         => '<i class="fa fa-lg fa-angle-left"></i>',
+            'full_tag_open'     => '<ul class="pagination justify-content-center mt-4">',
+            'full_tag_close'    => '</ul>',
+            'num_tag_open'      => '<li class="page-item"><span class="page-link">',
+            'num_tag_close'     => '</span></li>',
+            'cur_tag_open'      => '<li class="page-item active"><span class="page-link">',
+            'cur_tag_close'     => '<span class="sr-only">(current)</span></span></li>',
+            'next_tag_open'     => '<li class="page-item"><span class="page-link">',
+            'next_tagl_close'   => '<span aria-hidden="true">&raquo;yyyy</span></span></li>',
+            'prev_tag_open'     => '<li class="page-item"><span class="page-link">',
+            'prev_tagl_close'   => '</span>Next</li>',
+            'first_tag_open'    => '<li class="page-item"><span class="page-link">',
+            'first_tagl_close'  => '</span></li>',
+            'last_tag_open'     => '<li class="page-item"><span class="page-link">',
+            'last_tagl_close'   => '</span></li>',
         ];
 
 

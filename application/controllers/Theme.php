@@ -14,14 +14,13 @@ class Theme extends Operator_Controller
         $themes     = $this->theme->orderBy('theme_id')->getAll();
         $total    = count($themes);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'theme/index_theme';
 		$this->load->view('template', compact('pages', 'main_view', 'themes', 'total'));
 	}
         
 //--add--
         public function add()
-	{
-            
+	{                     
         if (!$_POST) {
             $input = (object) $this->theme->getDefaultValues();
         } else {
@@ -30,8 +29,8 @@ class Theme extends Operator_Controller
 
         if (!$this->theme->validate()) {
             $pages   = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
+            $main_view   = 'theme/form_theme';
+            $form_action = 'theme/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -43,17 +42,16 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('theme');
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
-            
         $theme = $this->theme->where('theme_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Theme data were not available');
-            redirect($this->pages);
+            redirect('theme');
         }
 
         if (!$_POST) {
@@ -64,8 +62,8 @@ class Theme extends Operator_Controller
 
         if (!$this->theme->validate()) {
             $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $main_view   = 'theme/form_theme';
+            $form_action = "theme/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -77,16 +75,16 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('theme');
 	}
         
 //--delete--        
-        public function delete($id = null)
+        	public function delete($id = null)
 	{
 		$theme = $this->theme->where('theme_id', $id)->get();
         if (!$theme) {
             $this->session->set_flashdata('warning', 'Theme data were not available');
-            redirect($this->pages);
+            redirect('theme');
         }
 
         if ($this->theme->where('theme_id', $id)->delete()) {
@@ -95,7 +93,7 @@ class Theme extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect($this->pages);
+        redirect('theme');
 	}
         
 

@@ -1,63 +1,94 @@
 <?php $i = 0 ?>
-
-<!-- Page heading -->
-<div class="row">
-    <div class="col-10">
-        <h2>Faculty</h2>
-    </div>
-</div>
-
-<!-- Flash message -->
-<?php $this->load->view('_partial/flash_message') ?>
-
-<!-- Table -->
-<div class="row">
-    <div class="col-6">
-        <?php if ($faculties):?>
-            <table class="awn-table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Faculty Name</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($faculties as $faculty): ?>
-                    <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
-                        <td><?= ++$i ?></td>
-                        <td><?= $faculty->faculty_name ?></td>
-                        <td><?= anchor("faculty/edit/$faculty->faculty_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?= form_open("faculty/delete/$faculty->faculty_id") ?>
-                                <?= form_hidden('faculty_id', $faculty->faculty_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
-                    </tr>
-                </tfoot>
+<!-- .page-title-bar -->
+<header class="page-title-bar">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="<?=base_url()?>">Penerbitan</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a class="text-muted">Fakultas</a>
+      </li>
+    </ol>
+  </nav> 
+</header>
+<!-- /.page-title-bar -->
+<!-- .page-section -->
+<div class="page-section">
+  <div class="row">
+    <div class="col-md-6">
+    <!-- .card -->
+      <section class="card card-fluid">
+          <!-- .card-header -->
+        <header class="card-header">
+          <!-- .d-flex -->
+          <div class="d-flex align-items-center">
+            <span class="mr-auto">Tabel Fakultas</span>
+            <!-- .card-header-control -->
+            <div class="card-header-control">
+              <!-- .tombol add -->
+              <a href="<?=base_url('faculty/add') ?>" class="btn btn-primary btn-sm">Tambah Faklultas</a>
+              <!-- /.tombol add -->
+            </div>
+            <!-- /.card-header-control -->
+          </div>
+          <!-- /.d-flex -->
+        </header>
+          <!-- /.card-header -->
+         <!-- .card-body -->
+        <div class="card-body">
+          <!-- .table-responsive -->
+          <?php if ($faculties):?>
+          <div class="table-responsive">
+            <!-- .table -->
+            <table class="table">
+              <!-- thead -->
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Fakultas</th>
+                  <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                </tr>
+              </thead>
+              <!-- /thead -->
+              <!-- tbody -->
+              <tbody>
+                <?php foreach($faculties as $faculty): ?>
+                <!-- tr -->
+                <tr>
+                  <td class="align-middle"><?= ++$i ?></td>
+                  <td class="align-middle"><?= $faculty->faculty_name ?></td>
+                  <td class="align-middle text-right">
+                    <a href="<?= base_url('faculty/edit/'.$faculty->faculty_id.'') ?>" class="btn btn-sm btn-secondary">
+                      <i class="fa fa-pencil-alt"></i>
+                      <span class="sr-only">Edit</span>
+                    </a>
+                    <a href="<?= base_url('faculty/delete/'.$faculty->faculty_id.'') ?>" class="btn btn-sm btn-danger">
+                      <i class="fa fa-trash-alt"></i>
+                      <span class="sr-only">Delete</span>
+                    </a>
+                  </td>
+                </tr>
+                <!-- /tr -->
+                <?php endforeach ?>
+              </tbody>
+              <!-- /tbody -->
             </table>
-        <?php else: ?>
-            <p>No faculty data were available</p>
-        <?php endif ?>
-    </div>
+            <!-- /.table -->
+          </div>
+          <?php else: ?>
+              <p class="text-center">Data tidak tersedia</p>
+          <?php endif ?>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+      </section>
+      <!-- /.card -->
+  </div>
+  </div>
+  
 </div>
-
-<div class="row">
-    <!-- Button create -->
-    <div class="col-10">
-        <?= anchor("faculty/add", 'Add', ['class' => 'btn btn-primary']) ?>
-    </div>
-    
-    <!-- Button back to reviewer -->
-    <div class="col-10">
-        <?= anchor("reviewer", 'Back to reviewer', ['class' => 'btn btn-primary']) ?>
-    </div>
-</div>
+<!-- /.page-section -->

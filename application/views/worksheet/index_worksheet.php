@@ -5,63 +5,97 @@
     if (isset($keywords)) {
         $page = $this->uri->segment(3);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(2); 
     }
 
     // data table series number
     $i = isset($page) ? $page * $perPage - $perPage : 0;
 ?>
 
-<!-- Page heading -->
-<div class="row">
-    <div class="col-10">
-        <h2>Worksheet</h2>
-    </div>
-</div>
-
-<!-- Flash message -->
-<?php $this->load->view('_partial/flash_message') ?>
-
-<!--Search form -->
-<div class="row">
-    <div class="col-5">
-        &nbsp;
-    </div>
-    <div class="col-5 align-right">
-    <?= form_open('worksheet/search', ['method' => 'GET']) ?>
-        <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Title or Number', 'class' => 'col-3']) ?>
-        <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
-    <?= form_close() ?>
-    </div>
-</div>
-
-<!-- Table -->
-<div class="row">
-    <div class="col-10">
-        <?php if ($worksheets):?>
-            <table class="awn-table">
+<!-- .page-title-bar -->
+  <header class="page-title-bar">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>">Penerbitan</a>
+        </li>
+        <li class="breadcrumb-item active">
+          <a class="text-muted">Lembar Kerja</a>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="page-title"> Lembar Kerja </h1> 
+  </header>
+  <!-- /.page-title-bar -->
+  <!-- .page-section -->
+  <div class="page-section">
+    <!-- grid row -->
+    <div class="row">
+      <!-- grid column -->
+      <div class="col-12">
+        <!-- .card -->
+        <section class="card card-fluid">
+            <!-- .card-header -->
+          <header class="card-header">
+            <!-- .d-flex -->
+            <div class="d-flex align-items-center">
+              <span class="mr-auto">Tabel Lembar Kerja <span class="text-muted">(<?=$total ?>)</span></span>
+              <!-- .card-header-control -->
+              <div class="card-header-control">
+                <!-- .tombol add -->
+                <a href="<?=base_url('worksheet/add') ?>" class="btn btn-primary btn-sm">Tambah Lembar Kerja</a>
+                <!-- /.tombol add -->
+              </div>
+              <!-- /.card-header-control -->
+            </div>
+            <!-- /.d-flex -->
+          </header>
+            <!-- /.card-header -->
+           <!-- .card-body -->
+          <div class="card-body p-0">
+            <div class="p-3">
+              <!-- .input-group -->
+              <?= form_open('worksheet/search', ['method' => 'GET']) ?>
+              <div class="input-group input-group-alt">
+                <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Work Unit, Institute, NIP, Username, or Name', 'class' => 'form-control']) ?>
+                <div class="input-group-append">
+                   <?= form_button(['type' => 'submit', 'content' => 'Search', 'class' => 'btn btn-secondary']) ?>
+                </div>
+              <?= form_close() ?>
+              </div>
+              <!-- /.input-group -->
+            </div>
+            <!-- .table-responsive -->
+            <?php if ($worksheets):?>
+            <div class="table-responsive">
+              <!-- .table -->
+              <table class="table">
+                <!-- thead -->
                 <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Draft Title</th>
-                        <th scope="col">Worksheet Number</th>
-                        <th scope="col">Reprint Status</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Notes</th>
-                        <th scope="col">Last Edited by</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Action</th>
-                    </tr>
+                  <tr>
+                    <th scope="col" class="pl-4">No</th>
+                    <th scope="col">Judul Draft</th>
+                    <th scope="col">Nomor Lembar Kerja</th>
+                    <th scope="col">Jenis</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">PIC</th>
+                    <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                  </tr>
                 </thead>
+                <!-- /thead -->
+                <!-- tbody -->
                 <tbody>
-                    <?php foreach($worksheets as $worksheet):?>
-                    <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
-                        <td><?= ++$i ?></td>
-                        <td><?= $worksheet->draft_title ?></td>
-                        <td><?= $worksheet->worksheet_num ?></td>
-                        <td><?= $worksheet->is_reprint == 'y' ? 'Reprint' : 'Not Reprint' ?></td>
-                        <td><?=
+                  <?php foreach($worksheets as $worksheet): ?>
+                  <!-- tr -->
+                  <tr>
+                    <td class="align-middle pl-4"><?= ++$i ?></td>
+                    <td class="align-middle"><a href="<?= base_url('draft/view/'.$worksheet->draft_id) ?>"><?= $worksheet->draft_title ?></a></td>
+                    <td class="align-middle"><?= $worksheet->worksheet_num ?></td>
+                    <td class="align-middle"><?= $worksheet->is_reprint == 'y' ? 'Cetak Ulang' : 'Baru' ?></td>
+                    <td class="align-middle"><?=
                             $status = "";
                             if ($worksheet->worksheet_status > 0) {
                                 if ($worksheet->worksheet_status == 1) {
@@ -74,53 +108,55 @@
                             }
                             echo $status;
                             ?>        
-                        </td>
-                        <td><?= $worksheet->worksheet_notes ?></td>
-                        <td><?= $worksheet->worksheet_pic ?></td>
-                        <td><?= anchor("worksheet/edit/$worksheet->worksheet_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?php if ($worksheet->worksheet_status > 0) {
-                                echo "";
-                            } else {
-                                ?>
-                                <?= form_open("worksheet/action/$worksheet->worksheet_id/1") ?>
-                                    <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
-                                    <?= form_button(['type' => 'submit', 'content' => 'Approve', 'class' => 'btn-success']) ?>
-                                <?= form_close() ?>
+                    </td>
+                    <td class="align-middle"><?= $worksheet->worksheet_pic ?></td>
+                    <td class="align-middle text-right">
 
-                                <?= form_open("worksheet/action/$worksheet->worksheet_id/2") ?>
-                                    <?= form_hidden('worksheet_id', $worksheet->worksheet_id) ?>
-                                    <?= form_button(['type' => 'submit', 'content' => 'Reject', 'class' => 'btn-danger']) ?>
-                                <?= form_close() ?>
-                            <?php
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
+                      <a href="<?= base_url('worksheet/action/'.$worksheet->worksheet_id.'/1') ?>" class="btn btn-sm btn-success">
+                        <i class="fa fa-check"></i>
+                        <span class="sr-only">Setuju</span>
+                      </a>
+                       <a href="<?= base_url('worksheet/action/'.$worksheet->worksheet_id.'/2') ?>" class="btn btn-sm btn-danger">
+                        <i class="fa fa-ban"></i>
+                        <span class="sr-only">Setuju</span>
+                      </a>
+                      <span>-</span>
+                      <a href="<?= base_url('worksheet/edit/'.$worksheet->worksheet_id.'') ?>" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-pencil-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                      <a href="<?= base_url('worksheet/delete/'.$worksheet->worksheet_id.'') ?>" class="btn btn-sm btn-danger">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="sr-only">Delete</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <!-- /tr -->
+                  <?php endforeach ?>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
-                    </tr>
-                </tfoot>
-            </table>
-        <?php else: ?>
-            <p>Worksheet data were not available</p>
-        <?php endif ?>
+                <!-- /tbody -->
+              </table>
+              <!-- /.table -->
+            </div>
+            <?php else: ?>
+                <p class="text-center">Data tidak tersedia</p>
+            <?php endif ?>
+            <!-- /.table-responsive -->
+             <!-- Pagination -->
+                <?php if ($pagination): ?>          
+                  <?= $pagination ?>
+                <?php else: ?>
+                    &nbsp;
+                <?php endif ?>
+            <!-- .pagination -->
+          </div>
+          <!-- /.card-body -->
+        </section>
+        <!-- /.card -->
+      </div>
+      <!-- /grid column -->
     </div>
-</div>
+    <!-- /grid row -->
+  </div>
+  <!-- /.page-section -->
 
-<div class="row">
-
-    <!-- Pagination -->
-    <div class="col-2">
-    <?php if ($pagination): ?>
-        <div id="pagination"  class="float-right">
-            <?= $pagination ?>
-        </div>
-    <?php else: ?>
-        &nbsp;
-    <?php endif ?>
-    </div>
-</div>

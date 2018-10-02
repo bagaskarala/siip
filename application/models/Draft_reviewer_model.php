@@ -17,11 +17,11 @@ class Draft_reviewer_model extends MY_Model
 //                'label' => 'Reviewer ID',
 //                'rules' => 'trim|required'
 //            ],
-            // [
-            //     'field' => 'reviewer_id',
-            //     'label' => 'reviewer ID',
-            //     'rules' => 'trim|required|callback_unique_draft_reviewer_match'
-            // ],
+            [
+                'field' => 'reviewer_id',
+                'label' => 'reviewer ID',
+                'rules' => 'trim|required|callback_unique_draft_reviewer_match'
+            ],
         ];
 
         return $validationRules;

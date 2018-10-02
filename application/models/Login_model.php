@@ -44,18 +44,16 @@ class Login_model extends MY_Model
                           ->row();
 
         if (count($user)) {
-            // EDWARD :: Tambahin ini
             $role_id = $user->user_id;
             if ($user->level == "author" || $user->level == "reviewer") {
                 $role_id = $this->login->getIdRoleFromUserId($user->user_id, $user->level);
             }
-
             $data = [
                 'username' => $user->username,
                 'level'    => $user->level,
                 'is_login' => true,
                 'user_id'  => $user->user_id,
-                'role_id'  => $role_id // EDWARD :: ini juga tambahin
+                'role_id'  => $role_id
             ];
 
             $this->session->set_userdata($data);
@@ -70,7 +68,8 @@ class Login_model extends MY_Model
         $data = [
             'username' => null,
             'level'    => null,
-            'is_login' => null
+            'is_login' => null,
+            'user_id'  => null
         ];
         $this->session->unset_userdata($data);
         $this->session->sess_destroy();

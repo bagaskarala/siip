@@ -10,29 +10,20 @@ class Draft_reviewer extends Operator_Controller
 
 	public function index($page = null)
 	{
-        // $drafts     = $this->draft_reviewer->join('draft')->join('reviewer')->orderBy('draft.draft_id')->orderBy('reviewer.reviewer_id')->orderBy('draft_reviewer_id')->paginate($page)->getAll();
-        // $tot        = $this->draft_reviewer->join('draft')->join('reviewer')->orderBy('draft.draft_id')->orderBy('reviewer.reviewer_id')->orderBy('draft_reviewer_id')->getAll();
-
-        $drafts     = $this->draft_reviewer->where('draft_status', 1)->orderBy('draft.draft_id', 'DESC')->paginate($page)->getAll('draft');
-        $tot        = $this->draft_reviewer->where('draft_status', 1)->orderBy('draft.draft_id', 'DESC')->getAll('draft');
-
-        foreach ($drafts as $key => $value) {
-            $reviewers = $this->draft_reviewer->select('reviewer_nip')->getIdAndName('reviewer', 'draft_reviewer', $value->draft_id, 'draft');
-            $value->draft_reviewers = $reviewers;
-        }
-
+        $draft_reviewers     = $this->draft_reviewer->join('draft')->join('reviewer')->orderBy('draft.draft_id')->orderBy('reviewer.reviewer_id')->orderBy('draft_reviewer_id')->paginate($page)->getAll();
+        $tot        = $this->draft_reviewer->join('draft')->join('reviewer')->orderBy('draft.draft_id')->orderBy('reviewer.reviewer_id')->orderBy('draft_reviewer_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->draft_reviewer->makePagination(site_url($this->pages), 2, $total);
+        $main_view  = 'draftreviewer/index_draft_reviewer';
+        $pagination = $this->draft_reviewer->makePagination(site_url('draftreviewer'), 2, $total);
 
-		$this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
+		$this->load->view('template', compact('pages', 'main_view', 'draft_reviewers', 'pagination', 'total'));
 	}
         
 // -- add --        
         public function add()
 	{
-            
+        $data = array();
         if (!$_POST) {
             $input = (object) $this->draft_reviewer->getDefaultValues();
         } else {
@@ -40,52 +31,65 @@ class Draft_reviewer extends Operator_Controller
         }
 
         if (!$this->draft_reviewer->validate()) {
-            $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
+            $data['validasi'] = false;
+            echo json_encode($data);
+            // $pages     = $this->pages;
+            // $main_view   = 'draftreviewer/form_draft_reviewer';
+            // $form_action = 'draftreviewer/add';
+            // $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+            return;
+        }
+        //$data['draft'] =array();
+        $datax = array('draft_id' => $input->draft_id);
+        $data['jmlreviewer'] = count($this->draft_reviewer->getAllWhere($datax));
 
-            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+        if($data['jmlreviewer'] >1){
+            $data['validasi'] = 'max';
+            echo json_encode($data);
             return;
         }
         
-//        unset($input->search_reviewer);
-
         if ($this->draft_reviewer->insert($input)) {
-            $this->session->set_flashdata('success', 'Data saved');
+            $status = array('draft_status' => 4);
+            $this->draft_reviewer->editDraftDate($input->draft_id, 'review_start_date');
+            $this->draft_reviewer->updateDraftStatus($input->draft_id, $status);
+            $current_date = strtotime(date('Y-m-d H:i:s'));
+            $end_date = 60 * 24 * 60 * 60;
+            $deadline = date('Y-m-d H:i:s', ($current_date + $end_date));
+            $this->draft_reviewer->editDraftDate($input->draft_id, 'review1_deadline', $deadline);
+            $this->draft_reviewer->editDraftDate($input->draft_id, 'review2_deadline', $deadline);
+            $data['validasi'] = true;
+            $data['status'] = true;
+            //$this->session->set_flashdata('success', 'Data saved');
         } else {
-            $this->session->set_flashdata('error', 'Data failed to save');
+            $data['validasi'] = true;
+            $data['status'] = false;
+            //$this->session->set_flashdata('error', 'Data failed to save');
         }
+        echo json_encode($data);
 
-        redirect($this->pages);
 	}
 
 
 // -- edit --        
         public function edit($id = null)
 	{
-            
-        $data = array('draft_id' => $id);
-        $draft = $this->draft_reviewer->getWhere($data, 'draft');
-
-        $reviewers = $this->draft_reviewer->getIdAndName('reviewer', 'draft_reviewer', $draft->draft_id, 'draft');
-        $reviewers_id = array();
-
-        foreach ($reviewers as $key => $value) {
-            $reviewers_id[$key] = $value->reviewer_id;
+        $draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
+        if (!$draft_reviewer) {
+            $this->session->set_flashdata('warning', 'Draft Reviewer data were not available');
+            redirect('draftreviewer');
         }
 
-        $draft->reviewer_id =  $reviewers_id;
-
         if (!$_POST) {
-            $input = (object) $draft;
+            $input = (object) $draft_reviewer;
         } else {
             $input = (object) $this->input->post(null, true);
         }
 
         if (!$this->draft_reviewer->validate()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/edit/' . $id;
+            $main_view   = 'draftreviewer/form_draft_reviewer';
+            $form_action = "draftreviewer/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -94,60 +98,22 @@ class Draft_reviewer extends Operator_Controller
         
         unset($input->search_reviewer);
 
-        $isSuccess = true;
-
-        foreach ($input->reviewer_id as $key => $value) {
-            if (isset($draft->reviewer_id[$key])) {
-                $draft_reviewer_id = $this->draft_reviewer->getPKTableId('reviewer', 'draft', 'draft_reviewer', $draft->reviewer_id[$key], $id);
-
-                if ($draft_reviewer_id > 0) {
-                    $isSuccess = true;
-                    $data_input = array('reviewer_id' => $value);
-
-                    $this->draft_reviewer->where('draft_reviewer_id', $draft_reviewer_id)
-                                         ->update($data_input, 'draft_reviewer');
-
-                } else {
-                    $isSuccess = false;
-                    break;
-                }
-            } else {
-                $data_reviewer = array('reviewer_id' => $value, 'draft_id' => $id);
-
-                $draft_reviewer_id = $this->draft_reviewer->insert($data_reviewer, 'draft_reviewer');
-
-                if ($draft_reviewer_id < 1) {
-                    $isSuccess = false;
-                    break;
-                }
-            }
-        }
-
-        if ($isSuccess) {
-            $status = 4;
-            $status = array('draft_status' => $status);
-            $this->draft_reviewer->editDraftDate($id, 'review_start_date');
-            $this->draft_reviewer->updateDraftStatus($draft->draft_id, $status);
-            $current_date = strtotime(date('Y-m-d H:i:s'));
-            $end_date = 60 * 24 * 60 * 60;
-            $date = $current_date + $end_date;
-            $date = date('Y-m-d H:i:s', $date);
-            $this->draft_reviewer->editDraftDate($id, 'review_deadline_date', $date);
+        if ($this->draft_reviewer->where('draft_reviewer_id', $id)->update($input)) {
             $this->session->set_flashdata('success', 'Data updated');
         } else {
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect($this->pages);
+        redirect('draftreviewer');
 	}
         
 // -- delete --        
         public function delete($id = null)
 	{
-	$draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
+	   $draft_reviewer = $this->draft_reviewer->where('draft_reviewer_id', $id)->get();
         if (!$draft_reviewer) {
             $this->session->set_flashdata('warning', 'Draft Reviewer data were not available');
-            redirect($this->role . '/' . $this->pages);
+            redirect('draftreviewer');
         }
 
         if ($this->draft_reviewer->where('draft_reviewer_id', $id)->delete()) {
@@ -156,7 +122,7 @@ class Draft_reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+		redirect('draftreviewer');
 	}
 
 ////-- auto complete --        
@@ -183,7 +149,7 @@ class Draft_reviewer extends Operator_Controller
         public function search($page = null)
         {
         $keywords   = $this->input->get('keywords', true);
-        $drafts     = $this->draft_reviewer->like('draft_reviewer_id', $keywords)
+        $draft_reviewers     = $this->draft_reviewer->like('draft_reviewer_id', $keywords)
                                   ->orLike('draft_title', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->orLike('reviewer_nip', $keywords)
@@ -210,14 +176,14 @@ class Draft_reviewer extends Operator_Controller
 
         $pagination = $this->draft_reviewer->makePagination(site_url('draft_reviewer/search/'), 3, $total);
 
-        if (!$drafts) {
+        if (!$draft_reviewers) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('draftreviewer');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
+        $main_view  = 'draftreviewer/index_draft_reviewer';
+        $this->load->view('template', compact('pages', 'main_view', 'draft_reviewers', 'pagination', 'total'));
     }
         
         /*
@@ -236,19 +202,19 @@ class Draft_reviewer extends Operator_Controller
 //
     public function unique_draft_reviewer_match()
     {
-        // $reviewer_id      = $this->input->post('reviewer_id');
-        // $draft_id      = $this->input->post('draft_id');
-        // $draft_reviewer_id = $this->input->post('draft_reviewer_id');
+        $reviewer_id      = $this->input->post('reviewer_id');
+        $draft_id      = $this->input->post('draft_id');
+        $draft_reviewer_id = $this->input->post('draft_reviewer_id');
 
-        // $this->draft_reviewer->where('reviewer_id', $reviewer_id);
-        // $this->draft_reviewer->where('draft_id', $draft_id);
-        // !$draft_reviewer_id || $this->draft_reviewer->where('draft_reviewer_id !=', $draft_reviewer_id);
-        // $draft_reviewer = $this->draft_reviewer->get();
+        $this->draft_reviewer->where('reviewer_id', $reviewer_id);
+        $this->draft_reviewer->where('draft_id', $draft_id);
+        !$draft_reviewer_id || $this->draft_reviewer->where('draft_reviewer_id !=', $draft_reviewer_id);
+        $draft_reviewer = $this->draft_reviewer->get();
 
-        // if (count($draft_reviewer)) {
-        //     $this->form_validation->set_message('unique_draft_reviewer_match', 'Both of %s has been used');
-        //     return false;
-        // }
+        if (count($draft_reviewer)) {
+            $this->form_validation->set_message('unique_draft_reviewer_match', 'Both of %s has been used');
+            return false;
+        }
         return true;
     }
 

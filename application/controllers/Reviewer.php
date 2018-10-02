@@ -14,8 +14,8 @@ class Reviewer extends Operator_Controller
         $tot        = $this->reviewer->join('faculty')->join('user')->orderBy('faculty.faculty_id')->orderBy('reviewer_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->reviewer->makePagination(site_url($this->pages), 2, $total);
+        $main_view  = 'reviewer/index_reviewer';
+        $pagination = $this->reviewer->makePagination(site_url('reviewer'), 2, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'reviewers', 'pagination', 'total'));
 	}
@@ -23,17 +23,17 @@ class Reviewer extends Operator_Controller
         
         public function add()
 	{
-            
         if (!$_POST) {
             $input = (object) $this->reviewer->getDefaultValues();
         } else {
             $input = (object) $this->input->post(null, true);
         }
+        $input->expert = implode(",",$input->expert);
 
         if (!$this->reviewer->validate()) {
             $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
+            $main_view   = 'reviewer/form_reviewer';
+            $form_action = 'reviewer/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -45,16 +45,29 @@ class Reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('reviewer');
 	}
         
         public function edit($id = null)
 	{
-            
         $reviewer = $this->reviewer->where('reviewer_id', $id)->get();
+
+        // untuk select2 tags sumber
+        $allexpert = $this->reviewer->select('expert')->getAll();
+        foreach ($allexpert as $value) {
+            $pecah = explode(",",$value->expert);
+            foreach ($pecah as $key => $value) {        
+                $reviewer->sumber[$value] = $value;
+            }
+        }
+        
+        // untuk select2 tags pilihan
+        $reviewer->pilih = explode(",",$reviewer->expert);
+        
+
         if (!$reviewer) {
             $this->session->set_flashdata('warning', 'Reviewer data were not available');
-            redirect($this->pages);
+            redirect('reviewer');
         }
 
         if (!$_POST) {
@@ -65,12 +78,15 @@ class Reviewer extends Operator_Controller
 
         if (!$this->reviewer->validate()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $main_view   = 'reviewer/form_reviewer';
+            $form_action = "reviewer/edit/$id";
 
-            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+            $this->load->view('template', compact('siap','pages', 'main_view', 'form_action', 'input'));
             return;
         }
+
+        //gabungkan array masuk ke db
+        $input->expert = implode(",",$input->expert);
 
         if ($this->reviewer->where('reviewer_id', $id)->update($input)) {
             $this->session->set_flashdata('success', 'Data updated');
@@ -78,7 +94,7 @@ class Reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect($this->pages);
+        redirect('reviewer');
 	}
         
         public function delete($id = null)
@@ -86,7 +102,7 @@ class Reviewer extends Operator_Controller
 	$reviewer = $this->reviewer->where('reviewer_id', $id)->get();
         if (!$reviewer) {
             $this->session->set_flashdata('warning', 'Reviewer data were not available');
-            redirect($this->pages);
+            redirect('reviewer');
         }
 
         if ($this->reviewer->where('reviewer_id', $id)->delete()) {
@@ -95,7 +111,7 @@ class Reviewer extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+		redirect('reviewer');
 	}
         
         public function search($page = null)
@@ -104,6 +120,7 @@ class Reviewer extends Operator_Controller
         $reviewers     = $this->reviewer->like('reviewer_nip', $keywords)
                                   ->orLike('reviewer_name', $keywords)
                                   ->orLike('faculty_name', $keywords)
+                                  ->orLike('expert', $keywords)
                                   ->orLike('username', $keywords)
                                   ->join('faculty')
                                   ->join('user')
@@ -113,6 +130,7 @@ class Reviewer extends Operator_Controller
                                   ->getAll();
         $tot        = $this->reviewer->like('reviewer_id', $keywords)
                                   ->orLike('reviewer_name', $keywords)
+                                  ->orLike('expert', $keywords)
                                   ->join('faculty')
                                   ->orderBy('faculty.faculty_id')
                                   ->orderBy('reviewer_name')
@@ -123,11 +141,11 @@ class Reviewer extends Operator_Controller
 
         if (!$reviewers) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('reviewer');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'reviewer/index_reviewer';
         $this->load->view('template', compact('pages', 'main_view', 'reviewers', 'pagination', 'total'));
     }
         

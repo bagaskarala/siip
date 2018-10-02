@@ -14,16 +14,53 @@ class Draft_author extends Operator_Controller
         $tot        = $this->draft_author->join('draft')->join('author')->orderBy('draft.draft_id')->orderBy('author.author_id')->orderBy('draft_author_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->draft_author->makePagination(site_url($this->pages), 2, $total);
+        $main_view  = 'draftauthor/index_draft_author';
+        $pagination = $this->draft_author->makePagination(site_url('draftauthor'), 2, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'draft_authors', 'pagination', 'total'));
 	}
+
+    // public function addmulti($draft_id = null)
+    // {
+    //     $input = $this->input->post(null, true);
+
+    //     // $data =array();
+    //     // foreach ($inputs as $input) {
+    //     //      $data[$i] = array(
+    //     //        'author_id' => $input['author_id'],
+    //     //        'draft_id' => $input['draft_id'], 
+    //     //     );
+    //     //  }
+    //     // $this->db->insert_batch('draft_author', $data);
+    //     $isSuccess = true;
+
+    //     foreach ($input->author_id as $key => $value) {
+    //         $data_author = array('author_id' => $value, 'draft_id' => $draft_id);
+
+    //         $draft_author_id = $this->draft->insert($data_author, 'draft_author');
+
+    //         if ($draft_author_id < 1 ) {
+    //             $isSuccess = false;
+    //             break;
+    //         } else {
+    //             $isSuccess = true;
+    //         }
+    //     }
+
+    //     if ($isSuccess) {
+    //         $this->session->set_flashdata('success', 'Data saved');
+    //     } else {
+    //         $this->session->set_flashdata('error', 'Data author failed to save');
+    //     }
+
+    //     redirect('draft/view/'.$input->draft_id);
+
+    // }
         
-        
+    
         public function add()
 	{
-            
+        $data = array();
         if (!$_POST) {
             $input = (object) $this->draft_author->getDefaultValues();
         } else {
@@ -31,30 +68,34 @@ class Draft_author extends Operator_Controller
         }
 
         if (!$this->draft_author->validate()) {
-            $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
-
-            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+            $data['validasi'] = false;
+            echo json_encode($data);
+            // $pages     = $this->pages;
+            // $main_view   = 'draftauthor/form_draft_author';
+            // $form_action = 'draftauthor/add';
+            // $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
 
         if ($this->draft_author->insert($input)) {
-            $this->session->set_flashdata('success', 'Data saved');
+            $data['validasi'] = true;
+            $data['status'] = true;
+            //$this->session->set_flashdata('success', 'Data saved');
         } else {
-            $this->session->set_flashdata('error', 'Data failed to save');
+            $data['validasi'] = true;
+            $data['status'] = false;
+            //$this->session->set_flashdata('error', 'Data failed to save');
         }
-
-        redirect($this->pages);
+        echo json_encode($data);
+        
 	}
         
         public function edit($id = null)
 	{
-            
         $draft_author = $this->draft_author->where('draft_author_id', $id)->get();
         if (!$draft_author) {
             $this->session->set_flashdata('warning', 'Draft Author data were not available');
-            redirect($this->pages);
+            redirect('draftauthor');
         }
 
         if (!$_POST) {
@@ -65,8 +106,8 @@ class Draft_author extends Operator_Controller
 
         if (!$this->draft_author->validate()) {
             $pages    = $this->pages;
-            $main_view   = $$this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/'. $id;
+            $main_view   = 'draftauthor/form_draft_author';
+            $form_action = "draftauthor/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -78,24 +119,31 @@ class Draft_author extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect($this->pages);
+        redirect('draftauthor');
 	}
         
         public function delete($id = null)
 	{
-	$draft_author = $this->draft_author->where('draft_author_id', $id)->get();
+        $data = array();
+        $draft_author = $this->draft_author->where('draft_author_id', $id)->get();
         if (!$draft_author) {
+            $data['cek'] = false;
             $this->session->set_flashdata('warning', 'Draft Author data were not available');
-            redirect($this->pages);
+            //redirect('draftauthor');
         }
-
         if ($this->draft_author->where('draft_author_id', $id)->delete()) {
+            $data['cek'] = true;
+            $data['status'] = true;
             $this->session->set_flashdata('success', 'Data deleted');
 		} else {
+            $data['cek'] = true;
+            $data['status'] = false;
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+        echo json_encode($data);
+
+
 	}
         
         public function search($page = null)
@@ -130,11 +178,11 @@ class Draft_author extends Operator_Controller
 
         if (!$draft_authors) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('draftauthor');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'draftauthor/index_draft_author';
         $this->load->view('template', compact('pages', 'main_view', 'draft_authors', 'pagination', 'total'));
     }
         

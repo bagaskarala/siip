@@ -1,116 +1,155 @@
-<div class="row">
-    <div class="col-10 no-margin">
-        <h2>User</h2>
+<!-- .page-title-bar -->
+  <header class="page-title-bar">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="<?=base_url('user')?>">User</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a class="text-muted">Form</a>
+        </li>
+      </ol>
+    </nav> 
+  </header>
+  <!-- /.page-title-bar -->
+<!-- .page-section -->
+<div class="page-section">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- .card -->
+    <section id="data-author" class="card">
+      <!-- .card-body -->
+      <div class="card-body">
+        <!-- .form -->
+        <?= form_open($form_action,'class="needs-validation" novalidate=""') ?>
+          <!-- .fieldset -->
+          <fieldset>
+            <legend>Data User</legend>
+            <?= isset($input->user_id) ? form_hidden('user_id', $input->user_id) : '' ?>
+            <!-- .form-group -->
+            <div class="form-group">
+              <label for="username">Username
+                <abbr title="Required">*</abbr>
+              </label>
+              <div class="has-clearable">
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">
+                    <i class="fa fa-times-circle"></i>
+                  </span>
+                </button>
+              <?= form_input('username', $input->username, 'class="form-control" id="username" required ') ?>
+              <div class="invalid-feedback">Field is required</div>
+              </div>
+              <?= form_error('username') ?>
+            </div>
+            <!-- /.form-group -->
+            <!-- .form-group -->
+            <div class="form-group">
+              <label for="password">Password
+                <abbr title="Required">*</abbr>
+              </label>
+              <div class="has-clearable">
+                <button type="button" class="close" aria-label="Close">
+                  <span aria-hidden="true">
+                    <i class="fa fa-times-circle"></i>
+                  </span>
+                </button>
+             <?= form_password('password','' ,'class="form-control" id="password"') ?>
+              </div>
+              <?= form_error('password') ?>
+            </div>
+            <!-- /.form-group -->
+            <div class="row" id="hilang">
+              <div class="col-md-6">
+                <!-- .form-group -->
+                  <div class="form-group">
+                    <label>Level</label>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'superadmin',
+                          isset($input->level) && ($input->level == 'superadmin') ? true : false,'required class="custom-control-input" id="level1"')?>
+                        <label class="custom-control-label" for="level1">Superadmin</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'admin_penerbitan',
+                          isset($input->level) && ($input->level == 'admin_penerbitan') ? true : false, 'class="custom-control-input" id="level2"')?>
+                        <label class="custom-control-label" for="level2">Admin Penerbitan</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'editor',
+                          isset($input->level) && ($input->level == 'editor') ? true : false,' class="custom-control-input" id="level3"')?>
+                        <label class="custom-control-label" for="level3">Editor</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'layouter',
+                          isset($input->level) && ($input->level == 'layouter') ? true : false,' class="custom-control-input" id="level4"')?>
+                        <label class="custom-control-label" for="level4">Layouter</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'author',
+                          isset($input->level) && ($input->level == 'author') ? true : false,' class="custom-control-input" id="level5"')?>
+                        <label class="custom-control-label" for="level5">Author</label>
+                      </div>
+                      <div class="custom-control custom-radio">
+                        <?= form_radio('level', 'reviewer',
+                          isset($input->level) && ($input->level == 'reviewer') ? true : false,' class="custom-control-input" id="level6"')?>
+                        <label class="custom-control-label" for="level6">Reviewer</label>
+                      </div>
+                      <div class="invalid-feedback">Field is required</div>
+                     <?= form_error('level') ?>
+                  </div>
+                  <!-- /.form-group -->
+              </div>
+              <div class="col-md-6">
+                <!-- .form-group -->
+                <div class="form-group">
+                  <label>Status</label>
+                  <div>
+                    <!-- button radio -->
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary <?=($input->is_blocked == 'y') ? 'active' : '' ?>">
+                      <?= form_radio('is_blocked', 'y',
+                      isset($input->is_blocked) && ($input->is_blocked == 'y') ? true : false,'required class="custom-control-input" id="blocked1"')?> Blocked</label>
+                    <label class="btn btn-secondary <?=($input->is_blocked == 'n') ? 'active' : '' ?>">
+                      <?= form_radio('is_blocked', 'n',
+                      isset($input->is_blocked) && ($input->is_blocked == 'n') ? true : false,' class="custom-control-input" id="blocked2"')?> Not Blocked</label>
+                  </div>
+                  <!-- /button radio -->
+                  </div>
+                  
+                   <?= form_error('is_blocked') ?>
+                </div>
+                <!-- /.form-group -->
+              </div>
+            </div>
+            
+            
+          
+          </fieldset>
+          <!-- /.fieldset -->
+          <hr>
+          <!-- .form-actions -->
+          <div class="form-actions">
+            <button class="btn btn-primary ml-auto" type="submit">Submit data</button>
+          </div>
+          <!-- /.form-actions -->
+        </form>
+        <!-- /.form -->
+      </div>
+      <!-- /.card-body -->
+    </section>
+    <!-- /.card -->
     </div>
+  </div>
 </div>
+<!-- /.page-section -->
 
-<?= form_open($form_action) ?>
+<?php if ($input->username == 'superadmin'): ?>
+  <script>
+    $('#hilang').hide();
+  </script>
+<?php endif ?>
 
-    <?= isset($input->user_id) ? form_hidden('user_id', $input->user_id) : '' ?>
 
-    <!-- username -->
-    <div class="row form-group">
-        <div class="col-2">
-            <?= form_label('Username', 'username', ['class' => 'label']) ?>
-        </div>
-        <div class="col-4">
-            <?= form_input('username', $input->username) ?>
-        </div>
-        <div class="col-4">
-            <?= form_error('username') ?>
-        </div>
-    </div>
-
-    <!-- password -->
-    <div class="row form-group">
-        <div class="col-2">
-            <?= form_label('Password', 'password', ['class' => 'label']) ?>
-        </div>
-        <div class="col-4">
-            <?= form_password('password') ?>
-        </div>
-        <div class="col-4">
-            <?= form_error('password') ?>
-        </div>
-    </div>
-
-    <!-- level -->
-    <div class="row form-group">
-        <div class="col-2">
-            <p class="label">Level</p>
-        </div>
-        <div class="col-4">
-            <label class="block-label">
-                <?= form_radio('level', 'superadmin',
-                    isset($input->level) && ($input->level == 'superadmin') ? true : false)
-                ?> Superadmin
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'admin_penerbitan',
-                    isset($input->level) && ($input->level == 'admin_penerbitan') ? true : false)
-                ?> Admin Penerbitan
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'staff_penerbitan',
-                    isset($input->level) && ($input->level == 'staff_penerbitan') ? true : false)
-                ?> Staff Penerbitan
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'admin_pemasaran',
-                    isset($input->level) && ($input->level == 'admin_pemasaran') ? true : false)
-                ?> Admin Pemasaran
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'admin_percetakan',
-                    isset($input->level) && ($input->level == 'admin_percetakan') ? true : false)
-                ?> Admin Percetakan
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'admin_gudang',
-                    isset($input->level) && ($input->level == 'admin_gudang') ? true : false)
-                ?> Admin Gudang
-            </label>
-            <label class="block-label">
-                <?= form_radio('level', 'author',
-                    isset($input->level) && ($input->level == 'author') ? true : false)
-                ?> Author
-            </label>      
-            <label class="block-label">
-                <?= form_radio('level', 'reviewer',
-                    isset($input->level) && ($input->level == 'reviewer') ? true : false)
-                ?> Reviewer
-            </label>                
-        </div>
-        <div class="col-4">
-            <?= form_error('level') ?>
-        </div>
-    </div>
-
-    <!-- is_blocked -->
-    <div class="row form-group">
-        <div class="col-2">
-            <p class="label">Block Status</p>
-        </div>
-        <div class="col-4">
-            <label class="block-label">
-                <?= form_radio('is_blocked', 'y',
-                    isset($input->is_blocked) && ($input->is_blocked == 'y') ? true : false)
-                ?> Yes
-            </label>
-            <label class="block-label">
-                <?= form_radio('is_blocked', 'n',
-                    isset($input->is_blocked) && ($input->is_blocked == 'n') ? true : false)
-                ?> No
-            </label>
-        </div>
-        <div class="col-4">
-            <?= form_error('is_blocked') ?>
-        </div>
-    </div>
-
-    <!-- submit button -->
-    <div class="row">
-        <div class="col-2">&nbsp;</div>
-        <div class="col-8"><?= form_button(['type' => 'submit', 'content' => 'Save', 'class' => 'btn-primary']) ?></div>
-    </div>
- <?= form_close() ?>

@@ -5,102 +5,142 @@
     if (isset($keywords)) {
         $page = $this->uri->segment(3);
     } else {
-        $page = $this->uri->segment(2);
+        $page = $this->uri->segment(2); 
     }
 
     // data table series number
     $i = isset($page) ? $page * $perPage - $perPage : 0;
 ?>
 
-<!-- Page heading -->
-<div class="row">
-    <div class="col-10">
-        <h2>Reviewer</h2>
-    </div>
-</div>
-
-<!-- Flash message -->
-<?php $this->load->view('_partial/flash_message') ?>
-
-<!--Search form -->
-<div class="row">
-    <div class="col-5">
-        &nbsp;
-    </div>
-    <div class="col-5 align-right">
-    <?= form_open('reviewer/search', ['method' => 'GET']) ?>
-        <?= form_label('Find', 'key_words') ?>
-        <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Input your search here', 'class' => 'col-3']) ?>
-        <?= form_button(['type' => 'submit', 'content' => 'Find', 'class' => 'btn-default']) ?>
-    <?= form_close() ?>
-    </div>
-</div>
-
-<!-- Table -->
-<div class="row">
-    <div class="col-10">
-        <?php if ($reviewers):?>
-            <table class="awn-table">
+<!-- .page-title-bar -->
+  <header class="page-title-bar">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="<?=base_url()?>">Penerbitan</a>
+        </li>
+        <li class="breadcrumb-item active">
+          <a class="text-muted">Reviewer</a>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="page-title"> Reviewer </h1> 
+  </header>
+  <!-- /.page-title-bar -->
+  <!-- .page-section -->
+  <div class="page-section">
+    <!-- grid row -->
+    <div class="row">
+      <!-- grid column -->
+      <div class="col-12">
+        <!-- .card -->
+        <section class="card card-fluid">
+            <!-- .card-header -->
+          <header class="card-header bg-light">
+            <!-- .d-flex -->
+            <div class="d-flex align-items-center">
+              <span class="mr-auto">Tabel Reviewer <span class="text-muted">(<?=$total ?>)</span></span>
+              <!-- .card-header-control -->
+              <div class="card-header-control">
+                <!-- .tombol add -->
+                <a href="<?=base_url('reviewer/add') ?>" class="btn btn-primary btn-sm">Tambah Reviewer</a>
+                <!-- /.tombol add -->
+              </div>
+              <!-- /.card-header-control -->
+            </div>
+            <!-- /.d-flex -->
+          </header>
+            <!-- /.card-header -->
+           <!-- .card-body -->
+          <div class="card-body p-0">
+            <div class="p-3">
+              <!-- .input-group -->
+              <?= form_open('reviewer/search', ['method' => 'GET']) ?>
+              <div class="input-group input-group-alt">
+                <?= form_input('keywords', $this->input->get('keywords'), ['placeholder' => 'Enter Work Unit, Institute, NIP, Username, or Name', 'class' => 'form-control']) ?>
+                <div class="input-group-append">
+                   <?= form_button(['type' => 'submit', 'content' => 'Search', 'class' => 'btn btn-secondary']) ?>
+                </div>
+              <?= form_close() ?>
+              </div>
+              <!-- /.input-group -->
+            </div>
+            <!-- .table-responsive -->
+            <?php if ($reviewers):?>
+            <div class="table-responsive">
+              <!-- .table -->
+              <table class="table">
+                <!-- thead -->
                 <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">User Name</th>
-                        <th scope="col">Reviewer NIP</th>
-                        <th scope="col">Reviewer Name</th>
-                        <th scope="col">Faculty Name</th>                        
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
+                  <tr>
+                    <th scope="col" class="pl-4">No</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">NIP</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Fakultas</th> 
+                    <th scope="col">Bidang</th> 
+                    <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                  </tr>
                 </thead>
+                <!-- /thead -->
+                <!-- tbody -->
                 <tbody>
-                    <?php foreach($reviewers as $reviewer): ?>
-                    <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
-                        <td><?= ++$i ?></td>
-                        <td><?= $reviewer->username ?></td>
-                        <td><?= $reviewer->reviewer_nip ?></td>
-                        <td><?= $reviewer->reviewer_name ?></td>
-                        <td><?= $reviewer->faculty_name  ?></td>
-                        <td><?= anchor("reviewer/edit/$reviewer->reviewer_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?= form_open("reviewer/delete/$reviewer->reviewer_id") ?>
-                                <?= form_hidden('reviewer_id', $reviewer->reviewer_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
+                  <?php foreach($reviewers as $reviewer): ?>
+                  <!-- tr -->
+                  <tr>
+                    <td class="align-middle pl-4"><?= ++$i ?></td>
+                    <td class="align-middle"><?= $reviewer->username ?></td>
+                    <td class="align-middle"><?= $reviewer->reviewer_nip ?></td>
+                    <td class="align-middle"><?= $reviewer->reviewer_name ?></td>
+                    <td class="align-middle"><?= $reviewer->faculty_name  ?></td>
+                    <td class="align-middle"><?= $reviewer->expert  ?></td>
+                    <td class="align-middle text-right">
+                      <a href="<?= base_url('reviewer/edit/'.$reviewer->reviewer_id.'') ?>" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-pencil-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                      <a href="<?= base_url('reviewer/delete/'.$reviewer->reviewer_id.'') ?>" class="btn btn-sm btn-danger">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <!-- /tr -->
+                  <?php endforeach ?>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
-                    </tr>
-                </tfoot>
-            </table>
-        <?php else: ?>
-            <p>Reviewer data were not available</p>
-        <?php endif ?>
-    </div>
-</div>
+                <!-- /tbody -->
+              </table>
+              <!-- /.table -->
+            </div>
+            <?php else: ?>
+                <p class="text-center">Data tidak tersedia</p>
+            <?php endif ?>
+            <!-- /.table-responsive -->
+             <!-- Pagination -->
+                <?php if ($pagination): ?>          
+                  <?= $pagination ?>
+                <?php else: ?>
+                    &nbsp;
+                <?php endif ?>
+            <!-- .pagination -->
+          </div>
 
-<div class="row">
-    <!-- Button add -->
-    <div class="col-2">
-        <?= anchor("reviewer/add", 'Add', ['class' => 'btn btn-primary']) ?>
+              <!-- .card-footer -->
+            <footer class="card-footer bg-light">
+              <div class="card-footer-content text-muted">
+                  <a href="<?=base_url('faculty') ?>" class="btn btn-secondary mr-2">Fakultas</a>
+              </div>
+            </footer>
+            <!-- /.card-footer -->
+          <!-- /.card-body -->
+        </section>
+        <!-- /.card -->
+      </div>
+      <!-- /grid column -->
     </div>
-    
-        <!-- Button faculty -->
-    <div class="col-2">
-        <?= anchor("faculty", 'See Faculty List', ['class' => 'btn btn-primary']) ?>
-    </div>
-
-    <!-- Pagination -->
-    <div class="col-2">
-    <?php if ($pagination): ?>
-        <div id="pagination"  class="float-right">
-            <?= $pagination ?>
-        </div>
-    <?php else: ?>
-        &nbsp;
-    <?php endif ?>
-    </div>
-</div>
+    <!-- /grid row -->
+  </div>
+  <!-- /.page-section -->

@@ -12,17 +12,17 @@ class User extends Admin_Controller
 	public function index($page = null)
 	{
         $users      = $this->user->paginate($page)->orderBy('user_id')->getAll();
-        $total    = count($users);
+        $tot = $this->user->orderBy('user_id')->getAll();
+        $total    = count($tot);
         $pages   = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-		$this->load->view('template', compact('pages', 'main_view', 'users', 'total'));
+        $main_view  = 'user/index_user';
+        $pagination = $this->user->makePagination(site_url('user'), 2, $total);
+		$this->load->view('template', compact('pagination','pages', 'main_view', 'users', 'total'));
 	}
  
 //--add--        
         	public function add()
 	{
-                    $act = 'add';
-                    
         if (!$_POST) {
             $input = (object) $this->user->getDefaultValues();
         } else {
@@ -31,8 +31,8 @@ class User extends Admin_Controller
 
         if (!$this->user->validate()) {
             $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $act;
+            $main_view   = 'user/form_user';
+            $form_action = 'user/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -47,18 +47,16 @@ class User extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('user');
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
-            $act = 'edit';
-            
         $user = $this->user->where('user_id', $id)->get();
         if (!$user) {
             $this->session->set_flashdata('warning', 'User data were not available');
-            redirect($this->pages);
+            redirect('user');
         }
 
         if (!$_POST) {
@@ -70,8 +68,8 @@ class User extends Admin_Controller
 
         if (!$this->user->validate()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $main_view   = 'user/form_user';
+            $form_action = "user/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -90,7 +88,7 @@ class User extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('user');
 	}
 
 	public function delete($id = null)
@@ -98,7 +96,11 @@ class User extends Admin_Controller
 		$user = $this->user->where('user_id', $id)->get();
         if (!$user) {
             $this->session->set_flashdata('warning', 'User data were not available');
-            redirect($this->pages);
+            redirect('user');
+        }
+        //prevent delete superadmin
+        if ($user->level == 'superadmin' && $user->username == 'superadmin'){
+            redirect('user');
         }
 
         if ($this->user->where('user_id', $id)->delete()) {
@@ -107,7 +109,7 @@ class User extends Admin_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+		redirect('user');
 	}        
 
 // -- search -- 
@@ -134,11 +136,11 @@ class User extends Admin_Controller
 
         if (!$users) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('user');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'user/index_user';
         $this->load->view('template', compact('pages', 'main_view', 'users', 'pagination', 'total'));
     }        
         

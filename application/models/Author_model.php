@@ -75,7 +75,7 @@ class Author_model extends MY_Model
             [
                 'field' => 'user_id',
                 'label' => 'User ID',
-                'rules' => 'trim|callback_unique_author_username'
+                'rules' => 'trim|required|callback_unique_author_username'
             ]
             
             
@@ -130,8 +130,8 @@ class Author_model extends MY_Model
 
     public function deleteAuthorKTP($authorKTP)
     {
-        if (file_exists("./draftfile/$authorKTP")) {
-            unlink("./draftfile/$authorKTP");
+        if (file_exists("./authorktp/$authorKTP")) {
+            unlink("./authorktp/$authorKTP");
         }
     }
 }

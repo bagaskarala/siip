@@ -9,20 +9,38 @@ class Draft extends Operator_Controller
     }
 
 	public function index($page = null)
-	{
-        $drafts     = $this->draft->join('category')->join('theme')->orderBy('draft_id', 'desc')->orderBy('category.category_id')->orderBy('theme.theme_id')->paginate($page)->getAll();
-        $tot        = $this->draft->join('category')->join('theme')->orderBy('draft_id', 'desc')->orderBy('category.category_id')->orderBy('theme.theme_id')->getAll();
+	{  
+        $ceklevel = $this->session->userdata('level');
+        $cekusername = $this->session->userdata('username');
 
+        //get id user
+        
+        if ($ceklevel == 'author'){
+            $drafts = $this->draft->join('category')->join('theme')->join3('draft_author','draft','draft')->join3('author','draft_author','author')->join3('user','author','user')->where('user.username',$cekusername)->paginate($page)->getAll();
+            $tot = $this->draft->join3('draft_author','draft','draft')->join3('author','draft_author','author')->join3('user','author','user')->where('user.username',$cekusername)->getAll();
+        }elseif($ceklevel == 'editor' || $ceklevel == 'layouter'){
+            $drafts = $this->draft->join('category')->join('theme')->join3('responsibility','draft','draft')->join3('user','responsibility','user')->where('user.username',$cekusername)->paginate($page)->getAll();
+            $tot = $this->draft->join('category')->join('theme')->join3('responsibility','draft','draft')->join3('user','responsibility','user')->where('user.username',$cekusername)->getAll();
+        }elseif($ceklevel == 'reviewer'){
+            $drafts = $this->draft->join('category')->join('theme')->join3('draft_reviewer','draft','draft')->join3('reviewer','draft_reviewer','reviewer')->join3('user','reviewer','user')->where('user.username',$cekusername)->paginate($page)->getAll();
+            $tot = $this->draft->join('category')->join('theme')->join3('draft_reviewer','draft','draft')->join3('reviewer','draft_reviewer','reviewer')->join3('user','reviewer','user')->where('user.username',$cekusername)->getAll();
+        }else{
+            $drafts     = $this->draft->join('category')->join('theme')->orderBy('draft_title')->orderBy('category.category_id')->orderBy('theme.theme_id')->paginate($page)->getAll();
+            $tot        = $this->draft->join('category')->join('theme')->orderBy('draft_title')->orderBy('category.category_id')->orderBy('theme.theme_id')->getAll();
+        }
+        
+        //tampilkan author dan status draft
         foreach ($drafts as $key => $value) {
             $authors = $this->draft->getIdAndName('author', 'draft_author', $value->draft_id);
-            $value->author = $authors;
+            $value->authors = $authors;
             $value->draft_status = $this->checkStatus($value->draft_status);
         }
+        
 
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->draft->makePagination(site_url($this->pages), 2, $total);
+        $main_view  = 'draft/index_draft';
+        $pagination = $this->draft->makePagination(site_url('draft'), 2, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
 	}
@@ -31,12 +49,20 @@ class Draft extends Operator_Controller
 // --add--        
         public function add()
 	{
-        $act = 'add';
 
         if (!$_POST) {
             $input = (object) $this->draft->getDefaultValues();
         } else {
             $input = (object) $this->input->post(null, true);
+        }
+
+
+        if (!$this->draft->validate() || $this->form_validation->error_array()) {
+            $pages     = $this->pages;
+            $main_view   = 'draft/form_draft_add';
+            $form_action = 'draft/add';
+            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+            return;
         }
 
         if (!empty($_FILES) && $_FILES['draft_file']['size'] > 0) {
@@ -47,16 +73,8 @@ class Draft extends Operator_Controller
             if ($upload) {
                 $input->draft_file =  "$draftFileName"; // Data for column "draft".
             }
-        }
-
-        if (!$this->draft->validate() || $this->form_validation->error_array()) {
-            $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages . '_' . $act;
-            $form_action = $this->pages . '/' . $act;
-            $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
-            return;
-        }
-
+        }   
+        
         $draft_id = $this->draft->insert($input);
 
         $isSuccess = true;
@@ -93,40 +111,203 @@ class Draft extends Operator_Controller
             $this->session->set_flashdata('error', 'Data author failed to save');
         } 
 
-        redirect($this->pages);
+        redirect('draft/view/'.$draft_id);
       }
-     
-// -- edit --
-      
-      public function edit($id = null)
-	{
-        $act = 'edit';
+
+// -- view --
+      public function view($id = null)
+    {
 
         $draft = $this->draft->where('draft_id', $id)->get();
-        $authors = $this->draft->getIdAndName('author', 'draft_author', $draft->draft_id);
-
-        $author_id = array();
-
-        foreach ($authors as $key => $value) {
-            $author_id[$key] = $value->author_id;
-        }
-
-        $draft->author_id = $author_id;
-
         if (!$draft) {
             $this->session->set_flashdata('warning', 'Draft data were not available');
-            redirect($this->pages);
+            redirect('draft');
         }
+
+        //status draft
+        $draft->draft_status = $this->checkStatus($draft->draft_status);
+        
+        // ambil tabel worksheet
+        $this->load->model('Worksheet_model','worksheet',true);
+        $ambil_worksheet = ['draft_id' => $id];
+        $desk = $this->worksheet->getWhere($ambil_worksheet, 'worksheet');
+
 
         if (!$_POST) {
             $input = (object) $draft;
-            $pages    = $this->pages;
         } else {
             $input = (object) $this->input->post(null, true);
             $input->draft_file = $draft->draft_file; // Set draft file for preview.
         }
+
+        // tabel author
+        $authors =  $this->draft->select(['draft_author.author_id','draft_author_id','author_name','author_nip','work_unit_name','institute_name','draft.draft_id'])->join3('draft_author','draft','draft')->join3('author','draft_author','author')->join3('work_unit','author','work_unit')->join3('institute','author','institute')->where('draft_author.draft_id',$id)->getAll();
         
-         if (!empty($_FILES) && $_FILES['draft_file']['size'] > 0) {
+
+        // tabel reviewer
+        $reviewers =  $this->draft->select(['draft_reviewer.reviewer_id','draft_reviewer_id','reviewer_name','reviewer_nip','faculty_name','username'])->join3('draft_reviewer','draft','draft')->join3('reviewer','draft_reviewer','reviewer')->join3('faculty','reviewer','faculty')->join3('user','reviewer','user')->where('draft_reviewer.draft_id',$id)->getAll();
+
+        //cari reviewer 1 dan 2
+        $reviewer_order = key(array_filter(
+            $reviewers,
+            function ($e) {
+                return $e->username == $this->session->userdata('username');
+            }
+        ));
+
+        // tampilkan editor
+        $editors = $this->draft->select(['username','level','responsibility_id'])->join3('responsibility','draft','draft')->join3('user','responsibility','user')->where('responsibility.draft_id',$id)->where('level','editor')->getAll();
+
+        // tampilkan layouter
+        $layouters = $this->draft->select(['username','level','responsibility_id'])->join3('responsibility','draft','draft')->join3('user','responsibility','user')->where('responsibility.draft_id',$id)->where('level','layouter')->getAll();
+
+        //prevent ganti link
+        if ($this->level == "reviewer") {
+            $prevent = count(array_filter(
+                    $reviewers,
+                    function ($e) {
+                        return $e->reviewer_id == $this->role_id;
+                    }
+                ));
+            if($prevent==0){
+                redirect('draft');
+            };
+        }
+        if ($this->level == "author") {
+            $prevent = count(array_filter(
+                    $authors,
+                    function ($e) {
+                        return $e->author_id == $this->role_id;
+                    }
+                ));
+            if($prevent==0){
+                redirect('draft');
+            };
+        }
+
+
+        // If something wrong
+        if (!$this->draft->validate() || $this->form_validation->error_array()) {
+            $pages    = $this->pages;
+            $main_view   = 'draft/view/view';
+            $form_action = "draft/edit/$id";
+
+            $this->load->view('template', compact('draft','reviewer_order','desk','pages', 'main_view', 'form_action', 'input', 'authors', 'reviewers','editors','layouters'));
+            return;
+        }
+        
+
+        if ($this->draft->where('draft_id', $id)->update($input)) {
+            $this->session->set_flashdata('success', 'Data updated');
+        } else {
+            $this->session->set_flashdata('error', 'Data failed to update');
+        }
+
+        redirect('draft');
+    }
+
+    //upload file tiap tahap
+    public function upload_progress($id = null,$column){
+        $draft = $this->draft->where('draft_id', $id)->get();
+        $datatitle = ['draft_id'=>$id];
+        $title = $this->draft->getWhere($datatitle);
+        if (!$draft) {
+            $this->session->set_flashdata('warning', 'Draft data were not available');
+            redirect('draft');
+        }
+
+        if (!$_POST) {
+            $input = (object) $draft;
+        } else {
+            $input = (object) $this->input->post(null, true);
+            $input->$column = $draft->$column; // Set draft file for preview.
+        }
+
+        
+        if (!empty($_FILES) && $_FILES[$column]['size'] > 0) {
+            // Upload new draft (if any)
+            $getextension=explode(".",$_FILES[$column]['name']);            
+            $draftFileName  = str_replace(" ","_",$title->draft_title.'_'.$column . '_' . date('YmdHis').".".$getextension[1]); // draft file name
+            $upload = $this->draft->uploadProgress($column, $draftFileName);
+
+            if ($upload) {
+                $input->$column =  "$draftFileName";
+                // Delete old draft file
+                if ($draft->$column) {
+                    $this->draft->deleteProgress($draft->$column);
+                }
+            }
+        }
+
+        //If something wrong
+        // if (!$this->draft->validate() || $this->form_validation->error_array()) {
+        //     $pages    = $this->pages;
+        //     $main_view   = 'draft/view/view';
+        //     $form_action = "draft/edit/$id";
+
+        //     $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
+        //     return;
+        // }
+
+        if ($this->draft->where('draft_id', $id)->update($input)) {
+            $this->session->set_flashdata('success', 'Data updated');
+        } else {
+            $this->session->set_flashdata('error', 'Data failed to update');
+        }
+
+        redirect('draft/view/'.$id);
+
+    }
+
+// -- ubah notes - buat ubah deadline juga  
+      public function ubahnotes($id = null)
+	{
+        $data = array();
+        $draft = $this->draft->where('draft_id', $id)->get();
+        if (!$draft) {
+            $this->session->set_flashdata('warning', 'Draft data were not available');
+            redirect('draft');
+        }
+
+        if (!$_POST) {
+            $input = (object) $draft;
+        } else {
+            $input = (object) $this->input->post(null, true);
+        }
+        
+        // If something wrong
+        // if (!$this->draft->validate() || $this->form_validation->error_array()) {
+        //     return;
+        // }
+
+        if ($this->draft->where('draft_id', $id)->update($input)) {
+            //$this->session->set_flashdata('success', 'Data updated');
+            $data['status'] = true;
+        } else {
+            $data['status'] = false;
+            //$this->session->set_flashdata('error', 'Data failed to update');
+        }
+
+        echo json_encode($data);
+	}
+
+    public function edit($id = null)
+    {
+        $draft = $this->draft->where('draft_id', $id)->get();
+        if (!$draft) {
+            $this->session->set_flashdata('warning', 'Draft data were not available');
+            redirect('draft');
+        }
+
+        if (!$_POST) {
+            $input = (object) $draft;
+        } else {
+            $input = (object) $this->input->post(null, true);
+            $input->draft_file = $draft->draft_file; // Set draft file for preview.
+        }
+
+        
+        if (!empty($_FILES) && $_FILES['draft_file']['size'] > 0) {
             // Upload new draft (if any)
             $getextension=explode(".",$_FILES['draft_file']['name']);            
             $draftFileName  = str_replace(" ","_",$input->draft_title . '_' . date('YmdHis').".".$getextension[1]); // draft file name
@@ -144,58 +325,21 @@ class Draft extends Operator_Controller
         // If something wrong
         if (!$this->draft->validate() || $this->form_validation->error_array()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages . '_' . $act;
-            $form_action = $this->pages . '/' . $act . '/' . $id;
+            $main_view   = 'draft/form_draft_edit';
+            $form_action = "draft/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
 
-        $isSuccess = true;
-
         if ($this->draft->where('draft_id', $id)->update($input)) {
-            foreach ($input->author_id as $key => $value) {
-                if (isset($draft->author_id[$key])) {
-                    $draft_author_id = $this->draft->select('draft_author_id')
-                                                   ->where('author_id', $draft->author_id[$key])
-                                                   ->where('draft_id', $id)
-                                                   ->get('draft_author')
-                                                   ->draft_author_id;
-
-                    if ($draft_author_id > 0) {
-                        $isSuccess = true;
-                        $data_input = array('author_id' => $value);
-
-                        $this->draft->where('draft_author_id', $draft_author_id)
-                                    ->update($data_input, 'draft_author');
-                    } else {
-                        $isSuccess = false;
-                        break;
-                    }
-                } else {
-                    $isSuccess = true;
-                    $data_author = array('author_id' => $value, 'draft_id' => $id);
-
-                    $draft_author_id = $this->draft->insert($data_author, 'draft_author');
-
-                    if ($draft_author_id < 1) {
-                        $isSuccess = false;
-                        break;
-                    }
-                }
-            }
+            $this->session->set_flashdata('success', 'Data updated');
         } else {
-            $isSuccess = false;
+            $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        if ($isSuccess) {
-            $this->session->set_flashdata('success', 'Data Updated');
-        } else {
-            $this->session->set_flashdata('error', 'Data Failed to Update');
-        }
-
-        redirect($this->pages);
-	}
+        redirect('draft');
+    }
 
 // -- delete --        
         public function delete($id = null)
@@ -203,7 +347,7 @@ class Draft extends Operator_Controller
 	$draft = $this->draft->where('draft_id', $id)->get();
         if (!$draft) {
             $this->session->set_flashdata('warning', 'Draft data were not available');
-            redirect($this->pages);
+            redirect('draft');
         }
 
         $isSuccess = true;
@@ -215,7 +359,7 @@ class Draft extends Operator_Controller
 
         if ($affected_rows > 0) {
             if ($this->draft->where('draft_id', $id)->delete()) {
-                // Delete draftfile.
+                // Delete cover.
                 $this->draft->deleteDraftfile($draft->draft_file);
             } else {
                 $isSuccess = false;
@@ -230,7 +374,7 @@ class Draft extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-		redirect($this->pages);
+        redirect('draft');
 	}
 
 // -- search --        
@@ -262,7 +406,7 @@ class Draft extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->draft->makePagination(site_url('admin/draft/search/'), 4, $total);
+        $pagination = $this->draft->makePagination(site_url('draft/search/'), 3, $total);
 
         if (!$drafts) {
             $this->session->set_flashdata('warning', 'Data were not found');
@@ -270,59 +414,19 @@ class Draft extends Operator_Controller
         } else {
             foreach ($drafts as $key => $value) {
                 $authors = $this->draft->getIdAndName('author', 'draft_author', $value->draft_id);
-                $value->author = $authors;
+                $value->authors = $authors;
                 $value->draft_status = $this->checkStatus($value->draft_status);
             }
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'draft/index_draft';
         $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
     }
 
-    public function detail($id) {
-        $draft = $this->draft->joinRelationMiddle('draft', 'draft_author')->joinRelationMiddle('draft', 'draft_reviewer')->joinRelationMiddle('draft', 'draft_layouter')->where('draft.draft_id', $id)->get('draft');
-
-        if ($draft->draft_status >= 4) {
-            $draft->draft_status_string = $this->checkStatus($draft->draft_status);
-            $draft->draft_id = $id;
-        } else {
-            $draft = null;
-        }
-
-        // EDWARD :: Yang lu butuhin biar author sama reviewer gabisa ganti link cuma ini
-        $role_table = "";
-        $role_column = "";
-
-        if ($this->level == "reviewer") {
-            $role_table = 'draft_reviewer';
-            $role_column = $draft->reviewer_id;
-        }
-
-        if ($this->level == "author") {
-            $role_table = 'draft_author';
-            $role_column = $draft->author_id;
-        }
-
-        if ($role_table != "") {
-            if ($this->role_id != $role_column) {
-                // redirect($this->index());
-                redirect('draft');
-            }
-        }
-        // EDWARD :: Sampai sini
-
-        $pages    = $this->pages;
-        $main_view  = $this->pages . '/' . $this->pages . '_detail';
-
-        $this->load->view('template', compact('pages', 'main_view', 'draft'));
-    }
-
-    // EDWARD :: Ini fungsi yang buat case nya ganti
     public function endProgress($id, $status) {
         $this->draft->updateDraftStatus($id, array('draft_status' => $status + 1));
 
-        // EDWARD :: tinggal tambahin ininya aja nanti
         switch ($status) {
             case '4':
                 $column = 'review_end_date';
@@ -337,7 +441,7 @@ class Draft extends Operator_Controller
 
         $this->detail($id);
     }
-    // EDWARD :: Sampai sini
+
 
     public function generateWorksheetNumber() {
         $date = date('Y-m');
@@ -436,30 +540,14 @@ class Draft extends Operator_Controller
         !$draft_id || $this->draft->where('draft_id !=', $draft_id);
         $draft = $this->draft->get();
 
-        if ($draft) {
+        if (count($draft)) {
             $this->form_validation->set_message('unique_draft_title', '%s has been used');
             return false;
         }
         return true;
     }
 
-    public function unique_draft_title_author()
-    {
-        // $draft_title     = $this->input->post('draft_title');
-        // $author_id     = $this->input->post('author_id')[0];
-        // $draft_id = $this->input->post('draft_id');
-        
-        // $this->draft->where('author_id', $author_id);
-        // $this->draft->where('draft_title', $draft_title);
-        // !$draft_id || $this->draft->where('draft_id !=', $draft_id);
-        // $draft = $this->draft->get();
-
-        // if ($draft) {
-        //     $this->form_validation->set_message('unique_draft_title_author', 'Title and Author Name has been used');
-        //     return false;
-        // }
-        return true;
-    }    
+    
 
     
 }

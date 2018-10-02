@@ -10,12 +10,12 @@ class Worksheet extends Operator_Controller
 
 	public function index($page = null)
 	{
-        $worksheets     = $this->worksheet->join('draft')->orderBy('draft.draft_id', 'desc')->orderBy('worksheet_id', 'desc')->paginate($page)->getAll();
-        $tot        = $this->worksheet->join('draft')->orderBy('draft.draft_id', 'desc')->orderBy('worksheet_id', 'desc')->getAll();
+        $worksheets     = $this->worksheet->join('draft')->orderBy('draft.draft_id')->orderBy('worksheet_id')->paginate($page)->getAll();
+        $tot        = $this->worksheet->join('draft')->orderBy('draft.draft_id')->orderBy('worksheet_id')->getAll();
         $total     = count($tot);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
-        $pagination = $this->worksheet->makePagination(site_url($this->pages), 3, $total);
+        $main_view  = 'worksheet/index_worksheet';
+        $pagination = $this->worksheet->makePagination(site_url('worksheet'), 2, $total);
 
 		$this->load->view('template', compact('pages', 'main_view', 'worksheets', 'pagination', 'total'));
 	}
@@ -23,7 +23,6 @@ class Worksheet extends Operator_Controller
         
         public function add()
 	{
-            
         if (!$_POST) {
             $input = (object) $this->worksheet->getDefaultValues();
         } else {
@@ -32,8 +31,8 @@ class Worksheet extends Operator_Controller
 
         if (!$this->worksheet->validate()) {
             $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
+            $main_view   = 'worksheet/form_worksheet';
+            $form_action = 'worksheet/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -45,12 +44,11 @@ class Worksheet extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('worksheet');
 	}
         
         public function edit($id = null)
 	{
-            
         $worksheet = $this->worksheet->where('worksheet_id', $id)->get();
         $data = array('draft_id' => $worksheet->draft_id);
         $draft_title = $this->worksheet->getWhere($data, 'draft');
@@ -59,7 +57,7 @@ class Worksheet extends Operator_Controller
 
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
-            redirect($this->pages);
+            redirect('worksheet');
         }
 
         if (!$_POST) {
@@ -70,8 +68,8 @@ class Worksheet extends Operator_Controller
 
         if (!$this->worksheet->validate()) {
             $pages    = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/edit/' . $id;
+            $main_view   = 'worksheet/form_worksheet';
+            $form_action = "worksheet/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -83,16 +81,16 @@ class Worksheet extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to update');
         }
 
-        redirect($this->pages);
+        redirect('worksheet');
 	}
-        
-        public function action($id, $action)
-	{
-    	$worksheet = $this->worksheet->where('worksheet_id', $id)->get();
+
+    public function action($id, $action)
+    {
+        $worksheet = $this->worksheet->where('worksheet_id', $id)->get();
 
         if (!$worksheet) {
             $this->session->set_flashdata('warning', 'Worksheet data were not available');
-            redirect($this->pages);
+            redirect('worksheet');
         }
 
         $data = array('worksheet_status' => $action, 'worksheet_pic' => $this->username);
@@ -108,18 +106,32 @@ class Worksheet extends Operator_Controller
                 if ($action == '2') {
                     $actionMessage = 'Rejected';
                 }
-
-                $this->worksheet->insert(array('draft_id' => $worksheet->draft_id), 'transaction');
-                
                 $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
-                $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
+                $this->session->set_flashdata('success', "Worksheet Failed Update");
             }
-		} else {
-            $this->session->set_flashdata('warning', 'Worksheet Failed to Update');
+        } else {
+            $this->session->set_flashdata('warning', 'Worksheet Failed Update');
         }
 
-		redirect($this->pages);
+        redirect('worksheet');
+    }
+        
+        public function delete($id = null)
+	{
+	$worksheet = $this->worksheet->where('worksheet_id', $id)->get();
+        if (!$worksheet) {
+            $this->session->set_flashdata('warning', 'Worksheet data were not available');
+            redirect('worksheet');
+        }
+
+        if ($this->worksheet->where('worksheet_id', $id)->delete()) {
+			$this->session->set_flashdata('success', 'Data deleted');
+		} else {
+            $this->session->set_flashdata('error', 'Data failed to delete');
+        }
+
+		redirect('worksheet');
 	}
         
         public function search($page = null)
@@ -142,15 +154,15 @@ class Worksheet extends Operator_Controller
                                   ->getAll();
         $total = count($tot);
 
-        $pagination = $this->worksheet->makePagination(site_url('admin/worksheet/search/'), 3, $total);
+        $pagination = $this->worksheet->makePagination(site_url('worksheet/search/'), 3, $total);
 
         if (!$worksheets) {
             $this->session->set_flashdata('warning', 'Data were not found');
-            redirect($this->pages);
+            redirect('worksheet');
         }
 
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'worksheet/index_worksheet';
         $this->load->view('template', compact('pages', 'main_view', 'worksheets', 'pagination', 'total'));
     }
         

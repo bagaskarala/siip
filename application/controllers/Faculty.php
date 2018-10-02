@@ -13,14 +13,13 @@ class Faculty extends Operator_Controller
         $faculties     = $this->faculty->orderBy('faculty_id')->getAll();
         $total    = count($faculties);
         $pages    = $this->pages;
-        $main_view  = $this->pages . '/index_' . $this->pages;
+        $main_view  = 'faculty/index_faculty';
 		$this->load->view('template', compact('pages', 'main_view', 'faculties', 'total'));
 	}
         
 //--add--
         public function add()
-	{
-            
+	{                     
         if (!$_POST) {
             $input = (object) $this->faculty->getDefaultValues();
         } else {
@@ -29,8 +28,8 @@ class Faculty extends Operator_Controller
 
         if (!$this->faculty->validate()) {
             $pages   = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages;
+            $main_view   = 'faculty/form_faculty';
+            $form_action = 'faculty/add';
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -42,17 +41,16 @@ class Faculty extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('faculty');
 	}
         
 //--edit--        
         public function edit($id = null)
 	{
-            
         $faculty = $this->faculty->where('faculty_id', $id)->get();
         if (!$this) {
             $this->session->set_flashdata('warning', 'Faculty data were not available');
-            redirect($this->pages);
+            redirect('faculty');
         }
 
         if (!$_POST) {
@@ -63,8 +61,8 @@ class Faculty extends Operator_Controller
 
         if (!$this->faculty->validate()) {
             $pages     = $this->pages;
-            $main_view   = $this->pages . '/form_' . $this->pages;
-            $form_action = $this->pages . '/' . $id;
+            $main_view   = 'faculty/form_faculty';
+            $form_action = "faculty/edit/$id";
 
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
@@ -76,7 +74,7 @@ class Faculty extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to save');
         }
 
-        redirect($this->pages);
+        redirect('faculty');
 	}
         
 //--delete--        
@@ -85,7 +83,7 @@ class Faculty extends Operator_Controller
 		$faculty = $this->faculty->where('faculty_id', $id)->get();
         if (!$faculty) {
             $this->session->set_flashdata('warning', 'Faculty data were not available');
-            redirect($this->pages);
+            redirect('faculty');
         }
 
         if ($this->faculty->where('faculty_id', $id)->delete()) {
@@ -94,7 +92,7 @@ class Faculty extends Operator_Controller
             $this->session->set_flashdata('error', 'Data failed to delete');
         }
 
-        redirect($this->pages);
+        redirect('faculty');
 	}
         
 

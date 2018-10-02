@@ -1,58 +1,100 @@
 <?php $i = 0 ?>
-
-<!-- Page heading -->
-<div class="row">
-    <div class="col-10">
-        <h2>Theme</h2>
-    </div>
-</div>
-
-<!-- Flash message -->
-<?php $this->load->view('_partial/flash_message') ?>
-
-<!-- Table -->
-<div class="row">
-    <div class="col-6">
-        <?php if ($themes):?>
-            <table class="awn-table">
+<!-- .page-title-bar -->
+<header class="page-title-bar">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="<?=base_url()?>">Penerbitan</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="<?=base_url('draft')?>">Draft</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a class="text-muted">Tema</a>
+      </li>
+    </ol>
+  </nav>
+</header>
+<!-- /.page-title-bar -->
+<!-- .page-section -->
+<div class="page-section">
+  <!-- grid row -->
+  <div class="row">
+    <!-- grid column -->
+    <div class="col-md-6">
+      <!-- .card -->
+      <section class="card card-fluid">
+          <!-- .card-header -->
+        <header class="card-header">
+          <!-- .d-flex -->
+          <div class="d-flex align-items-center">
+            <span class="mr-auto">Tabel Tema</span>
+            <!-- .card-header-control -->
+            <div class="card-header-control">
+              <!-- .tombol add -->
+              <a href="<?=base_url('theme/add') ?>" class="btn btn-primary btn-sm">Tambah Tema</a>
+              <!-- /.tombol add -->
+            </div>
+            <!-- /.card-header-control -->
+          </div>
+          <!-- /.d-flex -->
+        </header>
+          <!-- /.card-header -->
+         <!-- .card-body -->
+        <div class="card-body">
+          <!-- .table-responsive -->
+            <?php if ($themes):?>
+            <div class="table-responsive">
+              <!-- .table -->
+              <table class="table">
+                <!-- thead -->
                 <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Theme Name</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
+                  <tr>
+                    <th scope="col" class="pl-4">No</th>
+                    <th scope="col">Tema</th>
+                    <th style="width:100px; min-width:100px;"> &nbsp; </th>
+                  </tr>
                 </thead>
+                <!-- /thead -->
+                <!-- tbody -->
                 <tbody>
-                    <?php foreach($themes as $theme): ?>
-                    <?= ($i & 1) ? '<tr class="zebra">' : '<tr>'; ?>
-                        <td><?= ++$i ?></td>
-                        <td><?= $theme->theme_name ?></td>
-                        <td><?= anchor("theme/edit/$theme->theme_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
-                        <td>
-                            <?= form_open("theme/delete/$theme->theme_id") ?>
-                                <?= form_hidden('theme_id', $theme->theme_id) ?>
-                                <?= form_button(['type' => 'submit', 'content' => 'Delete', 'class' => 'btn-danger']) ?>
-                            <?= form_close() ?>
-                        </td>
-                    </tr>
-                    <?php endforeach ?>
+                  <?php foreach($themes as $theme): ?>
+                  <!-- tr -->
+                  <tr>
+                    <td class="align-middle pl-4"><?= ++$i ?></td>
+                    <td class="align-middle"><?= $theme->theme_name ?></td>
+                    <td class="align-middle text-right">
+                      <a href="<?= base_url('theme/edit/'.$theme->theme_id.'') ?>" class="btn btn-sm btn-secondary">
+                        <i class="fa fa-pencil-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                      <a href="<?= base_url('theme/delete/'.$theme->theme_id.'') ?>" class="btn btn-sm btn-danger">
+                        <i class="fa fa-trash-alt"></i>
+                        <span class="sr-only">Edit</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <!-- /tr -->
+                  <?php endforeach ?>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6">Total : <?= isset($total) ? $total : '' ?></td>
-                    </tr>
-                </tfoot>
-            </table>
-        <?php else: ?>
-            <p>No theme data were available</p>
-        <?php endif ?>
+                <!-- /tbody -->
+              </table>
+              <!-- /.table -->
+            </div>
+            <?php else: ?>
+                <p class="text-center">Data tidak tersedia</p>
+            <?php endif ?>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.card-body -->
+      </section>
+      <!-- /.card -->
     </div>
+    <!-- /grid column -->
+  </div>
+  <!-- /grid row -->
 </div>
-
-<div class="row">
-    <!-- Button create -->
-    <div class="col-10">
-        <?= anchor("theme/add", 'Add', ['class' => 'btn btn-primary']) ?>
-    </div>
-</div>
+<!-- /.page-section -->
