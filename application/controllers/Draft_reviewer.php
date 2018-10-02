@@ -128,6 +128,11 @@ class Draft_reviewer extends Operator_Controller
             $status = array('draft_status' => $status);
             $this->draft_reviewer->editDraftDate($id, 'review_start_date');
             $this->draft_reviewer->updateDraftStatus($draft->draft_id, $status);
+            $current_date = strtotime(date('Y-m-d H:i:s'));
+            $end_date = 60 * 24 * 60 * 60;
+            $date = $current_date + $end_date;
+            $date = date('Y-m-d H:i:s', $date);
+            $this->draft_reviewer->editDraftDate($id, 'review_deadline_date', $date);
             $this->session->set_flashdata('success', 'Data updated');
         } else {
             $this->session->set_flashdata('error', 'Data failed to update');

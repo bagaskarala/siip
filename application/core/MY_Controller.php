@@ -7,6 +7,7 @@ class MY_Controller extends CI_Controller
     protected $level = '';
     protected $is_login = '';
     protected $user_id = '';
+    protected $role_id = ''; //EDWARD :: ini juga
 
     public function __construct()
     {

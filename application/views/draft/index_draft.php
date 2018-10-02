@@ -88,6 +88,7 @@
                         <th scope="col">Proofread Revise Status</th>
                         <th scope="col">Proofread Revise Notes</th> -->
                         <th scope="col">Status</th>
+                        <th scope="col">Detail</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                     </tr>
@@ -148,6 +149,7 @@
                         <td><?= $draft->proofread_is_revised == 'y' ? 'Revised' : 'Not Revised'?></td>
                         <td><?= $draft->proofread_revise_notes ?></td> -->
                         <td><?= $draft->draft_status ?></td>
+                        <td><?= anchor("draft/detail/$draft->draft_id", 'Detail', ['class' => 'btn btn-success']) ?></td>
                         <td><?= anchor("draft/edit/$draft->draft_id", 'Edit', ['class' => 'btn btn-warning']) ?></td>
                         <td>
                             <?= form_open("draft/delete/$draft->draft_id") ?>

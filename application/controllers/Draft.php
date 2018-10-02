@@ -280,6 +280,65 @@ class Draft extends Operator_Controller
         $this->load->view('template', compact('pages', 'main_view', 'drafts', 'pagination', 'total'));
     }
 
+    public function detail($id) {
+        $draft = $this->draft->joinRelationMiddle('draft', 'draft_author')->joinRelationMiddle('draft', 'draft_reviewer')->joinRelationMiddle('draft', 'draft_layouter')->where('draft.draft_id', $id)->get('draft');
+
+        if ($draft->draft_status >= 4) {
+            $draft->draft_status_string = $this->checkStatus($draft->draft_status);
+            $draft->draft_id = $id;
+        } else {
+            $draft = null;
+        }
+
+        // EDWARD :: Yang lu butuhin biar author sama reviewer gabisa ganti link cuma ini
+        $role_table = "";
+        $role_column = "";
+
+        if ($this->level == "reviewer") {
+            $role_table = 'draft_reviewer';
+            $role_column = $draft->reviewer_id;
+        }
+
+        if ($this->level == "author") {
+            $role_table = 'draft_author';
+            $role_column = $draft->author_id;
+        }
+
+        if ($role_table != "") {
+            if ($this->role_id != $role_column) {
+                // redirect($this->index());
+                redirect('draft');
+            }
+        }
+        // EDWARD :: Sampai sini
+
+        $pages    = $this->pages;
+        $main_view  = $this->pages . '/' . $this->pages . '_detail';
+
+        $this->load->view('template', compact('pages', 'main_view', 'draft'));
+    }
+
+    // EDWARD :: Ini fungsi yang buat case nya ganti
+    public function endProgress($id, $status) {
+        $this->draft->updateDraftStatus($id, array('draft_status' => $status + 1));
+
+        // EDWARD :: tinggal tambahin ininya aja nanti
+        switch ($status) {
+            case '4':
+                $column = 'review_end_date';
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        $this->draft->editDraftDate($id, $column);
+
+        $this->detail($id);
+    }
+    // EDWARD :: Sampai sini
+
     public function generateWorksheetNumber() {
         $date = date('Y-m');
 
@@ -321,43 +380,28 @@ class Draft extends Operator_Controller
                 $status = 'Review on Progress';
                 break;
             case 5:
-                $status = 'Review Done';
-                break;
-            case 6:
                 $status = 'Choosing Editor';
                 break;
-            case 7:
+            case 6:
                 $status = 'Edit on Progress';
                 break;
-            case 8:
-                $status = 'Edit Done';
-                break;
-            case 9:
+            case 7:
                 $status = 'Choosing Layouter';
                 break;
-            case 10:
+            case 8:
                 $status = 'Layout on Progress';
                 break;
-            case 11:
-                $status = 'Layout Done';
-                break;
-            case 12:
+            case 9:
                 $status = 'Choosing Cover';
                 break;
-            case 13:
+            case 10:
                 $status = 'Cover on Progress';
                 break;
-            case 14:
-                $status = 'Cover Done';
-                break;
-            case 15:
+            case 11:
                 $status = 'Choosing Proofread';
                 break;
-            case 16:
+            case 12:
                 $status = 'Proofread on Progress';
-                break;
-            case 17:
-                $status = 'Proofread Done';
                 break;
             
             default:

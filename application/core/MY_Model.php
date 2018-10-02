@@ -240,8 +240,12 @@ class MY_Model extends CI_Model
         }
     }
 
-    public function editDraftDate($id, $column) {
-        $data = array($column => date('Y-m-d H:i:s'));
+    public function editDraftDate($id, $column, $date = '') {
+        if ($date == "") {
+            $date = date('Y-m-d H:i:s');
+        }
+
+        $data = array($column => $date);
         $this->where('draft_id', $id)
              ->update($data, 'draft');
     }
