@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- End Required meta tags -->
-    <title>ERROR - PAGE NOT FOUND</title>
+    <title>Pilih Role</title>
     <!-- file bawaan template -->
     
     <!-- FAVICONS -->
@@ -25,22 +25,32 @@
     <!-- END THEME STYLES -->
 </head>
 <body>
-  <!-- .empty-state -->
-  <section class="empty-state">
+<!-- .empty-state -->
+  <main class="empty-state empty-state-fullpage bg-primary">
     <!-- .empty-state-container -->
     <div class="empty-state-container">
-      <div class="state-figure">
-        <img class="img-fluid" src="assets/images/illustration/img-2.png" alt="" style="max-width: 320px"> </div>
-      <h3 class="state-header"> Page Not found! </h3>
-      <p class="state-description lead text-muted"> URL point to something that doesn't exist. </p>
-      <div class="state-action">
-        <a href="<?=base_url() ?>" class="btn btn-lg btn-light">
-          <i class="fa fa-angle-right"></i> Go Back</a>
-      </div>
+      <section class="card">
+        <header class="card-header bg-light text-left">
+          <i class="fa fa-fw fa-circle text-red"></i>
+          <i class="fa fa-fw fa-circle text-yellow"></i>
+          <i class="fa fa-fw fa-circle text-teal"></i>
+        </header>
+        <div class="card-body">
+          <h3> Pilih Role </h3>
+          <p class="font-weight-bold">Akun = <?=ucwords($this->session->userdata('username')); ?></p>
+          <p>Akun anda mempunyai role author dan reviewer.</p>
+          <button class="btn btn-success my-2" onclick="location.href='<?=base_url('login/multilevel/author') ?>';">Masuk sebagai Author</button>
+          <button class="btn btn-warning my-2" onclick="location.href='<?=base_url('login/multilevel/reviewer') ?>';">Masuk sebagai Reviewer</button>
+          <div class="state-action">
+            
+            <a href="<?=base_url('login/logout') ?>" class="btn btn-lg btn-light my-2">
+              <i class="fa fa-logout"></i> Logout</a>
+          </div>
+        </div>
+      </section>
     </div>
     <!-- /.empty-state-container -->
-  </section>
+  </main>
   <!-- /.empty-state -->
-
 </body>
 </html>

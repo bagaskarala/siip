@@ -27,7 +27,7 @@
         </li>
       </ol>
     </nav>
-    <h1 class="page-title"> Draft </h1> 
+    <h1 class="page-title"> Draft Usulan</h1> 
   </header>
   <!-- /.page-title-bar -->
   <!-- .page-section -->

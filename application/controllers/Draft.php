@@ -207,7 +207,7 @@ class Draft extends Operator_Controller
     }
 
     //upload file tiap tahap
-    public function upload_progress($id = null,$column){
+    public function upload_progress($id,$column){
         $draft = $this->draft->where('draft_id', $id)->get();
         $datatitle = ['draft_id'=>$id];
         $title = $this->draft->getWhere($datatitle);
@@ -223,6 +223,9 @@ class Draft extends Operator_Controller
             $input->$column = $draft->$column; // Set draft file for preview.
         }
 
+        //tiap upload, update upload date
+        $tahap = explode('_', $column);
+        $this->draft->editDraftDate($id, $tahap[0].'_upload_date');
         
         if (!empty($_FILES) && $_FILES[$column]['size'] > 0) {
             // Upload new draft (if any)
@@ -272,8 +275,16 @@ class Draft extends Operator_Controller
         if (!$_POST) {
             $input = (object) $draft;
         } else {
-            $input = (object) $this->input->post(null, true);
+            $input = (object) $this->input->post(null, false);
         }
+
+        if (empty($input->files)) {
+            unset($input->files);
+        }
+
+        // if (isset($input->draft_status) && !empty($input->draft_status)) {
+        //     $input->
+        // }
         
         // If something wrong
         // if (!$this->draft->validate() || $this->form_validation->error_array()) {
@@ -506,6 +517,12 @@ class Draft extends Operator_Controller
                 break;
             case 12:
                 $status = 'Proofread on Progress';
+                break;
+            case 13:
+                $status = 'Confirm to Book';
+                break;
+            case 99:
+                $status = 'Draft Ditolak';
                 break;
             
             default:

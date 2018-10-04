@@ -88,7 +88,7 @@
                     <!-- /thead -->
                     <!-- tbody -->
                     <tbody>
-                      <?php foreach($authors as $author): ?>
+                      <?php foreach($authors as $author):?>
                       <!-- tr -->
                       <tr>
                         <td class="align-middle pl-4"><?= ++$i ?></td>
@@ -97,6 +97,10 @@
                         <td class="align-middle"><?= $author->work_unit_name ?></td>
                         <td class="align-middle"><?= $author->institute_name ?></td>
                         <td class="align-middle text-right">
+                          <a href="<?= base_url('author/copyToReviewer/' . $author->user_id . '/' . $author->author_nip . '/' . $author->author_name) ?>" class="btn btn-sm btn-secondary">
+                            <i class="fa fa-user-plus"></i>
+                            <span class="sr-only">Jadikan reviewer</span>
+                          </a>
                           <a href="<?= base_url('author/edit/'.$author->author_id.'') ?>" class="btn btn-sm btn-secondary">
                             <i class="fa fa-pencil-alt"></i>
                             <span class="sr-only">Edit</span>
