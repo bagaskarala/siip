@@ -7,6 +7,11 @@ class User extends Admin_Controller
     {
         parent::__construct();
         $this->pages = 'user';
+        //khusus admin
+        $ceklevel = $this->session->userdata('level');
+        if ($ceklevel != 'admin_penerbitan' and $ceklevel != 'superadmin'){
+            redirect('home');
+        }
     }
 
 	public function index($page = null)

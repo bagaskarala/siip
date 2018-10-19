@@ -5,7 +5,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span></a>
         </li>
         <li class="breadcrumb-item">
           <a href="<?=base_url()?>">Penerbitan</a>
@@ -22,11 +22,12 @@
   <!-- /.page-title-bar -->
 <!-- .page-section -->
 <div class="page-section">
-  <div class="d-xl-none">
+
+  <!-- <div class="d-xl-none">
     <button class="btn btn-danger btn-floated" type="button" data-toggle="sidebar">
       <i class="fa fa-th-list"></i>
     </button>
-  </div>
+  </div> -->
   <!-- .card -->
   <section id="data-draft" class="card">
     <!-- .card-header -->
@@ -43,9 +44,9 @@
         <!-- endif hilangkan data penulis di reviewer -->
         <?php endif ?>
         <!-- if hilangkan tab data reviewer -->
-        <?php if($ceklevel != 'author' and $ceklevel != 'reviewer'): ?>
+        <?php if($ceklevel != 'author' and $ceklevel != 'reviewer' and $desk->worksheet_status=='1'): ?>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#data-reviewer">Data Reviewer <span><?=(!$reviewers)?'<label class="badge badge-warning">Required</label>':'' ?></span></a>
+          <a class="nav-link" data-toggle="tab" href="#data-reviewer">Data Reviewer</a>
         </li>
         <!-- endif hilangkan tab data reviewer -->
         <?php endif ?>
@@ -73,13 +74,13 @@
               <!-- tr -->
               <tr>
                 <td width="200px"> Kategori </td>
-                <td>: <?= konversiID('category','category_id', $input->category_id)->category_name;?> </td>
+                <td>: <?=isset($input->category_id)? konversiID('category','category_id', $input->category_id)->category_name : ''?> </td>
               </tr>
               <!-- /tr -->
               <!-- tr -->
               <tr>
                 <td width="200px"> Tema </td>
-                <td>: <?= konversiID('theme','theme_id', $input->theme_id)->theme_name;?> </td>
+                <td>: <?=isset($input->theme_id)? konversiID('theme','theme_id', $input->theme_id)->theme_name : ''?> </td>
               </tr>
               <!-- /tr -->
               <!-- tr -->
@@ -90,18 +91,6 @@
               </tr>
               <!-- /tr -->
               <?php if($ceklevel != 'reviewer'): ?>
-              <!-- tr -->
-              <tr>
-                <td width="200px"> Dana yang diajukan </td>
-                <td>: <?= $input->proposed_fund ?>  </td>
-              </tr>
-              <!-- /tr -->
-              <!-- tr -->
-              <tr>
-                <td width="200px"> Dana yang disetujui </td>
-                <td>: <?= $input->approved_fund ?>  </td>
-              </tr>
-              <!-- /tr -->
               <!-- tr -->
               <tr>
                 <td width="200px"> Tanggal Masuk </td>
@@ -123,7 +112,13 @@
               <!-- tr -->
               <tr>
                 <td width="200px"> Status Draft </td>
-                <td>: <?= $input->draft_status ?>  </td>
+                <td>: <span class="font-weight-bold"><?= $input->draft_status ?></span>  </td>
+              </tr>
+              <!-- /tr -->
+              <!-- tr -->
+              <tr>
+                <td width="200px"> Catatan Draft </td>
+                <td>: <span class="font-weight-bold"><?= $input->draft_notes ?></span>  </td>
               </tr>
               <!-- /tr -->
               <!-- endif data yang dilihat reviewer -->
@@ -365,19 +360,89 @@
   <?php $this->load->view('draft/view/review'); ?>
   <!-- reviewer tidak bisa melihat progress draft -->
   <?php if($ceklevel != 'reviewer'): ?>
-    <!-- progress-edit -->
-    <?php $this->load->view('draft/view/edit'); ?>
-    <!-- progress-layout -->
-    <?php $this->load->view('draft/view/layout'); ?>
-    <!-- progress-proofread -->
-    <?php $this->load->view('draft/view/proofread'); ?>
+    <?php if($input->is_review == 'y'): ?>
+      <!-- progress-edit -->
+      <?php $this->load->view('draft/view/edit'); ?>
+    <?php endif ?>
+    <?php if($input->is_edit == 'y'): ?>
+      <!-- progress-layout -->
+      <?php $this->load->view('draft/view/layout'); ?>
+    <?php endif ?>
+    <?php if($input->is_layout == 'y'): ?>
+      <!-- progress-proofread -->
+      <?php $this->load->view('draft/view/proofread'); ?>
+    <?php endif ?>
     <!-- if tampilan admin -->
     <?php if($ceklevel == 'superadmin' or $ceklevel == 'admin_penerbitan'): ?>
      <div class="el-example">
-       <a href="" class="btn btn-primary disabled">Simpan jadi buku</a>
-       <a href="" class="btn btn-danger">Tolak</a>
-       <button class="btn btn-light" type="submit">Kembali</button>
+      <?php 
+        $hidden_date = array(
+            'type'  => 'hidden',
+            'id'    => 'finish_date',
+            'value' => date('Y-m-d H:i:s')
+        );
+        echo form_input($hidden_date);?>
+       <button class="btn btn-primary" data-toggle="modal" data-target="#modalsimpan" <?=($input->is_proofread == 'y')? '':'disabled' ?>>Simpan jadi buku</button>
+       <button class="btn btn-danger" data-toggle="modal" data-target="#modaltolak">Tolak</button>
      </div>
+     <!-- Alert Danger Modal -->
+      <div class="modal modal-warning fade" id="modalsimpan" tabindex="-1" role="dialog" aria-labelledby="modalsimpan" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog" role="document">
+          <!-- .modal-content -->
+          <div class="modal-content">
+            <!-- .modal-header -->
+            <div class="modal-header">
+              <h5 class="modal-title">
+                <i class="fa fa-bullhorn text-yellow mr-1"></i> Konfirmasi Draft</h5>
+            </div>
+            <!-- /.modal-header -->
+            <!-- .modal-body -->
+            <div class="modal-body">
+              <p>Draft <span class="font-weight-bold"><?= $input->draft_title ?></span> sudah final dan akan disimpan jadi buku?</p>
+            </div>
+            <!-- /.modal-body -->
+            <!-- .modal-footer -->
+            <div class="modal-footer">
+              <button class="btn btn-primary" id="draft-setuju" draft-title="<?=$draft->draft_title ?>" draft-file="<?=$draft->proofread_file ?>" value="14">Submit</button>
+              <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+            <!-- /.modal-footer -->
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!-- Alert Danger Modal -->
+      <div class="modal modal-alert fade" id="modaltolak" tabindex="-1" role="dialog" aria-labelledby="modalsimpan" aria-hidden="true">
+        <!-- .modal-dialog -->
+        <div class="modal-dialog" role="document">
+          <!-- .modal-content -->
+          <div class="modal-content">
+            <!-- .modal-header -->
+            <div class="modal-header">
+              <h5 class="modal-title">
+                <i class="fa fa-exclamation-triangle text-red mr-1"></i> Tolak Draft</h5>
+            </div>
+            <!-- /.modal-header -->
+            <!-- .modal-body -->
+            <div class="modal-body">
+              <p>Draft <span class="font-weight-bold"><?= $input->draft_title ?></span> ditolak?</p>
+            </div>
+            <!-- /.modal-body -->
+            <!-- .modal-footer -->
+            <div class="modal-footer">
+              <button class="btn btn-danger" type="submit" id="draft-tolak" value="99">Tolak</button>
+              <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+            </div>
+            <!-- /.modal-footer -->
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
     <!-- endif tampilan admin -->
     <?php endif ?>
   <!-- endif tampilan reviewer -->
@@ -540,7 +605,7 @@
           }
           $('[name=layouter]').val("");
           $('#reload-layouter').load(' #reload-layouter');
-          //$('#list-group-layout').load(' #list-group-layout');
+          $('#list-group-layout').load(' #list-group-layout');
           $this.removeAttr("disabled").html("Pilih");
         }
 
@@ -700,6 +765,74 @@
         });
         return false;
       });
+
+    $('#draft-setuju').on('click', function() {
+        var $this = $(this);
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Processing ");
+        let id=$('[name=draft_id]').val();
+        let draft_title=$this.attr('draft-title');
+        let draft_file=$this.attr('draft-file');
+        let action=$('#draft-setuju').val();
+        let finish_date=$('#finish_date').val();
+        let cek = '<?php echo base_url('draft/copyToBook/')?>'+id+'/'+draft_title+'/'+draft_file;
+        console.log(cek);
+        $.ajax({
+            type : "POST",
+            url : "<?php echo base_url('draft/ubahnotes/') ?>"+id,
+            datatype : "JSON",
+            data : {
+              draft_status : action,
+              finish_date : finish_date,
+            },
+            success :function(data){
+              let datax = JSON.parse(data);
+              console.log(datax);
+              $this.removeAttr("disabled").html("Simpan Jadi Buku");
+              if(datax.status == true){
+                toastr_view('111');
+                location.href ='<?php echo base_url('draft/copyToBook/')?>'+id+'/'+draft_title+'/'+draft_file;
+              }else{
+                toastr_view('000');
+              }
+            }
+          });
+
+          // $('#draft_aksi').modal('hide');
+          // location.reload();
+          return false;
+      });
+
+      $('#draft-tolak').on('click', function() {
+        var $this = $(this);
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Processing ");
+        let id=$('[name=draft_id]').val();
+        let action=$('#draft-tolak').val();
+        console.log(action);
+        $.ajax({
+            type : "POST",
+            url : "<?php echo base_url('draft/ubahnotes/') ?>"+id,
+            datatype : "JSON",
+            data : {
+              draft_status : action,
+            },
+            success :function(data){
+              let datax = JSON.parse(data);
+              console.log(datax);
+              $this.removeAttr("disabled").html("Tolak");
+              if(datax.status == true){
+                toastr_view('111');
+              }else{
+                toastr_view('000');
+              }
+              location.href = '<?php echo base_url('draft/view/') ?>'+id;
+            }
+          });
+
+          // $('#draft_aksi').modal('hide');
+          // location.reload();
+          return false;
+      });
+
   
   });
 </script>

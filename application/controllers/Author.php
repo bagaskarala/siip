@@ -6,6 +6,11 @@ class Author extends Operator_Controller
     {
         parent::__construct();
         $this->pages = 'author';
+        //khusus admin
+        $ceklevel = $this->session->userdata('level');
+        if ($ceklevel == 'author' || $ceklevel == 'reviewer' || $ceklevel == 'editor' || $ceklevel == 'layouter'){
+            redirect('home');
+        }
     }
 
 	public function index($page = null)
@@ -37,7 +42,7 @@ class Author extends Operator_Controller
         if (!$this->author->validate()) {
             $main_view   = 'author/view_author';
             $form_action = "author/edit/$id";
-
+            $pages    = $this->pages;
             $this->load->view('template', compact('pages', 'main_view', 'form_action', 'input'));
             return;
         }
@@ -68,7 +73,8 @@ class Author extends Operator_Controller
         $drafts =  $this->author->select(['draft_author.author_id','author_name','draft_author.draft_id','draft_title','category_name','theme_name'])->join3('draft_author','author','author')->join3('draft','draft_author','draft')->join3('category','draft','category')->join3('theme','draft','theme')->where('draft_author.author_id',$id)->getAll();
 
         $main_view   = 'author/view_author';
-        $this->load->view('template', compact('main_view', 'drafts', 'input'));
+        $pages    = $this->pages;
+        $this->load->view('template', compact('pages','main_view', 'drafts', 'input'));
     
     }
         
@@ -177,7 +183,8 @@ class Author extends Operator_Controller
 		redirect('author');
 	}
 
-    public function copyToReviewer($user_id, $nip, $name) {
+    public function copyToReviewer($user_id, $nip, $name) 
+    {
         $this->load->model('reviewer_model', 'reviewer', true);
         $reviewer_id = $this->reviewer->getIdRoleFromUserId($user_id, 'reviewer');
 
@@ -204,8 +211,8 @@ class Author extends Operator_Controller
         }
     }
         
-        public function search($page = null)
-        {
+    public function search($page = null)
+    {
         $keywords   = $this->input->get('keywords', true);
         $authors     = $this->author->like('work_unit_name', $keywords)
                                   ->orLike('institute_name', $keywords)

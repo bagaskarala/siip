@@ -6,6 +6,11 @@ class Work_unit extends Operator_Controller
     {
         parent::__construct();
         $this->pages = 'work_unit';
+        //khusus admin
+        $ceklevel = $this->session->userdata('level');
+        if ($ceklevel == 'author' || $ceklevel == 'reviewer' || $ceklevel == 'editor' || $ceklevel == 'layouter'){
+            redirect('home');
+        }
     }
 //--index--
 	public function index($page = null)

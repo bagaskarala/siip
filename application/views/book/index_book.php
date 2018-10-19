@@ -17,7 +17,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span></a>
         </li>
         <li class="breadcrumb-item">
           <a href="<?=base_url()?>">Penerbitan</a>
@@ -79,7 +79,6 @@
                 <thead>
                   <tr>
                     <th scope="col" class="pl-4">No</th>
-                    <th scope="col">Draft</th>
                     <th scope="col">Judul</th>
                     <th scope="col">Edisi</th>
                     <th scope="col">Copy</th>
@@ -96,8 +95,7 @@
                   <!-- tr -->
                   <tr>
                     <td class="align-middle pl-4"><?= ++$i ?></td>
-                    <td class="align-middle"><a href="<?= base_url('draft/view/'.$book->draft_id) ?>"><?= $book->draft_title ?></a></td>
-                    <td class="align-middle"><?= $book->book_title ?></td>
+                    <td class="align-middle"><a href="<?= base_url('book/view/'.$book->book_id) ?>"><?= $book->book_title ?></a></td>
                     <td class="align-middle"><?= $book->book_edition ?></td>
                     <td class="align-middle"><?= $book->copies_num ?></td>
                     <td class="align-middle"><?= $book->is_reprint == 'y' ? 'Cetak Ulang' : 'Baru' ?></td>
@@ -107,14 +105,40 @@
                         <i class="fa fa-pencil-alt"></i>
                         <span class="sr-only">Edit</span>
                       </a>
-                      <a href="<?= base_url('book/delete/'.$book->book_id.'') ?>" class="btn btn-sm btn-danger">
-                        <i class="fa fa-trash-alt"></i>
-                        <span class="sr-only">Delete</span>
-                      </a>
+                      <button type="button" class="btn btn-sm btn-danger"  data-toggle="modal" data-target="#modalhapus-<?= $book->book_id ?>"><i class="fa fa-trash-alt"></i><span class="sr-only">Delete</span></button>
                     </td>
-                  <?php endif ?>
+                    <?php endif ?>
                   </tr>
                   <!-- /tr -->
+                  <!-- Alert Danger Modal -->
+                  <div class="modal modal-alert fade" id="modalhapus-<?= $book->book_id ?>" tabindex="-1" role="dialog" aria-labelledby="modalhapus" aria-hidden="true">
+                    <!-- .modal-dialog -->
+                    <div class="modal-dialog" role="document">
+                      <!-- .modal-content -->
+                      <div class="modal-content">
+                        <!-- .modal-header -->
+                        <div class="modal-header">
+                          <h5 class="modal-title">
+                            <i class="fa fa-exclamation-triangle text-red mr-1"></i> Konfirmasi Hapus</h5>
+                        </div>
+                        <!-- /.modal-header -->
+                        <!-- .modal-body -->
+                        <div class="modal-body">
+                          <p>Apakah anda yakin akan menghapus buku <span class="font-weight-bold"><?= $book->book_title ?></span>?</p>
+                        </div>
+                        <!-- /.modal-body -->
+                        <!-- .modal-footer -->
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" onclick="location.href='<?= base_url('book/delete/'.$book->book_id.'') ?>'" data-dismiss="modal">Hapus</button>
+                          <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                        </div>
+                        <!-- /.modal-footer -->
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
                   <?php endforeach ?>
                 </tbody>
                 <!-- /tbody -->

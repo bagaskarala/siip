@@ -47,7 +47,13 @@
       <?php endif ?>
       <div class="list-group-item justify-content-between">
         <span class="text-muted">Status</span>
-        <strong></strong>
+        <?php if($input->is_layout == 'y'): ?>
+        <a href="#" onclick="event.preventDefault()" class="font-weight-bold" data-toggle="popover" data-placement="left" data-container="body" auto="" right="" data-html="true" title="" data-trigger="hover" data-content="<?=$input->layout_status ?>" data-original-title="Catatan Admin"><i class="fa fa-info-circle"></i> Layout Selesai</a>
+        <?php elseif($input->is_layout == 'n' and $input->stts == 99): ?>
+        <a href="#" onclick="event.preventDefault()" class="font-weight-bold" data-toggle="popover" data-placement="left" data-container="body" auto="" right="" data-html="true" title="" data-trigger="hover" data-content="<?=$input->layout_status ?>" data-original-title="Catatan Admin"><i class="fa fa-info-circle"></i> Draft Ditolak</a>
+        <?php else: ?>
+          -
+        <?php endif ?>
       </div>
       <hr class="m-0">
     </div>
@@ -57,8 +63,8 @@
         <?php if ($ceklevel == 'superadmin' || $ceklevel == 'admin_penerbitan'): ?>
         <button class="btn btn-secondary" style="width:50px" data-toggle="modal" data-target="#layout_aksi"><i class="fa fa-thumbs-up"></i></button>
         <?php endif ?>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#layout">Layout dan Tanggapan</button>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#cover">Cover dan Tanggapan</button>
+        <button type="button" class="btn <?=($input->layout_notes!='' || $input->layout_notes_author!='')? 'btn-success' : 'btn-outline-success' ?>" data-toggle="modal" data-target="#layout">Tanggapan Layout <?=($input->layout_notes!='' || $input->layout_notes_author!='')? '<i class="fa fa-check"></i>' : '' ?></button>
+        <button type="button" class="btn <?=($input->cover_notes!='' || $input->cover_notes_author!='')? 'btn-success' : 'btn-outline-success' ?>" data-toggle="modal" data-target="#cover">Tanggapan Cover <?=($input->cover_notes!='' || $input->cover_notes_author!='')? '<i class="fa fa-check"></i>' : '' ?></button>
       </div>
         <!-- modal -->
         <div class="modal fade" id="layout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,80 +77,85 @@
                 <h5 class="modal-title"> Progress Layout</h5>
               </div>
               <!-- /.modal-header -->
-              <!-- .modal-body -->
-              <div class="modal-body">
-                <?= form_open_multipart('draft/upload_progress/'.$input->draft_id.'/layout_file', 'novalidate'); ?>
-                  <p class="font-weight-bold">UPLOAD</p>
-                  <?= isset($input->draft_id) ? form_hidden('draft_id', $input->draft_id) : '' ?>
-                  <!-- .form-group -->
-                    <div class="form-group">
-                      <label for="layout_file">File Review</label>
-                      <!-- .input-group -->
-                      <div class="input-group input-group-alt">
-                        <div class="custom-file">
-                          <?= form_upload('layout_file','','class="custom-file-input"') ?> 
-                          <label class="custom-file-label" for="layout_file">Choose file</label>
-                          <div class="invalid-feedback">Field is required</div>
+                <!-- .modal-body -->
+                <div class="modal-body">
+                  <div id="modal-layout">
+                  <p class="font-weight-bold">NASKAH</p>
+                  <!-- if upload ditampilkan di level tertentu -->
+                  <?php if($ceklevel=='layouter' or $ceklevel == 'author' or $ceklevel == 'superadmin' or $ceklevel == 'admin_penerbitan'): ?>
+                  <?= form_open_multipart('draft/upload_progress/'.$input->draft_id.'/layout_file', 'id="layoutform"'); ?>
+                    <?= isset($input->draft_id) ? form_hidden('draft_id', $input->draft_id) : '' ?>
+                    <!-- .form-group -->
+                      <div class="form-group">
+                        <label for="layout_file">File Naskah</label>
+                        <!-- .input-group -->
+                        <div class="input-group input-group-alt">
+                          <div class="custom-file">
+                            <?= form_upload('layout_file','','class="custom-file-input" id="layout_file" required') ?> 
+                            <label class="custom-file-label" for="layout_file">Choose file</label>
+                            <div class="invalid-feedback">Field is required</div>
+                          </div>
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" value="Submit" id="btn-upload-layout"><i class="fa fa-upload"></i> Upload</button>
+                          </div>
                         </div>
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="submit" value="Submit" id="btn-upload-edit"><i class="fa fa-upload"></i> Upload</button>
-                        </div>
+                        <!-- /.input-group -->
+                        <small class="form-text text-muted">Last Upload : <?=konversiTanggal($input->layout_upload_date) ?>, by : <?=$input->layout_last_upload ?></small>
                       </div>
-                      <!-- /.input-group -->
-                    </div>
-                    <!-- /.form-group -->
-                <?= form_close(); ?>
-                <hr class="my-3">
-                <p>Last Upload: <?=konversiTanggal($input->layout_upload_date) ?></p>
-                <?=(!empty($input->layout_file))? '<a data-toggle="tooltip" data-placement="right" title="" data-original-title="'.$input->layout_file.'" href="'.base_url('draftfile/'.$input->layout_file).'" class="btn btn-success"><i class="fa fa-download"></i> Download</a>' : '' ?>
-                <hr class="my-3">
-                <!-- .form -->
-                <?= form_open('draft/ubahnotes/'.$input->draft_id,'id="formlayout"') ?>
-                  <!-- .fieldset -->
-                  <fieldset>
-                    <!-- .form-group -->
-                    <div class="form-group">
-                      <label for="cl" class="font-weight-bold">Catatan Layout</label>
-                      <?php 
-                      $optionscl = array(
-                          'name' => 'layout_notes',
-                          'class'=> 'form-control summernote-basic',
-                          'id'  => 'cl',
-                          'rows' => '6',
-                          'value'=> $input->layout_notes
-                      );
-                      if($ceklevel!='layouter'){
-                        echo '<div class="font-italic">'.nl2br($input->layout_notes).'</div>';
-                      }else{
-                        echo form_textarea($optionscl);
-                      }
-                      ?>
-                    </div>
-                    <!-- /.form-group -->
-                    <hr>
-                    <!-- .form-group -->
-                    <div class="form-group">
-                      <label for="clp" class="font-weight-bold">Catatan Editor</label>
-                      <?php 
-                      $optionsclp = array(
-                          'name' => 'layout_notes_author',
-                          'class'=> 'form-control summernote-basic',
-                          'id'  => 'clp',
-                          'rows' => '6',
-                          'value'=> $input->layout_notes_author
-                      );
-                      if($ceklevel!='editor'){
-                        echo '<div class="font-italic">'.nl2br($input->layout_notes_author).'</div>';
-                      }else{
-                        echo form_textarea($optionsclp);
-                      }
-                      ?>
-                    </div>
-                    <!-- /.form-group -->
-                  </fieldset>
-                  <!-- /.fieldset -->
-              </div>
-              <!-- /.modal-body -->
+                      <!-- /.form-group -->
+                  <?= form_close(); ?>
+                  <?php endif ?>
+                  <!-- endif upload ditampilkan di level tertentu -->
+                  <?=(!empty($input->layout_file))? '<a data-toggle="tooltip" data-placement="right" title="" data-original-title="'.$input->layout_file.'" href="'.base_url('draftfile/'.$input->layout_file).'" class="btn btn-success"><i class="fa fa-download"></i> Download</a>' : 'No data' ?>
+                  </div>
+                  <hr class="my-3">
+                  <!-- .form -->
+                  <?= form_open('draft/ubahnotes/'.$input->draft_id,'id="formlayout"') ?>
+                    <!-- .fieldset -->
+                    <fieldset>
+                      <!-- .form-group -->
+                      <div class="form-group">
+                        <label for="cl" class="font-weight-bold">Catatan Layout</label>
+                        <?php 
+                        $optionscl = array(
+                            'name' => 'layout_notes',
+                            'class'=> 'form-control summernote-basic',
+                            'id'  => 'cl',
+                            'rows' => '6',
+                            'value'=> $input->layout_notes
+                        );
+                        if($ceklevel!='layouter'){
+                          echo '<div class="font-italic">'.nl2br($input->layout_notes).'</div>';
+                        }else{
+                          echo form_textarea($optionscl);
+                        }
+                        ?>
+                      </div>
+                      <!-- /.form-group -->
+                      <hr>
+                      <!-- .form-group -->
+                      <div class="form-group">
+                        <label for="clp" class="font-weight-bold">Catatan Editor</label>
+                        <?php 
+                        $optionsclp = array(
+                            'name' => 'layout_notes_author',
+                            'class'=> 'form-control summernote-basic',
+                            'id'  => 'clp',
+                            'rows' => '6',
+                            'value'=> $input->layout_notes_author
+                        );
+                        if($ceklevel!='editor'){
+                          echo '<div class="font-italic">'.nl2br($input->layout_notes_author).'</div>';
+                        }else{
+                          echo form_textarea($optionsclp);
+                        }
+                        ?>
+                      </div>
+                      <!-- /.form-group -->
+                    </fieldset>
+                    <!-- /.fieldset -->
+                </div>
+                <!-- /.modal-body -->
               <!-- .modal-footer -->
               <div class="modal-footer">
                 <button class="btn btn-primary ml-auto" type="submit" value="Submit" id="btn-submit-layout">Submit</button>
@@ -172,30 +183,35 @@
               <!-- /.modal-header -->
               <!-- .modal-body -->
               <div class="modal-body">
-                <?= form_open_multipart('draft/upload_progress/'.$input->draft_id.'/cover_file', 'novalidate'); ?>
-                  <p class="font-weight-bold">UPLOAD</p>
+                <div id="modal-cover">
+                <p class="font-weight-bold">NASKAH</p>
+                <!-- if upload ditampilkan di level tertentu -->
+                <?php if($ceklevel=='layout' or $ceklevel == 'author' or $ceklevel == 'superadmin' or $ceklevel == 'admin_penerbitan'): ?>
+                <?= form_open_multipart('draft/upload_progress/'.$input->draft_id.'/cover_file', 'id="coverform"'); ?>
                   <?= isset($input->draft_id) ? form_hidden('draft_id', $input->draft_id) : '' ?>
                   <!-- .form-group -->
                     <div class="form-group">
-                      <label for="cover_file">File Review</label>
+                      <label for="cover_file">File Naskah</label>
                       <!-- .input-group -->
                       <div class="input-group input-group-alt">
                         <div class="custom-file">
-                          <?= form_upload('cover_file','','class="custom-file-input"') ?> 
+                          <?= form_upload('cover_file','','class="custom-file-input" id="cover_file" required') ?> 
                           <label class="custom-file-label" for="cover_file">Choose file</label>
                           <div class="invalid-feedback">Field is required</div>
                         </div>
                         <div class="input-group-append">
-                          <button class="btn btn-primary" type="submit" value="Submit" id="btn-upload-edit"><i class="fa fa-upload"></i> Upload</button>
+                          <button class="btn btn-primary" type="submit" value="Submit" id="btn-upload-cover"><i class="fa fa-upload"></i> Upload</button>
                         </div>
                       </div>
                       <!-- /.input-group -->
+                      <small class="form-text text-muted">Last Upload : <?=konversiTanggal($input->cover_upload_date) ?>, by : <?=$input->cover_last_upload ?></small>
                     </div>
                     <!-- /.form-group -->
                 <?= form_close(); ?>
-                <hr class="my-3">
-                <p>Last Upload: <?=konversiTanggal($input->cover_upload_date) ?></p>
-                <?=(!empty($input->cover_file))? '<a data-toggle="tooltip" data-placement="right" title="" data-original-title="'.$input->cover_file.'" href="'.base_url('draftfile/'.$input->cover_file).'" class="btn btn-success"><i class="fa fa-download"></i> Download</a>' : '' ?>
+                <?php endif ?>
+                <!-- endif upload ditampilkan di level tertentu -->
+                <?=(!empty($input->cover_file))? '<a data-toggle="tooltip" data-placement="right" title="" data-original-title="'.$input->cover_file.'" href="'.base_url('draftfile/'.$input->cover_file).'" class="btn btn-success"><i class="fa fa-download"></i> Download</a>' : 'No data' ?>
+                </div>
                 <hr class="my-3">
                 <!-- .form -->
                 <?= form_open('draft/ubahnotes/'.$input->draft_id,'id="formcover"') ?>
@@ -428,7 +444,7 @@
               <!-- /.modal-body -->
               <!-- .modal-footer -->
               <div class="modal-footer">
-                <button class="btn btn-success" type="submit" id="layout-setuju" value="9">Setuju</button>
+                <button class="btn btn-success" type="submit" id="layout-setuju" value="12">Setuju</button>
                 <button class="btn btn-danger" type="submit" id="layout-tolak" value="99">Tolak</button>
                 <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
               </div>
@@ -467,10 +483,11 @@
             console.log(datax)
             $this.removeAttr("disabled").html("Submit");
             if(datax.status == true){
-            toastr_view('111');
+              toastr_view('111');
             }else{
-            toastr_view('000');
-          }
+              toastr_view('000');
+            }
+            $('#list-group-layout').load(' #list-group-layout');
           }
         });
         return false;
@@ -488,23 +505,79 @@
           datatype : "JSON",
           data : {
             cover_notes : cc,
-            cover_notes_author : ccp
+            cover_notes_author : ccp,
+            draft_status : 10,
           },
           success :function(data){
             let datax = JSON.parse(data);
             console.log(datax)
             $this.removeAttr("disabled").html("Submit");
             if(datax.status == true){
-            toastr_view('111');
+              toastr_view('111');
             }else{
-            toastr_view('000');
-          }
+              toastr_view('000');
+            }
+            $('#list-group-layout').load(' #list-group-layout');
           }
         });
         return false;
       });
 
+      $('#layoutform').submit(function() {
+        var $this = $('#btn-upload-layout');
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Uploading ");
+        let id=$('[name=draft_id]').val();
+        $.ajax({
+            url : "<?php echo base_url('draft/upload_progress/') ?>"+id+"/layout_file",
+            type:"post",
+             data:new FormData(this),
+             processData:false,
+             contentType:false,
+             cache:false,
+            success :function(data){
+              let datax = JSON.parse(data);
+              console.log(datax);
+              $this.removeAttr("disabled").html("Upload");
+              if(datax.status == true){
+                toastr_view('111');
+              }else{
+                toastr_view('000');
+              }
+              $('#modal-layout').load(' #modal-layout');
+            }
+          });
+          return false;
+      });
+
+      $('#coverform').submit(function() {
+        var $this = $('#btn-upload-cover');
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Uploading ");
+        let id=$('[name=draft_id]').val();
+        $.ajax({
+            url : "<?php echo base_url('draft/upload_progress/') ?>"+id+"/cover_file",
+            type:"post",
+             data:new FormData(this),
+             processData:false,
+             contentType:false,
+             cache:false,
+            success :function(data){
+              let datax = JSON.parse(data);
+              console.log(datax);
+              $this.removeAttr("disabled").html("Upload");
+              if(datax.status == true){
+                toastr_view('111');
+              }else{
+                toastr_view('000');
+              }
+              $('#modal-cover').load(' #modal-cover');
+            }
+          });
+          return false;
+      });
+
       $('#layout-setuju').on('click', function() {
+        var $this = $(this);
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Processing ");
         let id=$('[name=draft_id]').val();
         let layout_status=$('[name=layout_status]').val();
         let action=$('#layout-setuju').val();
@@ -517,24 +590,30 @@
               layout_status : layout_status,
               draft_status : action,
               layout_end_date : end_date,
+              proofread_start_date : end_date,
+              is_layout : 'y',
             },
             success :function(data){
               let datax = JSON.parse(data);
-              console.log(datax)
+              console.log(datax);
+              $this.removeAttr("disabled").html("Setuju");
               if(datax.status == true){
                 toastr_view('111');
               }else{
                 toastr_view('000');
               }
+              $('#list-group-layout').load(' #list-group-layout');
+              location.reload();
             }
           });
 
-          $('#layout_aksi').modal('hide');
-          location.reload();
+          // $('#layout_aksi').modal('hide');
           return false;
       });
 
       $('#layout-tolak').on('click', function() {
+        var $this = $(this);
+        $this.attr("disabled","disabled").html("<i class='fa fa-spinner fa-spin '></i> Processing ");
         let id=$('[name=draft_id]').val();
         let layout_status=$('[name=layout_status]').val();
         let action=$('#layout-tolak').val();
@@ -549,20 +628,23 @@
               layout_status : layout_status,
               draft_status : action,
               layout_end_date : end_date,
+              is_layout : 'n'
             },
             success :function(data){
               let datax = JSON.parse(data);
-              console.log(datax)
+              console.log(datax);
+              $this.removeAttr("disabled").html("Tolak");
               if(datax.status == true){
                 toastr_view('111');
               }else{
                 toastr_view('000');
               }
+              $('#list-group-layout').load(' #list-group-layout');
+              location.reload();
             }
           });
 
-          $('#layout_aksi').modal('hide');
-          location.reload();
+          // $('#layout_aksi').modal('hide');
           return false;
       });
 

@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span></a>
         </li>
         <li class="breadcrumb-item">
           <a href="<?=base_url()?>">Penerbitan</a>
@@ -12,7 +12,7 @@
           <a href="<?=base_url('worksheet')?>">Lembar kerja</a>
         </li>
         <li class="breadcrumb-item active">
-          <a class="text-muted">Tambah</a>
+          <a class="text-muted">Form</a>
         </li>
       </ol>
     </nav>
@@ -64,7 +64,6 @@
             <!-- .form-group -->
             <div class="form-group">
               <label for="worksheet_notes">Catatan Desk Screening
-                <abbr title="Required">*</abbr>
               </label>
               <div class="has-clearable">
                 <button type="button" class="close" aria-label="Close">
@@ -80,7 +79,9 @@
             <!-- /.form-group -->
             <!-- .form-group -->
             <div class="form-group">
-              <label>Jenis Naskah</label>
+              <label>Jenis Naskah
+                <abbr title="Required">*</abbr>
+              </label>
                 <div class="custom-control custom-radio mb-1">
                   <?= form_radio('is_reprint', 'y',
                     isset($input->is_reprint) && ($input->is_reprint == 'y') ? true : false,'required class="custom-control-input" id="cetakulang"')?>
@@ -99,7 +100,9 @@
           <hr>
           <!-- .form-group -->
             <div class="form-group">
-              <label>Status</label>
+              <label>Status
+                <abbr title="Required">*</abbr>
+              </label>
                 <div class="custom-control custom-radio mb-1">
                   <?= form_radio('worksheet_status', '0',
                     isset($input->worksheet_status) && ($input->worksheet_status == '0') ? true : false,'required class="custom-control-input" id="belum"')?>

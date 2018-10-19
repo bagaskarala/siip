@@ -6,6 +6,11 @@ class Worksheet extends Operator_Controller
     {
         parent::__construct();
         $this->pages = 'worksheet';
+        //author dan reviewer tidak boleh akses halaman ini
+        $ceklevel = $this->session->userdata('level');
+        if ($ceklevel == 'author' || $ceklevel == 'reviewer'){
+            redirect('home');
+        }
     }
 
 	public function index($page = null)
@@ -75,7 +80,17 @@ class Worksheet extends Operator_Controller
             return;
         }
 
+        $input->worksheet_pic = $this->username;
+        
         if ($this->worksheet->where('worksheet_id', $id)->update($input)) {
+            if($input->worksheet_status == 1){
+                $status = array('draft_status' => 1);
+            }elseif($input->worksheet_status == 2){
+                $status = array('draft_status' => 2);
+            }else{
+                $status = array('draft_status' => 0);
+            }
+            $this->worksheet->updateDraftStatus($worksheet->draft_id, $status);
             $this->session->set_flashdata('success', 'Data updated');
         } else {
             $this->session->set_flashdata('error', 'Data failed to update');
@@ -108,7 +123,7 @@ class Worksheet extends Operator_Controller
                 }
                 $this->session->set_flashdata('success', "Worksheet $actionMessage");
             } else {
-                $this->session->set_flashdata('success', "Worksheet Failed Update");
+                $this->session->set_flashdata('warning', "Worksheet Failed Update");
             }
         } else {
             $this->session->set_flashdata('warning', 'Worksheet Failed Update');

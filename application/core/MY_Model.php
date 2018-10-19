@@ -26,6 +26,12 @@ class MY_Model extends CI_Model
         return $this->db->query($sql);
     }
 
+    public function count($table = "")
+    {
+        $table = $this->checkTable($table);
+        return $this->db->count_all_results($table);
+    }
+
     public function get($table = "")
     {
         $table = $this->checkTable($table);
@@ -91,6 +97,12 @@ class MY_Model extends CI_Model
     public function where($column, $condition)
     {
         $this->db->where($column, $condition);
+        return $this;
+    }
+    
+    public function whereNot($column, $condition)
+    {
+        $this->db->where($column.' !=', $condition);
         return $this;
     }
 
@@ -182,6 +194,12 @@ class MY_Model extends CI_Model
     public function orderBy($column_name, $order = 'asc')
     {
         $this->db->order_by($column_name, $order);
+        return $this;
+    }
+
+    public function limit($limit)
+    {
+        $this->db->limit($limit);
         return $this;
     }
 
@@ -281,6 +299,21 @@ class MY_Model extends CI_Model
         $data =  $this->select($role . '_id')
                       ->joinRelationDest('user', $role)
                       ->whereRelation($role, $user_id, 'user')
+                      ->getRowArray($role);
+
+        if ($data) {
+            $id = $data[$role . '_id'];
+        }
+
+        return $id;
+    }
+
+    public function getIdDraftFromDraftId($draft_id, $role) {
+        $id = 0;
+
+        $data =  $this->select($role . '_id')
+                      ->joinRelationDest('draft', $role)
+                      ->whereRelation($role, $draft_id, 'draft')
                       ->getRowArray($role);
 
         if ($data) {

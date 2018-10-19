@@ -28,16 +28,6 @@ class Draft_model extends MY_Model
                 'rules' => 'trim'
             ],
             [
-                'field' => 'proposed_fund',
-                'label' => 'Proposed Fund',
-                'rules' => 'trim|required|numeric|min_length[3]|max_length[13]'
-            ],
-            [
-                'field' => 'approved_fund',
-                'label' => 'Approved Fund',
-                'rules' => 'min_length[3]|max_length[13]'
-            ],
-            [
                 'field' => 'entry_date',
                 'label' => 'Entry Date',
                 'rules' => 'trim'
@@ -68,11 +58,16 @@ class Draft_model extends MY_Model
                 'label' => 'Review End Date',
                 'rules' => 'trim'
             ],
-            // [
-            //     'field' => 'review1_file',
-            //     'label' => 'Review 1 File',
-            //     'rules' => 'trim'
-            // ],
+            [
+                'field' => 'review1_file',
+                'label' => 'Review 1 File',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'review1_template',
+                'label' => 'Review 1 template',
+                'rules' => 'trim'
+            ],
             [
                 'field' => 'review1_upload_date',
                 'label' => 'Review 1 Upload Date',
@@ -96,6 +91,11 @@ class Draft_model extends MY_Model
             [
                 'field' => 'review2_file',
                 'label' => 'Review 2 File',
+                'rules' => 'trim'
+            ],
+            [
+                'field' => 'review2_template',
+                'label' => 'Review 2 template',
                 'rules' => 'trim'
             ],
             [
@@ -272,8 +272,6 @@ class Draft_model extends MY_Model
             'draft_title'                   => '',
             'author_id'                     => '',
             'draft_file'                    => '',
-            'proposed_fund'                 => '',
-            'approved_fund'                 => '',
             'entry_date'                    => '',
             'finish_date'                   => '',
             'print_date'                    => '',

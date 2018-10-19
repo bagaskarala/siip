@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="<?=base_url()?>"><span class="fa fa-home"></span> Admin Panel</a>
+          <a href="<?=base_url()?>"><span class="fa fa-home"></span></a>
         </li>
         <li class="breadcrumb-item">
           <a href="<?=base_url()?>">Penerbitan</a>
@@ -30,7 +30,7 @@
       <?= form_open_multipart($form_action,'class="needs-validation" novalidate="" id="formdraft"') ?>
         <!-- .fieldset -->
         <fieldset>
-          <legend>Data Draft</legend>
+          <legend>Data Buku</legend>
           <?= isset($input->book_id) ? form_hidden('book_id', $input->book_id) : '' ?>
           <!-- .form-group -->
           <div class="form-group">
@@ -45,7 +45,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="book_code">Kode Buku
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -53,7 +52,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('book_code', $input->book_code, 'class="form-control" id="book_code" required=""') ?>
+            <?= form_input('book_code', $input->book_code, 'class="form-control" id="book_code"') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('book_code') ?>
@@ -79,7 +78,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="book_edition">Edisi Buku
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -87,7 +85,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('book_edition', $input->book_edition, 'class="form-control" id="book_edition" required=""') ?>
+            <?= form_input('book_edition', $input->book_edition, 'class="form-control" id="book_edition" ') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('book_edition') ?>
@@ -96,7 +94,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="isbn">ISBN
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -104,7 +101,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('isbn', $input->isbn, 'class="form-control" id="isbn" required=""') ?>
+            <?= form_input('isbn', $input->isbn, 'class="form-control" id="isbn"') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('isbn') ?>
@@ -115,6 +112,7 @@
             <label for="book_file">File Buku
               <abbr title="Required">*</abbr>
             </label>
+            <p><?= isset($input->book_file)? '<a href="'.base_url('draftfile/'.$input->book_file).'">'.$input->book_file.'</a>' : ''  ?></p>
             <div class="custom-file">
               <?= form_upload('book_file','','class="custom-file-input" ') ?> 
               <label class="custom-file-label" for="tf3">Choose file</label>
@@ -127,7 +125,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="published_date">Tanggal Terbit
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -135,7 +132,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('published_date', $input->published_date, 'class="form-control" id="published_date" required=""') ?>
+            <?= form_input('published_date', $input->published_date, 'class="form-control mydate" id="published_date"') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('published_date') ?>
@@ -162,7 +159,6 @@
             <!-- .form-group -->
           <div class="form-group">
             <label for="serial_num">Serial Number Total
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -170,7 +166,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('serial_num', $input->serial_num, 'class="form-control" id="serial_num" required=""') ?>
+            <?= form_input('serial_num', $input->serial_num, 'class="form-control" id="serial_num"') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('serial_num') ?>
@@ -179,7 +175,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="serial_num_per_year">Serial Number Per Tahun
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -187,7 +182,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('serial_num_per_year', $input->serial_num_per_year, 'class="form-control" id="serial_num_per_year" required=""') ?>
+            <?= form_input('serial_num_per_year', $input->serial_num_per_year, 'class="form-control" id="serial_num_per_year" ') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('serial_num_per_year') ?>
@@ -196,7 +191,6 @@
           <!-- .form-group -->
           <div class="form-group">
             <label for="copies_num">Jumlah Copy
-              <abbr title="Required">*</abbr>
             </label>
             <div class="has-clearable">
               <button type="button" class="close" aria-label="Close">
@@ -204,7 +198,7 @@
                   <i class="fa fa-times-circle"></i>
                 </span>
               </button>
-            <?= form_input('copies_num', $input->copies_num, 'class="form-control" id="copies_num" required=""') ?>
+            <?= form_input('copies_num', $input->copies_num, 'class="form-control" id="copies_num"') ?>
             <div class="invalid-feedback">Field is required</div>
             </div>
             <?= form_error('copies_num') ?>
