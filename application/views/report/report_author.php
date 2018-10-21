@@ -31,15 +31,8 @@
   <!-- Graph for Author -->
 
   <br />
-<<<<<<< HEAD
   <h5>Laporan Author</h5>
   <br />
-=======
-  <div align="center">
-    <h5>UGM Press</h5>
-    <h6>Grafik Instansi Author</h6>
-  </div>
->>>>>>> cff5d49b887c2a74c15377f9befe6205b2e405f1
 
   <canvas id="myPieChart" width="380" height="100"></canvas>
   <script>

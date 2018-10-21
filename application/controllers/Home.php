@@ -118,11 +118,7 @@ class Home extends Operator_Controller
             $count['count_belum'] = $count_belum;
             $count['count_total'] = $count_total;
         }elseif($ceklevel == 'author'){
-<<<<<<< HEAD
             $categories = $this->home->orderBy('category_name')->getAllWhere("category_status = 'y'",'category');
-=======
-            $categories = $this->home->orderBy('category_name')->getAll('category');
->>>>>>> cff5d49b887c2a74c15377f9befe6205b2e405f1
 
             $count['draft_total'] = $this->home->join3('draft_author','draft','draft')->join3('author','draft_author','author')->join3('user','author','user')->where('user.username',$cekusername)->count('draft');
             $count['draft_desk'] = $this->home->join3('draft_author','draft','draft')->join3('author','draft_author','author')->join3('user','author','user')->where('user.username',$cekusername)->where('draft_status','0')->count('draft');

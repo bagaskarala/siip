@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
--- http://www.phpmyadmin.net
+-- version 4.8.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2018 at 11:34 PM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Oct 21, 2018 at 06:13 AM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,7 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `author`
 --
 
-CREATE TABLE IF NOT EXISTS `author` (
+CREATE TABLE `author` (
   `author_id` mediumint(9) NOT NULL,
   `work_unit_id` mediumint(9) DEFAULT NULL,
   `institute_id` mediumint(9) DEFAULT NULL,
@@ -43,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `author` (
   `heir_name` varchar(256) NOT NULL,
   `user_id` mediumint(9) DEFAULT NULL,
   `author_ktp` varchar(256) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `author`
@@ -61,7 +63,7 @@ INSERT INTO `author` (`author_id`, `work_unit_id`, `institute_id`, `author_nip`,
 -- Table structure for table `bank`
 --
 
-CREATE TABLE IF NOT EXISTS `bank` (
+CREATE TABLE `bank` (
   `bank_name` varchar(256) NOT NULL,
   `bank_id` varchar(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -213,7 +215,7 @@ INSERT INTO `bank` (`bank_name`, `bank_id`) VALUES
 -- Table structure for table `book`
 --
 
-CREATE TABLE IF NOT EXISTS `book` (
+CREATE TABLE `book` (
   `book_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `book_code` varchar(256) NOT NULL,
@@ -228,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   `copies_num` varchar(256) NOT NULL,
   `book_notes` text NOT NULL,
   `is_reprint` enum('y','n') NOT NULL DEFAULT 'n'
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `book`
@@ -244,7 +246,7 @@ INSERT INTO `book` (`book_id`, `draft_id`, `book_code`, `book_title`, `book_edit
 -- Table structure for table `category`
 --
 
-CREATE TABLE IF NOT EXISTS `category` (
+CREATE TABLE `category` (
   `category_id` mediumint(9) NOT NULL,
   `category_name` varchar(256) NOT NULL,
   `category_year` year(4) NOT NULL,
@@ -252,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `category` (
   `date_open` date NOT NULL,
   `date_close` date NOT NULL,
   `category_status` enum('y','n') NOT NULL DEFAULT 'y'
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
@@ -269,7 +271,7 @@ INSERT INTO `category` (`category_id`, `category_name`, `category_year`, `catego
 -- Table structure for table `draft`
 --
 
-CREATE TABLE IF NOT EXISTS `draft` (
+CREATE TABLE `draft` (
   `draft_id` mediumint(9) NOT NULL,
   `category_id` mediumint(9) DEFAULT NULL,
   `theme_id` mediumint(9) DEFAULT NULL,
@@ -342,14 +344,14 @@ CREATE TABLE IF NOT EXISTS `draft` (
   `kriteria4_reviewer2` text NOT NULL,
   `nilai_reviewer2` text NOT NULL,
   `review2_last_upload` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft`
 --
 
 INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draft_file`, `entry_date`, `finish_date`, `print_date`, `is_review`, `review_start_date`, `review_end_date`, `review1_file`, `review1_upload_date`, `review1_last_upload`, `review1_notes`, `review1_notes_author`, `review1_deadline`, `review1_flag`, `review2_file`, `review2_upload_date`, `review2_notes`, `review2_notes_author`, `review2_deadline`, `review2_flag`, `review_status`, `is_edit`, `edit_start_date`, `edit_end_date`, `edit_file`, `edit_upload_date`, `edit_last_upload`, `edit_notes`, `edit_notes_author`, `edit_deadline`, `edit_status`, `is_layout`, `layout_start_date`, `layout_end_date`, `layout_file`, `layout_upload_date`, `layout_last_upload`, `layout_notes`, `layout_notes_author`, `layout_deadline`, `cover_file`, `cover_upload_date`, `cover_last_upload`, `cover_notes`, `cover_notes_author`, `layout_status`, `is_proofread`, `proofread_start_date`, `proofread_end_date`, `proofread_file`, `proofread_upload_date`, `proofread_last_upload`, `proofread_notes`, `proofread_notes_author`, `proofread_status`, `draft_status`, `draft_notes`, `kriteria1_reviewer1`, `kriteria2_reviewer1`, `kriteria3_reviewer1`, `kriteria4_reviewer1`, `nilai_reviewer1`, `kriteria1_reviewer2`, `kriteria2_reviewer2`, `kriteria3_reviewer2`, `kriteria4_reviewer2`, `nilai_reviewer2`, `review2_last_upload`) VALUES
-(40, 13, 18, 'cara memelihara lele', 'cara_memelihara_lele_20181009110800.docx', '2018-10-09 04:08:00', '2018-10-09 06:09:09', NULL, 'y', '2018-10-11 23:45:00', '2018-10-09 11:25:08', 'cara_memelihara_lele_review1_file_20181012141302.docx', '2018-10-12 07:13:02', '', '<p>jelekkk hahah</p>', '<p><b style="background-color: rgb(255, 255, 0);">makasih ya pak, semangattas hehehee</b></p>', '2018-12-10 23:45:00', 'y', 'cara_memelihara_lele_review2_file_20181012141126.docx', '2018-10-12 07:11:26', '<p>baguss tapi jelek wowkowkowk</p>', '<p>hehe siapp MAKASIH!</p>', '2018-12-10 23:45:00', 'n', '<p>saya setujui draftnya. silakan koreksi sesuai masukan reviewer</p>', 'y', '2018-10-09 11:27:56', '2018-10-09 11:32:49', 'cara_memelihara_lele_edit_file_20181012205155.docx', '2018-10-12 13:51:55', 'editor', '<p>saya edit dulu yaa</p><p><br></p><p>-----</p><p><span style="font-size: 24px; color: rgb(255, 0, 0); font-weight: bold;">revisi mayor</span></p><ol><li>penulisan kata salah</li><li>kata asing cetak miring</li></ol>', '<p>oke siapp</p>', '0000-00-00 00:00:00', '<p>oke saya setujui</p>', 'y', '2018-10-09 11:34:32', '2018-10-12 21:07:38', '', NULL, '', '<p>mantap jiwaa</p>', '', '0000-00-00 00:00:00', '', NULL, '', '', '', '<p>layout kurang bagus, ulangi ya</p><p><br></p><p>---</p><p>oke saya setujui lagi</p>', 'y', '2018-10-12 21:07:38', '2018-10-09 11:40:06', '', NULL, '', '', '', '<p>oke stujui</p>', 12, '', '<p>qqqqqqq</p>', '<p>www</p>', '<p>eee</p>', '<p style="line-height: 1;">rrrr</p>', '1,1,1,1', '<p>fgdfg</p>', '<p>dgdfg</p>', '<p>dfgdf</p>', '<p>dfgdfg</p>', '5,5,5,5', ''),
+(40, 13, 18, 'cara memelihara lele', 'cara_memelihara_lele_20181009110800.docx', '2018-10-09 04:08:00', '2018-10-09 06:09:09', NULL, 'y', '2018-10-11 23:45:00', '2018-10-09 11:25:08', 'cara_memelihara_lele_review1_file_20181012141302.docx', '2018-10-12 07:13:02', '', '<p>jelekkk hahah</p>', '<p><b style=\"background-color: rgb(255, 255, 0);\">makasih ya pak, semangattas hehehee</b></p>', '2018-12-10 23:45:00', 'y', 'cara_memelihara_lele_review2_file_20181012141126.docx', '2018-10-12 07:11:26', '<p>baguss tapi jelek wowkowkowk</p>', '<p>hehe siapp MAKASIH!</p>', '2018-12-10 23:45:00', 'n', '<p>saya setujui draftnya. silakan koreksi sesuai masukan reviewer</p>', 'y', '2018-10-09 11:27:56', '2018-10-09 11:32:49', 'cara_memelihara_lele_edit_file_20181012205155.docx', '2018-10-12 13:51:55', 'editor', '<p>saya edit dulu yaa</p><p><br></p><p>-----</p><p><span style=\"font-size: 24px; color: rgb(255, 0, 0); font-weight: bold;\">revisi mayor</span></p><ol><li>penulisan kata salah</li><li>kata asing cetak miring</li></ol>', '<p>oke siapp</p>', '0000-00-00 00:00:00', '<p>oke saya setujui</p>', 'y', '2018-10-09 11:34:32', '2018-10-12 21:07:38', '', NULL, '', '<p>mantap jiwaa</p>', '', '0000-00-00 00:00:00', '', NULL, '', '', '', '<p>layout kurang bagus, ulangi ya</p><p><br></p><p>---</p><p>oke saya setujui lagi</p>', 'y', '2018-10-12 21:07:38', '2018-10-09 11:40:06', '', NULL, '', '', '', '<p>oke stujui</p>', 12, '', '<p>qqqqqqq</p>', '<p>www</p>', '<p>eee</p>', '<p style=\"line-height: 1;\">rrrr</p>', '1,1,1,1', '<p>fgdfg</p>', '<p>dgdfg</p>', '<p>dfgdf</p>', '<p>dfgdfg</p>', '5,5,5,5', ''),
 (41, 13, 17, 'cara database', 'cara_database_20181009140208.docx', '2018-10-09 07:02:08', '2018-10-11 07:58:19', NULL, 'y', '2018-10-09 14:10:18', '2018-10-11 14:58:19', '', NULL, '', '<p>yesdfgg</p>', '', '2018-12-08 14:10:18', 'n', '', NULL, '<p>sudah bagus</p>', '', '2018-12-08 14:10:18', 'y', '<p>review selesai</p><p>disetujui</p>', 'y', '2018-10-09 14:20:38', '2018-10-09 14:21:46', '', NULL, '', '<p>editan in progressss</p>', '', '2018-10-25 00:00:00', '<p>editorial selesai fix</p>', 'y', '2018-10-09 14:36:27', '2018-10-09 14:22:22', '', NULL, '', '<p>okkeee</p><p>9 okt = revisiasd asd</p>', '', '0000-00-00 00:00:00', '', NULL, '', '', '', '', 'y', '2018-10-09 14:22:22', '2018-10-10 13:48:10', '', NULL, '', '', '', '', 14, '', '<p>okee</p>', '<p>fdfg</p>', '<p>dfgdfg</p>', '<p>dfgdfg</p>', '3,3,3,3', '', '', '', '', '', ''),
 (43, 13, 20, 'hukum perdata indonesia', 'hukum_perdata_indonesia_20181010134935.docx', '2018-10-10 06:49:35', NULL, NULL, 'y', '2018-10-10 13:50:07', '2018-10-12 21:25:21', 'hukum_perdata_indonesia_review1_file_20181012104424.docx', '2018-10-12 03:44:24', '', '<p>sudah bagus sih mas hehehe</p>', '<p>oke siap pakkk, makasihh</p>', '2018-12-09 13:50:07', 'y', 'hehehehe', '2018-10-12 06:09:53', '', '', '2018-12-09 13:50:07', NULL, '', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'hukum_perdata_indonesia_edit_file_20181012124327.docx', '2018-10-12 05:43:27', '', '', '<p>heheh</p>', '0000-00-00 00:00:00', '', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', NULL, '', '', '', '0000-00-00 00:00:00', 'hukum_perdata_indonesia_cover_file_20181012164833.docx', '2018-10-12 09:48:33', 'superadmin', '', '', '', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', NULL, '', '', '', '', 5, '', '<p>satuuuu</p>', '<p>duaaa</p>', '<p>tigaa</p>', '<p>empatt</p>', '1,2,3,4', '<p>empattt</p>', '<p>tiggaaa</p>', '<p>duaaa</p>', '<p>dsatuu</p>', '4,3,2,1', ''),
 (45, 15, 21, 'Spesies Ikan Tuna', 'Spesies_Ikan_Tuna_20181010142919.docx', '2018-10-10 07:29:19', NULL, NULL, 'y', '2018-10-11 23:58:36', '2018-10-12 00:28:19', '', NULL, '', '', '<p>eheheh sipp</p>', '2018-12-10 23:58:36', 'y', 'Spesies_Ikan_Tuna_review2_file_20181012140601.docx', '2018-10-12 07:06:01', '<p>lumayan sih keren</p>', '<p>keren</p>', '2018-12-10 23:58:36', 'y', '<p>keren</p>', 'y', '2018-10-10 14:31:00', '2018-10-12 21:24:31', '', NULL, '', '', '', '0000-00-00 00:00:00', '', 'n', '2018-10-10 14:31:13', '0000-00-00 00:00:00', '', NULL, '', '', '', '0000-00-00 00:00:00', '', NULL, '', '', '', '', 'n', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', NULL, '', '', '', '', 7, '', 'c1', '<p>v2</p>', '<p>b3</p>', '<p>n4</p>', '2,3,4,5', '<p>sudah keren</p>', '<p>baguss</p>', '<p>termantap</p>', '<p>cihuy</p>', '5,3,4,5', ''),
@@ -367,29 +369,30 @@ INSERT INTO `draft` (`draft_id`, `category_id`, `theme_id`, `draft_title`, `draf
 -- Table structure for table `draft_author`
 --
 
-CREATE TABLE IF NOT EXISTS `draft_author` (
+CREATE TABLE `draft_author` (
   `draft_author_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
-  `author_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
+  `author_id` mediumint(9) DEFAULT NULL,
+  `draft_author_status` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft_author`
 --
 
-INSERT INTO `draft_author` (`draft_author_id`, `draft_id`, `author_id`) VALUES
-(83, 41, 16),
-(85, 43, 18),
-(87, 43, 20),
-(88, 45, 19),
-(90, 40, 18),
-(91, 47, 18),
-(92, 48, 20),
-(93, 49, 18),
-(94, 50, 18),
-(95, 51, 19),
-(96, 52, 18),
-(97, 53, 20);
+INSERT INTO `draft_author` (`draft_author_id`, `draft_id`, `author_id`, `draft_author_status`) VALUES
+(83, 41, 16, 0),
+(85, 43, 18, 0),
+(87, 43, 20, 0),
+(88, 45, 19, 0),
+(90, 40, 18, 0),
+(91, 47, 18, 0),
+(92, 48, 20, 0),
+(93, 49, 18, 0),
+(94, 50, 18, 0),
+(95, 51, 19, 0),
+(96, 52, 18, 0),
+(97, 53, 20, 0);
 
 -- --------------------------------------------------------
 
@@ -397,12 +400,12 @@ INSERT INTO `draft_author` (`draft_author_id`, `draft_id`, `author_id`) VALUES
 -- Table structure for table `draft_reviewer`
 --
 
-CREATE TABLE IF NOT EXISTS `draft_reviewer` (
+CREATE TABLE `draft_reviewer` (
   `draft_reviewer_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `reviewer_id` mediumint(9) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '1 = Accept, 2 = Reject'
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `draft_reviewer`
@@ -427,10 +430,10 @@ INSERT INTO `draft_reviewer` (`draft_reviewer_id`, `draft_id`, `reviewer_id`, `s
 -- Table structure for table `faculty`
 --
 
-CREATE TABLE IF NOT EXISTS `faculty` (
+CREATE TABLE `faculty` (
   `faculty_id` mediumint(9) NOT NULL,
   `faculty_name` varchar(256) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `faculty`
@@ -450,10 +453,10 @@ INSERT INTO `faculty` (`faculty_id`, `faculty_name`) VALUES
 -- Table structure for table `institute`
 --
 
-CREATE TABLE IF NOT EXISTS `institute` (
+CREATE TABLE `institute` (
   `institute_id` mediumint(9) NOT NULL,
   `institute_name` varchar(256) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `institute`
@@ -471,11 +474,11 @@ INSERT INTO `institute` (`institute_id`, `institute_name`) VALUES
 -- Table structure for table `responsibility`
 --
 
-CREATE TABLE IF NOT EXISTS `responsibility` (
+CREATE TABLE `responsibility` (
   `responsibility_id` mediumint(9) NOT NULL,
   `user_id` mediumint(9) DEFAULT NULL,
   `draft_id` mediumint(9) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `responsibility`
@@ -513,14 +516,14 @@ INSERT INTO `responsibility` (`responsibility_id`, `user_id`, `draft_id`) VALUES
 -- Table structure for table `reviewer`
 --
 
-CREATE TABLE IF NOT EXISTS `reviewer` (
+CREATE TABLE `reviewer` (
   `reviewer_id` mediumint(9) NOT NULL,
   `reviewer_nip` varchar(256) NOT NULL,
   `reviewer_name` varchar(256) NOT NULL,
   `faculty_id` mediumint(9) DEFAULT NULL,
   `user_id` mediumint(9) DEFAULT NULL,
   `expert` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reviewer`
@@ -540,10 +543,10 @@ INSERT INTO `reviewer` (`reviewer_id`, `reviewer_nip`, `reviewer_name`, `faculty
 -- Table structure for table `theme`
 --
 
-CREATE TABLE IF NOT EXISTS `theme` (
+CREATE TABLE `theme` (
   `theme_id` mediumint(9) NOT NULL,
   `theme_name` varchar(256) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `theme`
@@ -563,13 +566,13 @@ INSERT INTO `theme` (`theme_id`, `theme_name`) VALUES
 -- Table structure for table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE `user` (
   `user_id` mediumint(9) NOT NULL,
   `username` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
   `level` enum('superadmin','admin_penerbitan','staff_penerbitan','editor','layouter','admin_pemasaran','admin_percetakan','admin_gudang','author','reviewer','author_reviewer') NOT NULL,
   `is_blocked` enum('y','n') NOT NULL DEFAULT 'n'
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
@@ -597,7 +600,7 @@ INSERT INTO `user` (`user_id`, `username`, `password`, `level`, `is_blocked`) VA
 -- Table structure for table `worksheet`
 --
 
-CREATE TABLE IF NOT EXISTS `worksheet` (
+CREATE TABLE `worksheet` (
   `worksheet_id` mediumint(9) NOT NULL,
   `draft_id` mediumint(9) DEFAULT NULL,
   `worksheet_num` varchar(256) NOT NULL,
@@ -606,7 +609,7 @@ CREATE TABLE IF NOT EXISTS `worksheet` (
   `worksheet_notes` text NOT NULL,
   `worksheet_pic` varchar(256) NOT NULL,
   `worksheet_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `worksheet`
@@ -631,10 +634,10 @@ INSERT INTO `worksheet` (`worksheet_id`, `draft_id`, `worksheet_num`, `is_reprin
 -- Table structure for table `work_unit`
 --
 
-CREATE TABLE IF NOT EXISTS `work_unit` (
+CREATE TABLE `work_unit` (
   `work_unit_id` mediumint(9) NOT NULL,
   `work_unit_name` varchar(256) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `work_unit`
@@ -768,72 +771,86 @@ ALTER TABLE `work_unit`
 -- AUTO_INCREMENT for table `author`
 --
 ALTER TABLE `author`
-  MODIFY `author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+  MODIFY `author_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
 --
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `book_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+  MODIFY `book_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+  MODIFY `category_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
 --
 -- AUTO_INCREMENT for table `draft`
 --
 ALTER TABLE `draft`
-  MODIFY `draft_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=54;
+  MODIFY `draft_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
 --
 -- AUTO_INCREMENT for table `draft_author`
 --
 ALTER TABLE `draft_author`
-  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=98;
+  MODIFY `draft_author_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+
 --
 -- AUTO_INCREMENT for table `draft_reviewer`
 --
 ALTER TABLE `draft_reviewer`
-  MODIFY `draft_reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=38;
+  MODIFY `draft_reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
 --
 -- AUTO_INCREMENT for table `faculty`
 --
 ALTER TABLE `faculty`
-  MODIFY `faculty_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `faculty_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 --
 -- AUTO_INCREMENT for table `institute`
 --
 ALTER TABLE `institute`
-  MODIFY `institute_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `institute_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- AUTO_INCREMENT for table `responsibility`
 --
 ALTER TABLE `responsibility`
-  MODIFY `responsibility_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=123;
+  MODIFY `responsibility_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+
 --
 -- AUTO_INCREMENT for table `reviewer`
 --
 ALTER TABLE `reviewer`
-  MODIFY `reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
+  MODIFY `reviewer_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
 --
 -- AUTO_INCREMENT for table `theme`
 --
 ALTER TABLE `theme`
-  MODIFY `theme_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+  MODIFY `theme_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+  MODIFY `user_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
 --
 -- AUTO_INCREMENT for table `worksheet`
 --
 ALTER TABLE `worksheet`
-  MODIFY `worksheet_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=36;
+  MODIFY `worksheet_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
 --
 -- AUTO_INCREMENT for table `work_unit`
 --
 ALTER TABLE `work_unit`
-  MODIFY `work_unit_id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `work_unit_id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- Constraints for dumped tables
 --
@@ -893,6 +910,7 @@ ALTER TABLE `reviewer`
 --
 ALTER TABLE `worksheet`
   ADD CONSTRAINT `worksheet_ibfk_1` FOREIGN KEY (`draft_id`) REFERENCES `draft` (`draft_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

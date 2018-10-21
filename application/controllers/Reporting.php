@@ -151,7 +151,6 @@ class Reporting extends Admin_Controller {
 		}
 		echo json_encode($result);
   }
-<<<<<<< HEAD
 
 	public function getBook()
   {
@@ -163,19 +162,6 @@ class Reporting extends Admin_Controller {
 		echo json_encode($result);
   }
 
-=======
-
-	public function getBook()
-  {
-		for($i = 1; $i <= 12; $i++)
-		{
-			$result[$i] = $this->reporting->getBook($i);
-			$result['count'][$i] = count($result[$i]);
-		}
-		echo json_encode($result);
-  }
-
->>>>>>> cff5d49b887c2a74c15377f9befe6205b2e405f1
 	public function getAuthor()
   {
 		for($i = 1; $i <= 3; $i++)
@@ -208,9 +194,6 @@ class Reporting extends Admin_Controller {
 		echo json_encode($result);
 	}
 }
-
-/*search filter*/
-
 
 /* End of file Reporting.php */
 /* Location: ./application/controllers/Reporting.php */
